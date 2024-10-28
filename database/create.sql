@@ -75,7 +75,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 CREATE POLICY "根据用户订阅的计划限制上传"
 ON storage.objects
 FOR INSERT TO authenticated
@@ -85,8 +84,11 @@ WITH CHECK (
 	AND (
 		SELECT
 		CASE (auth.jwt()->>'plan')::text
-			WHEN 'pro' THEN
+			WHEN 'pro/mouth' THEN
 				(auth.jwt()->>'cycle_uploaded_count')::int < 1777
+					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024  -- 177GB for pro plan
+			WHEN 'pro/year' THEN
+				(auth.jwt()->>'cycle_uploaded_count')::int < 17777
 					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024  -- 177GB for pro plan
 			ELSE
 				(auth.jwt()->>'cycle_uploaded_count')::int < 177
