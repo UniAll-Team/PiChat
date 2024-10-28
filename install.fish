@@ -5,7 +5,7 @@ pnpm add \
     zod
 
 pnpm add -D \
-    sass \
+    sass-embedded \
     nuxt-chatgpt
 
 set modules \
@@ -13,7 +13,9 @@ set modules \
     i18n \
     pinia \
     @vite-pwa/nuxt \
-    supabase
+    supabase \
+    sentry \
+    stripe-next
 
 for module in $modules
     http_proxy npx nuxi module add $module

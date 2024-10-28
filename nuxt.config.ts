@@ -15,6 +15,9 @@ export default defineNuxtConfig({
 		'@vueuse/nuxt',
 		'nuxt-og-image',
 		'@pinia/nuxt',
+		'@unlok-co/nuxt-stripe',
+		'@sentry/nuxt/module',
+		'@sentry/nuxt',
 	],
 
 	i18n: {
@@ -58,29 +61,29 @@ export default defineNuxtConfig({
 		},
 	},
 
-	// colorMode: {
-	// 	disableTransition: true,
-	// },
+	colorMode: {
+		disableTransition: true,
+	},
 
-	// nitro: {
-	// 	prerender: {
-	// 		routes: ['/', '/docs'],
-	// 		crawlLinks: true,
-	// 	},
-	// },
+	nitro: {
+		prerender: {
+			routes: ['/', '/docs'],
+			crawlLinks: true,
+		},
+	},
 
-	// routeRules: {
-	// 	'/api/search.json': { prerender: true },
-	// 	'/docs': { redirect: '/docs/getting-started', prerender: false },
-	// },
+	routeRules: {
+		'/api/search.json': { prerender: true },
+		'/docs': { redirect: '/docs/getting-started', prerender: false },
+	},
 
 	devtools: {
 		enabled: true,
 	},
 
-	// typescript: {
-	// 	strict: false,
-	// },
+	typescript: {
+		strict: false,
+	},
 
 	future: {
 		compatibilityVersion: 4,
@@ -92,6 +95,15 @@ export default defineNuxtConfig({
 			login: '/login',
 			callback: '/',
 			exclude: ['/', '/signup', '/docs', '/pricing'],
+		},
+	},
+
+	stripe: {
+		server: {
+			key: process.env.STRIPE_SECRET_KEY,
+		},
+		client: {
+			key: process.env.STRIPE_PUBLIC_KEY,
 		},
 	},
 

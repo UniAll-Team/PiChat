@@ -16,6 +16,10 @@
 			"suspicious": {
 				"noExplicitAny": "off",
 				"noAssignInExpressions": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off",
+				"noUnusedTemplateLiteral": "off"
 			}
 		}
 	},
