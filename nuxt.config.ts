@@ -18,7 +18,14 @@ export default defineNuxtConfig({
 		'@unlok-co/nuxt-stripe',
 		'@sentry/nuxt/module',
 		'@sentry/nuxt',
+		'@samk-dev/nuxt-vcalendar',
 	],
+
+	app: {
+		head: {
+			title: 'PiCHat',
+		},
+	},
 
 	i18n: {
 		strategy: 'prefix_and_default',
@@ -44,7 +51,7 @@ export default defineNuxtConfig({
 				file: 'ar-SA.ts',
 			},
 			{
-				code: 'zh',
+				code: 'zh-CN',
 				language: 'zh-CN',
 				name: '简体中文',
 				file: 'zh-CN.ts',

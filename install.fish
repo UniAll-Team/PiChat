@@ -15,7 +15,8 @@ set modules \
     @vite-pwa/nuxt \
     supabase \
     sentry \
-    stripe-next
+    stripe-next \
+    @samk-dev/nuxt-vcalendar
 
 for module in $modules
     http_proxy npx nuxi module add $module

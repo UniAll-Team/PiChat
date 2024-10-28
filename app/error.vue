@@ -38,7 +38,7 @@ defineProps({
 
 useHead({
 	htmlAttrs: {
-		lang: 'en'
+		lang: 'zh-CN'
 	}
 })
 

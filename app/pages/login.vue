@@ -26,7 +26,10 @@ const toast = useToast()
 
 definePageMeta({
 	layout: 'auth',
-	title: 'Login',
+})
+
+useHead({
+	title: '%s - Login',
 })
 
 const fields = [

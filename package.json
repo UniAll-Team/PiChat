@@ -21,6 +21,7 @@
 		"@nuxtjs/i18n": "^8.5.5",
 		"@nuxtjs/supabase": "^1.4.1",
 		"@pinia/nuxt": "^0.5.5",
+		"@samk-dev/nuxt-vcalendar": "^1.0.4",
 		"@sentry/nuxt": "^8.35.0",
 		"@unlok-co/nuxt-stripe": "^4.0.1",
 		"@vite-pwa/nuxt": "^0.10.5",
