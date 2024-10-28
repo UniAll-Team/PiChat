@@ -1,8 +1,8 @@
 <template>
 	<UCard class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
-		<UAuthForm :fields="fields" :validate="validate" :providers="providers" align="top" title="Create an account"
+		<UAuthForm :fields="fields" :schema="schema" :providers="providers" align="top" title="Create an account"
 			:ui="{ base: 'text-center', footer: 'text-center' }" :submit-button="{ label: 'Create account' }"
-			@submit="onSubmit">
+			@submit="signup">
 			<template #description>
 				Already have an account? <NuxtLink to="/login" class="text-primary font-medium">Login</NuxtLink>.
 			</template>
@@ -15,41 +15,65 @@
 </template>
 
 <script setup lang="ts">
+import { z } from 'zod'
+
+const supabase = useSupabaseClient()
+
 definePageMeta({
-	layout: 'auth'
+	layout: 'auth',
+	title: 'Sign up',
 })
 
-useSeoMeta({
-	title: 'Sign up'
+const toast = useToast()
+
+const fields = [
+	{
+		name: 'name',
+		type: 'text',
+		label: 'Name',
+		placeholder: 'Enter your name',
+	},
+	{
+		name: 'email',
+		type: 'email',
+		label: 'Email',
+		placeholder: 'Enter your email',
+	},
+	{
+		name: 'password',
+		label: 'Password',
+		type: 'password',
+		placeholder: 'Enter your password',
+	},
+]
+
+const schema = z.object({
+	email: z.string().email({ message: 'Invalid email address' }),
+	password: z.string().min(1, { message: 'Password is required' }),
 })
-
-const fields = [{
-	name: 'name',
-	type: 'text',
-	label: 'Name',
-	placeholder: 'Enter your name'
-}, {
-	name: 'email',
-	type: 'email',
-	label: 'Email',
-	placeholder: 'Enter your email'
-}, {
-	name: 'password',
-	label: 'Password',
-	type: 'password',
-	placeholder: 'Enter your password'
-}]
-
-const validate = (state: any) => {
-	const errors = []
-	if (!state.email) errors.push({ path: 'email', message: 'Email is required' })
-	if (!state.password) errors.push({ path: 'password', message: 'Password is required' })
-	return errors
-}
 
 const providers = useProviders()
 
-function onSubmit(data: any) {
-	console.log('Submitted', data)
+async function signup(data: any) {
+	const { error } = await supabase.auth.signInWithPassword({
+		email: data.email,
+		password: data.password,
+	})
+
+	if (error) {
+		toast.add({
+			title: 'Signup Error',
+			description: error.message,
+			color: 'red',
+		})
+	} else {
+		toast.add({
+			title: 'Signup Successful',
+			description: 'You have successfully logged in.',
+			color: 'green',
+		})
+
+		await navigateTo('/docs')
+	}
 }
 </script>

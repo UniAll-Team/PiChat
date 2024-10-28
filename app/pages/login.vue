@@ -1,8 +1,8 @@
 <template>
 	<UCard class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
-		<UAuthForm :fields="fields" :validate="validate" :providers="providers" title="Welcome back" align="top"
+		<UAuthForm :fields="fields" :schema="schema" :providers="providers" title="Welcome back" align="top"
 			icon="i-heroicons-lock-closed" :ui="{ base: 'text-center', footer: 'text-center' }"
-			:submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }" @submit="onSubmit">
+			:submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }" @submit="login">
 			<template #description>
 				Don't have an account? <NuxtLink to="/signup" class="text-primary font-medium">Sign up</NuxtLink>.
 			</template>
@@ -19,36 +19,58 @@
 </template>
 
 <script setup lang="ts">
+import { z } from 'zod'
+
+const supabase = useSupabaseClient()
+const toast = useToast()
+
 definePageMeta({
-	layout: 'auth'
+	layout: 'auth',
+	title: 'Login',
 })
 
-useSeoMeta({
-	title: 'Login'
+const fields = [
+	{
+		name: 'email',
+		type: 'email',
+		label: 'Email',
+		placeholder: 'Enter your email',
+	},
+	{
+		name: 'password',
+		label: 'Password',
+		type: 'password',
+		placeholder: 'Enter your password',
+	},
+]
+
+const schema = z.object({
+	email: z.string().email({ message: 'Invalid email address' }),
+	password: z.string().min(1, { message: 'Password is required' }),
 })
-
-const fields = [{
-	name: 'email',
-	type: 'email',
-	label: 'Email',
-	placeholder: 'Enter your email'
-}, {
-	name: 'password',
-	label: 'Password',
-	type: 'password',
-	placeholder: 'Enter your password'
-}]
-
-const validate = (state: any) => {
-	const errors = []
-	if (!state.email) errors.push({ path: 'email', message: 'Email is required' })
-	if (!state.password) errors.push({ path: 'password', message: 'Password is required' })
-	return errors
-}
 
 const providers = useProviders()
 
-function onSubmit(data: any) {
-	console.log('Submitted', data)
+async function login(data: any) {
+	const { error } = await supabase.auth.signInWithPassword({
+		email: data.email,
+		password: data.password,
+	})
+
+	if (error) {
+		toast.add({
+			title: 'Login Error',
+			description: error.message,
+			color: 'red',
+		})
+	} else {
+		toast.add({
+			title: 'Login Successful',
+			description: 'You have successfully logged in.',
+			color: 'green',
+		})
+
+		await navigateTo('/docs')
+	}
 }
 </script>
