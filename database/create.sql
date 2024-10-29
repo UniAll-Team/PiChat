@@ -114,6 +114,29 @@ AFTER INSERT ON storage.objects
 FOR EACH ROW
 EXECUTE FUNCTION public.insert_new_image();
 
+-- 建立一个视图，联合查询 storage.objects 和 images 表
+CREATE VIEW image_details
+WITH (security_invoker) AS
+SELECT
+	i.id,
+	o.owner_id,
+	o.name,
+	i.document,
+	i.embedding,
+	o.created_at,
+	o.updated_at,
+	o.last_accessed_at,
+	o.version,
+	o.metadata,
+	o.user_metadata
+FROM
+	public.images i,
+	storage.objects o
+WHERE
+	i.object_id = o.id
+	AND o.owner_id::UUID = auth.uid()
+	AND o.bucket_id = 'images';
+
 -- 上传图片时，更新用户的上传计数
 CREATE OR REPLACE FUNCTION auth.increment_cycle_uploaded_count()
 RETURNS trigger AS $$

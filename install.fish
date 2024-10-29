@@ -2,7 +2,8 @@ pnpm add \
     pinia-plugin-persistedstate \
     type-fest \
     date-fns \
-    zod
+    zod \
+    v3-infinite-loading
 
 pnpm add -D \
     sass-embedded \

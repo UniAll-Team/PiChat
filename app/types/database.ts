@@ -9,10 +9,49 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      images: {
+        Row: {
+          document: string | null
+          embedding: string | null
+          id: number
+          object_id: string
+          user_id: string | null
+        }
+        Insert: {
+          document?: string | null
+          embedding?: string | null
+          id?: never
+          object_id: string
+          user_id?: string | null
+        }
+        Update: {
+          document?: string | null
+          embedding?: string | null
+          id?: never
+          object_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      image_details: {
+        Row: {
+          bucket_id: string | null
+          created_at: string | null
+          document: string | null
+          embedding: string | null
+          id: number | null
+          last_accessed_at: string | null
+          metadata: Json | null
+          name: string | null
+          owner_id: string | null
+          updated_at: string | null
+          user_metadata: Json | null
+          version: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
