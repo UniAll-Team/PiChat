@@ -14,18 +14,20 @@
 </template>
 
 <script setup lang="ts">
-import { useAppToast } from '~/composables/useAppToast';
-
 const supabase = useSupabaseClient()
+const user = useSupabaseUser()
 const { toastSuccess, toastError } = useAppToast()
 
-const state = ref<{ [key: string]: boolean }>({
-	email: true,
-	app: false,
-	discounts: true,
-	product_updates: false,
-	important_updates: true,
-})
+const state = ref<{ [key: string]: boolean }>(user.value.user_metadata?.notifications)
+if (!state.value) {
+	state.value = {
+		email: true,
+		app: false,
+		discounts: true,
+		product_updates: false,
+		important_updates: true,
+	}
+}
 
 const sections = [
 	{

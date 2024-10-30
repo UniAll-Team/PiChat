@@ -3,7 +3,7 @@
 		<template #default="{ open }">
 			<UButton color="gray" variant="ghost" class="w-full" :label="user.user_metadata.full_name"
 				:class="[open && 'bg-gray-50 dark:bg-gray-800']">
-				<template #leading>
+				<template #leading v-if="hasAvatar">
 					<UAvatar :src="user.user_metadata.avatar_url" size="2xs" />
 				</template>
 			</UButton>
@@ -28,7 +28,8 @@ const supabase = useSupabaseClient()
 
 const { isHelpSlideoverOpen } = useDashboard()
 const { isDashboardSearchModalOpen } = useUIState()
-const { metaSymbol } = useShortcuts()
+
+const hasAvatar = computed(() => !!user.value.user_metadata.avatar_url)
 
 const items = computed(() => [
 	[
@@ -47,7 +48,6 @@ const items = computed(() => [
 		{
 			label: 'Command menu',
 			icon: 'i-heroicons-command-line',
-			shortcuts: [metaSymbol.value, 'K'],
 			click: () => {
 				isDashboardSearchModalOpen.value = true
 			},
@@ -55,7 +55,6 @@ const items = computed(() => [
 		{
 			label: 'Help & Support',
 			icon: 'i-heroicons-question-mark-circle',
-			shortcuts: ['?'],
 			click: () => (isHelpSlideoverOpen.value = true),
 		},
 	],

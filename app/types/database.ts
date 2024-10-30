@@ -37,7 +37,6 @@ export type Database = {
     Views: {
       image_details: {
         Row: {
-          bucket_id: string | null
           created_at: string | null
           document: string | null
           embedding: string | null

@@ -32,16 +32,13 @@
 		<!-- ~/components/HelpSlideover.vue -->
 		<HelpSlideover />
 
-		<ClientOnly>
-			<LazyUDashboardSearch :groups="groups" />
-		</ClientOnly>
 	</UDashboardLayout>
 </template>
 
 <script lang="ts" setup>
 const route = useRoute()
-const appConfig = useAppConfig()
 const { isHelpSlideoverOpen } = useDashboard()
+const { toastSuccess, toastError } = useAppToast()
 
 const links = [
 	{
@@ -82,7 +79,21 @@ const footerLinks = [
 	{
 		label: 'Invite people',
 		icon: 'i-heroicons-plus',
-		to: '/settings/members',
+		click: async () => {
+			// 复制网址链接到剪贴板
+			try {
+				await navigator.clipboard.writeText(window.location.origin)
+				toastSuccess({
+					title: 'Link copied to clipboard',
+					description: 'You can now share this link with others',
+				})
+			} catch (error) {
+				toastError({
+					title: 'Failed to copy link',
+					description: '复制失败，请开启剪贴板权限',
+				})
+			}
+		},
 	},
 	{
 		label: 'Help & Support',
@@ -90,30 +101,4 @@ const footerLinks = [
 		click: () => (isHelpSlideoverOpen.value = true),
 	},
 ]
-
-const groups = [
-	{
-		key: 'links',
-		label: 'Go to',
-		commands: links.map((link) => ({ ...link, shortcuts: link.tooltip?.shortcuts })),
-	},
-	{
-		key: 'code',
-		label: 'Code',
-		commands: [
-			{
-				id: 'source',
-				label: 'View page source',
-				icon: 'i-simple-icons-github',
-				click: () => {
-					window.open(
-						`https://github.com/nuxt-ui-pro/dashboard/blob/main/pages${route.path === '/' ? '/index' : route.path}.vue`,
-						'_blank'
-					)
-				},
-			},
-		],
-	},
-]
-
 </script>

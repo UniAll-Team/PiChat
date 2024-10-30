@@ -8,9 +8,6 @@
 
 <script setup lang="ts">
 const { isHelpSlideoverOpen } = useDashboard()
-const { metaSymbol } = useShortcuts()
-
-const shortcuts = ref(false)
 const query = ref('')
 
 const links = [
@@ -38,26 +35,26 @@ const categories = computed(() => [
 	{
 		title: 'General',
 		items: [
-			{ shortcuts: [metaSymbol.value, 'K'], name: 'Command menu' },
-			{ shortcuts: ['N'], name: 'Notifications' },
-			{ shortcuts: ['?'], name: 'Help & Support' },
-			{ shortcuts: ['/'], name: 'Search' },
+			{ name: 'Command menu' },
+			{ name: 'Notifications' },
+			{ name: 'Help & Support' },
+			{ name: 'Search' },
 		],
 	},
 	{
 		title: 'Navigation',
 		items: [
-			{ shortcuts: ['G', 'H'], name: 'Go to Home' },
-			{ shortcuts: ['G', 'I'], name: 'Go to Inbox' },
-			{ shortcuts: ['G', 'U'], name: 'Go to Users' },
-			{ shortcuts: ['G', 'S'], name: 'Go to Settings' },
+			{ name: 'Go to Home' },
+			{ name: 'Go to Inbox' },
+			{ name: 'Go to Users' },
+			{ name: 'Go to Settings' },
 		],
 	},
 	{
 		title: 'Inbox',
 		items: [
-			{ shortcuts: ['↑'], name: 'Prev notification' },
-			{ shortcuts: ['↓'], name: 'Next notification' },
+			{ name: 'Prev notification' },
+			{ name: 'Next notification' },
 		],
 	},
 ])
