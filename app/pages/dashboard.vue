@@ -18,8 +18,8 @@
 
 					<UInput placeholder="Search" v-model="imageDescription" icon="i-heroicons-magnifying-glass" color="gray"
 						autocomplete="off" variant="outline" :ui="{ icon: { trailing: { pointer: '' } } }"
-						:class="{ 'mobile-search-focused': isSearchFocused }" @focus="handleSearchFocus" @blur="handleSearchBlur"
-						@keyup.enter="handleSearch">
+						:class="{ 'mobile-search-focused': isSearchFocused, 'mobile-search-input': !isSearchFocused }"
+						@focus="handleSearchFocus" @blur="handleSearchBlur" @keyup.enter="handleSearch">
 						<template #trailing>
 							<UButton v-show="imageDescription !== ''" class='hidden-on-mobile' color="gray" variant="link"
 								icon="i-heroicons-x-mark" :padded="false" @click="imageDescription = ''" />
@@ -77,7 +77,7 @@ const handleSearch = async () => {
 </script>
 
 <style lang="scss" scoped>
-@media (max-width: 768px) {
+@media (width<=768px) {
 	.hidden-on-mobile {
 		display: none;
 	}
@@ -88,6 +88,10 @@ const handleSearch = async () => {
 		right: 1rem;
 		top: 1rem;
 		z-index: 10;
+	}
+
+	.mobile-search-input {
+		width: 4.2rem;
 	}
 }
 </style>
