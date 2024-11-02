@@ -151,40 +151,40 @@ WHERE
 CREATE OR REPLACE FUNCTION auth.add_cycle_indexed_count()
 RETURNS trigger AS $$
 DECLARE
-    current_count INT;
-    user_id UUID;
+	current_count INT;
+	user_id UUID;
 BEGIN
-    -- 如果 embedding 没有被更新或为 NULL，直接返回
-    IF NEW.embedding IS NULL OR NEW.embedding = OLD.embedding THEN
-        RETURN NEW;
-    END IF;
+	-- 如果 embedding 没有被更新或为 NULL，直接返回
+	IF NEW.embedding IS NULL OR NEW.embedding = OLD.embedding THEN
+		RETURN NEW;
+	END IF;
 
-    -- 获取关联的用户 ID
-    SELECT i.user_id INTO user_id
-    FROM images i
-    WHERE i.id = NEW.id;
+	-- 获取关联的用户 ID
+	SELECT i.user_id INTO user_id
+	FROM images i
+	WHERE i.id = NEW.id;
 
-    -- 如果没有找到用户 ID，直接返回
-    IF user_id IS NULL THEN
-        RETURN NEW;
-    END IF;
+	-- 如果没有找到用户 ID，直接返回
+	IF user_id IS NULL THEN
+		RETURN NEW;
+	END IF;
 
-    -- 获取当前计数，不存在则默认为 0
-    SELECT COALESCE((raw_app_meta_data->>'cycle_indexed_count')::int, 0)
-    INTO current_count
-    FROM auth.users
-    WHERE id = user_id;
+	-- 获取当前计数，不存在则默认为 0
+	SELECT COALESCE((raw_app_meta_data->>'cycle_indexed_count')::int, 0)
+	INTO current_count
+	FROM auth.users
+	WHERE id = user_id;
 
-    -- 更新计数
-    UPDATE auth.users
-    SET raw_app_meta_data = jsonb_set(
-        COALESCE(raw_app_meta_data, '{}'::jsonb),
-        '{cycle_indexed_count}',
-        to_jsonb(current_count + 1)
-    )
-    WHERE id = user_id;
+	-- 更新计数
+	UPDATE auth.users
+	SET raw_app_meta_data = jsonb_set(
+		COALESCE(raw_app_meta_data, '{}'::jsonb),
+		'{cycle_indexed_count}',
+		to_jsonb(current_count + 1)
+	)
+	WHERE id = user_id;
 
-    RETURN NEW;
+	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
