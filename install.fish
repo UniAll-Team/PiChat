@@ -1,9 +1,20 @@
 pnpm add \
-    pinia-plugin-persistedstate \
-    type-fest \
+    lodash \
     date-fns \
     zod \
-    v3-infinite-loading
+    mathjs \
+    type-fest \
+    pinia-plugin-persistedstate \
+    v3-infinite-loading \
+    @uppy/core \
+    @uppy/tus \
+    @uppy/vue \
+    @uppy/dashboard \
+    @uppy/drag-drop \
+    @uppy/progress-bar \
+    @uppy/status-bar \
+    @uppy/webcam \
+    @uppy/file-input
 
 pnpm add -D \
     sass-embedded \

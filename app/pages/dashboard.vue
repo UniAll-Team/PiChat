@@ -33,11 +33,13 @@
 			</UDashboardPanelContent>
 		</UDashboardPanel>
 	</UDashboardPage>
+
+	<UploadModal v-model="isUploadModalOpen" />
 </template>
 
 <script lang="ts" setup>
-import { sub } from 'date-fns'
-import type { Period, Range } from '~/types/dashboard'
+import { sub } from 'date-fns';
+import type { Range } from '~/types/dashboard';
 
 definePageMeta({
 	layout: 'dashboard',
@@ -45,12 +47,12 @@ definePageMeta({
 
 const imageDescription = ref('')
 const isSearchFocused = ref(false)
-const { isNotificationsSlideoverOpen } = useDashboard()
+const isUploadModalOpen = ref(false)
 
 const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
 
 const openUploadModal = () => {
-	isNotificationsSlideoverOpen.value = true
+	isUploadModalOpen.value = true
 }
 
 const handleSearchFocus = () => {

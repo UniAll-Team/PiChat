@@ -33,7 +33,7 @@ using (
 	(select auth.uid()) = user_id
 );
 
-create policy "Enable users to view their own data only"
+create policy "Enable users to update their own data only"
 on public.images
 as PERMISSIVE
 for UPDATE
@@ -44,6 +44,12 @@ using (
 with check (
 	(select auth.uid()) = user_id
 );
+
+CREATE POLICY "Enable read access for all users"
+ON storage.buckets
+AS PERMISSIVE FOR SELECT
+TO authenticated
+USING (true);
 
 -- 获取文件夹大小
 CREATE OR REPLACE FUNCTION storage.get_folder_size(folder_path TEXT)
@@ -75,6 +81,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- 获取当前用户的文件夹大小
+CREATE VIEW used_storage AS
+SELECT storage.get_folder_size(auth.uid()::TEXT) AS used_storage;
+
 CREATE POLICY "根据用户订阅的计划限制上传"
 ON storage.objects
 FOR INSERT TO authenticated
@@ -85,13 +95,13 @@ WITH CHECK (
 		SELECT
 		CASE (auth.jwt()->>'plan')::text
 			WHEN 'pro/mouth' THEN
-				(auth.jwt()->>'cycle_uploaded_count')::int < 1777
+				(auth.jwt()->>'cycle_indexed_count')::int < 1777
 					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024  -- 177GB for pro plan
 			WHEN 'pro/year' THEN
-				(auth.jwt()->>'cycle_uploaded_count')::int < 17777
+				(auth.jwt()->>'cycle_indexed_count')::int < 17777
 					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024  -- 177GB for pro plan
 			ELSE
-				(auth.jwt()->>'cycle_uploaded_count')::int < 177
+				(auth.jwt()->>'cycle_indexed_count')::int < 177
 					AND storage.get_folder_size(auth.uid()::text) < 10 * 1024 * 1024 * 1024  -- 10GB for free plan
 		END
 	)
@@ -137,33 +147,49 @@ WHERE
 	AND o.owner_id::UUID = auth.uid()
 	AND o.bucket_id = 'images';
 
--- 上传图片时，更新用户的上传计数
-CREATE OR REPLACE FUNCTION auth.increment_cycle_uploaded_count()
+-- 创建或替换函数
+CREATE OR REPLACE FUNCTION auth.add_cycle_indexed_count()
 RETURNS trigger AS $$
 DECLARE
-	current_count INT;
+    current_count INT;
+    user_id UUID;
 BEGIN
-	IF NEW.bucket_id = 'images' THEN
-		-- 获取当前计数，不存在则默认为 0
-		SELECT COALESCE((raw_app_metadata->>'cycle_uploaded_count')::int, 0)
-		INTO current_count
-		FROM auth.users
-		WHERE id = NEW.owner_id::UUID;
+    -- 如果 embedding 没有被更新或为 NULL，直接返回
+    IF NEW.embedding IS NULL OR NEW.embedding = OLD.embedding THEN
+        RETURN NEW;
+    END IF;
 
-		-- 更新计数
-		UPDATE auth.users
-		SET raw_app_metadata = jsonb_set(
-			COALESCE(raw_app_metadata, '{}'::jsonb),
-			'{cycle_uploaded_count}',
-			to_jsonb(current_count + 1)
-		)
-		WHERE id = NEW.owner_id::UUID;
-	END IF;
-	RETURN NEW;
+    -- 获取关联的用户 ID
+    SELECT i.user_id INTO user_id
+    FROM images i
+    WHERE i.id = NEW.id;
+
+    -- 如果没有找到用户 ID，直接返回
+    IF user_id IS NULL THEN
+        RETURN NEW;
+    END IF;
+
+    -- 获取当前计数，不存在则默认为 0
+    SELECT COALESCE((raw_app_meta_data->>'cycle_indexed_count')::int, 0)
+    INTO current_count
+    FROM auth.users
+    WHERE id = user_id;
+
+    -- 更新计数
+    UPDATE auth.users
+    SET raw_app_meta_data = jsonb_set(
+        COALESCE(raw_app_meta_data, '{}'::jsonb),
+        '{cycle_indexed_count}',
+        to_jsonb(current_count + 1)
+    )
+    WHERE id = user_id;
+
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-CREATE TRIGGER increment_cycle_uploaded_count
-AFTER INSERT ON storage.objects
+-- 创建触发器
+CREATE TRIGGER increment_cycle_indexed_count_trigger
+AFTER UPDATE OF embedding ON images
 FOR EACH ROW
-EXECUTE FUNCTION auth.increment_cycle_uploaded_count();
+EXECUTE FUNCTION auth.add_cycle_indexed_count();

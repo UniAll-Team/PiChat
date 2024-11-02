@@ -5,7 +5,7 @@
 			{{ item.name }}
 		</div>
 
-		<infinite-loading @infinite="load">
+		<InfiniteLoading @infinite="load">
 			<template #spinner>
 				<div>Loading...</div>
 			</template>
@@ -15,12 +15,12 @@
 			<template #error>
 				<div>出错了</div>
 			</template>
-		</infinite-loading>
+		</InfiniteLoading>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import type { Database, Tables } from '~/types/database';
+import type { Database } from '~/types/database';
 
 const items = ref([])
 const page = ref(1)
@@ -30,18 +30,17 @@ async function load(state: any) {
 	const supabase = useSupabaseClient<Database>()
 	try {
 		// 这里替换成你的实际API调用
-		const { data, error }
-			= await supabase
-				.from('image_details')
-				.select('*')
-				.order('id', { ascending: false })
-				.range((page.value - 1) * pageSize, page.value * pageSize - 1)
+		const { data, error } = await supabase
+			.from('image_details')
+			.select('*')
+			.order('id', { ascending: false })
+			.range((page.value - 1) * pageSize, page.value * pageSize - 1)
 
 		if (error) {
 			throw error
 		}
 
-		const newItems = data.map(imageDetail => imageDetail.name)
+		const newItems = data.map((imageDetail) => imageDetail.name)
 
 		if (newItems.length) {
 			items.value.push(...data)
