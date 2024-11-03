@@ -10,6 +10,8 @@ import Tus from '@uppy/tus'
 import { DashboardModal } from '@uppy/vue'
 import Webcam from '@uppy/webcam'
 import * as math from 'mathjs'
+import { customAlphabet } from 'nanoid'
+import { alphanumeric } from 'nanoid-dictionary'
 
 // Don't forget the CSS: core and UI components + plugins you are using
 import '@uppy/core/dist/style.css'
@@ -18,6 +20,7 @@ import '@uppy/webcam/dist/style.css'
 
 const { toastError } = useAppToast()
 
+const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 const session = useSupabaseSession()
 
@@ -25,6 +28,8 @@ const config = useRuntimeConfig()
 const supabaseConfig = config.public.supabase
 
 const userQuota = await useUserRemainingQuota()
+
+const galleryStore = useGalleryStore()
 
 const locale_strings = {
 	chooseFiles: '选择文件',
@@ -46,6 +51,11 @@ const locale_strings = {
 }
 
 const isOpen = defineModel<boolean>()
+const emit = defineEmits<{
+	completed: []
+}>()
+
+const nanoid = customAlphabet(alphanumeric)
 
 const uppy = new Uppy({
 	restrictions: {
@@ -71,14 +81,23 @@ const uppy = new Uppy({
 	.use(Webcam)
 
 uppy.on('file-added', (file) => {
+	const contentType = file.type
+	const fileExtension = contentType.split('/')[1]
+
 	file.meta = {
 		...file.meta,
 		bucketName: 'images',
-		objectName: `${user.value.id}/${btoa(file.name)}`,
-		contentType: file.type,
+		objectName: `${user.value.id}/${nanoid()}.${fileExtension}`,
+		contentType,
+		metadata: JSON.stringify({
+			// 上传文件的原始名称
+			originalName: file.name,
+			// 用户自定义的文件名
+			customName: file.name,
+		})
 	}
 
-	console.log('file-added', file.meta)
+	// console.log('file-added', file.meta)
 })
 
 uppy.on('upload-error', (file, error) => {
@@ -89,8 +108,27 @@ uppy.on('upload-error', (file, error) => {
 	}
 })
 
-uppy.on('upload-success', (file, response) => {
-	console.log(file, response)
+uppy.on('upload-success', async (file, response) => {
+	const { data, error } = await supabase
+		.storage
+		.from('images')
+		.list(user.value.id, {
+			limit: 1,
+			sortBy: { column: 'updated_at', order: 'desc' },
+		})
+
+	if (error) {
+		toastError({ title: '上传失败，请重试', description: error.message })
+		return
+	}
+
+	console.log('upload-success', data)
+
+	galleryStore.lastObjectId = data?.[0]?.id
+})
+
+uppy.on('complete', (result) => {
+	emit('completed')
 })
 
 function handleClose() {

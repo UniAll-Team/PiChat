@@ -125,12 +125,13 @@ FOR EACH ROW
 EXECUTE FUNCTION public.insert_new_image();
 
 -- 建立一个视图，联合查询 storage.objects 和 images 表
-CREATE VIEW image_details
+CREATE OR REPLACE VIEW image_details
 WITH (security_invoker) AS
 SELECT
 	i.id,
 	o.owner_id,
 	o.name,
+	storage.filename(o.name) AS filename,
 	i.document,
 	i.embedding,
 	o.created_at,

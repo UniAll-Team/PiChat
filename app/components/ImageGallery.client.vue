@@ -1,8 +1,9 @@
 <template>
 	<div>
-		<div v-for="item in items" :key="item.id">
+		<div v-for="(itemGroup, updatedAt) in itemGroups" :key="updatedAt">
 			<!-- 你的列表项内容 -->
-			{{ item.name }}
+			<h3 class="text-lg">{{ formatLocalDate(updatedAt, 'zhCN') }}</h3>
+			<img v-for="item in itemGroup" :key="item.id" :src="item.url" alt="图片" class="w-24 h-24 sm:w-60 sm:h-auto" />
 		</div>
 
 		<InfiniteLoading @infinite="load">
@@ -20,37 +21,72 @@
 </template>
 
 <script lang="ts" setup>
-import type { Database } from '~/types/database';
+import _ from 'lodash'
+import type { Database } from '~/types/database'
 
-const items = ref([])
+const itemGroups = ref({})
 const page = ref(1)
 const pageSize = 10
 
-async function load(state: any) {
-	const supabase = useSupabaseClient<Database>()
+const supabase = useSupabaseClient<Database>()
+const { toastError } = useAppToast()
+
+async function getImages() {
+	const { data, error } = await supabase
+		.from('image_details')
+		.select('*')
+		.order('id', { ascending: false })
+		.range((page.value - 1) * pageSize, page.value * pageSize - 1)
+
+	if (error) {
+		throw error
+	}
+
+	return data
+}
+
+async function load(state?: any) {
 	try {
-		// 这里替换成你的实际API调用
-		const { data, error } = await supabase
-			.from('image_details')
-			.select('*')
-			.order('id', { ascending: false })
-			.range((page.value - 1) * pageSize, page.value * pageSize - 1)
+		const data = await getImages()
 
-		if (error) {
-			throw error
-		}
+		const publicUrls = data.map((item) => {
+			const { data } = supabase
+				.storage
+				.from('images')
+				.getPublicUrl(item.name, {
+					// 缩略图
+					// transform: {
+					// 	width: 200,
+					// 	height: 200,
+					// }
+				})
+			return data.publicUrl
+		})
 
-		const newItems = data.map((imageDetail) => imageDetail.name)
+		const newItemGroups = _(data)
+			.zip(publicUrls)
+			.map(([item, url]) => {
+				return {
+					...item,
+					url,
+				}
+			})
+			.groupBy('updated_at')
+			.value()
 
-		if (newItems.length) {
-			items.value.push(...data)
-			page.value++
-			state.loaded()
+		console.log('newItemGroups', newItemGroups)
+		if (_.isEmpty(newItemGroups)) {
+			state?.complete()
 		} else {
-			state.complete()
+			itemGroups.value = _.merge(itemGroups.value, newItemGroups)
+			page.value++
+			state?.loaded()
 		}
 	} catch (error) {
-		state.error()
+		toastError({
+			title: '加载失败',
+			description: error.message,
+		})
 	}
 }
 </script>

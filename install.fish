@@ -6,6 +6,8 @@ pnpm add \
     type-fest \
     pinia-plugin-persistedstate \
     v3-infinite-loading \
+    nanoid \
+    nanoid-dictionary@beta \
     @uppy/core \
     @uppy/tus \
     @uppy/vue \

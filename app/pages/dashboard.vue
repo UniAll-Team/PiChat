@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts" setup>
-import { sub } from 'date-fns';
-import type { Range } from '~/types/dashboard';
+import { sub } from 'date-fns'
+import type { Range } from '~/types/dashboard'
 
 definePageMeta({
 	layout: 'dashboard',
@@ -80,10 +80,6 @@ const handleSearch = async () => {
 
 <style lang="scss" scoped>
 @media (width<=768px) {
-	.hidden-on-mobile {
-		display: none;
-	}
-
 	.mobile-search-focused {
 		position: absolute;
 		left: 1rem;

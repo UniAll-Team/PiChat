@@ -40,6 +40,7 @@ export type Database = {
           created_at: string | null
           document: string | null
           embedding: string | null
+          filename: string | null
           id: number | null
           last_accessed_at: string | null
           metadata: Json | null
@@ -48,6 +49,12 @@ export type Database = {
           updated_at: string | null
           user_metadata: Json | null
           version: string | null
+        }
+        Relationships: []
+      }
+      used_storage: {
+        Row: {
+          used_storage: number | null
         }
         Relationships: []
       }

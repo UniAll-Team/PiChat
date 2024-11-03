@@ -27,6 +27,14 @@ export default defineNuxtConfig({
 		},
 	},
 
+	imports: {
+		dirs: [
+			'./composables',
+			'./utils',
+			'./stores',
+		]
+	},
+
 	i18n: {
 		strategy: 'prefix_and_default',
 		detectBrowserLanguage: {

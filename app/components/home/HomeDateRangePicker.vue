@@ -1,9 +1,22 @@
 <template>
 	<UPopover>
 		<template #default="{ open }">
-			<UButton color="gray" variant="ghost" :class="[open && 'bg-gray-50 dark:bg-gray-800']"
-				trailing-icon="i-heroicons-chevron-down-20-solid">
-				{{ format(selected.start, 'd/MM/yy') }}-{{ format(selected.end, 'd/MM/yy') }}
+			<UButton color="gray" variant="ghost" :ui="{
+				inline: 'grid grid-cols-2 grid-rows-3 gap-y-0 h-12 w-13 sm:inline-flex sm:items-center',
+			}" :class="[open && 'bg-gray-50 dark:bg-gray-800']">
+				<span class="row-start-1 row-end-2 col-start-1 col-end-2  leading-none	sm:leading-normal">
+					{{ format(selected.start, 'd/MM/yy') }}
+				</span>
+				<span class="row-start-2 row-end-3 col-start-1 col-end-2 leading-none	sm:leading-normal">
+					-
+				</span>
+				<span class="row-start-3 row-end-4 col-start-1 col-end-2 leading-none	sm:leading-normal">
+					{{ format(selected.end, 'd/MM/yy') }}
+				</span>
+
+				<template #trailing>
+					<UIcon name="i-heroicons-chevron-down-20-solid" class="w-5 h-5 row-start-1 row-end-4 col-start-2 col-end-3" />
+				</template>
 			</UButton>
 		</template>
 
@@ -22,7 +35,7 @@
 	</UPopover>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { type Duration, format, isSameDay, sub } from 'date-fns'
 import type { Range } from '~/types/dashboard'
 
@@ -54,3 +67,11 @@ function selectRange(duration: Duration) {
 	selected.value = { start: sub(new Date(), duration), end: new Date() }
 }
 </script>
+
+<style lang="scss" scoped>
+@media (width<=750px) {
+	.date-text {
+		line-height: 0.8;
+	}
+}
+</style>

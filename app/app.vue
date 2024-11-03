@@ -1,3 +1,16 @@
+<template>
+	<div>
+		<NuxtLoadingIndicator />
+
+		<NuxtLayout>
+			<NuxtPage />
+		</NuxtLayout>
+
+		<UNotifications />
+		<UModals />
+	</div>
+</template>
+
 <script setup lang="ts">
 const colorMode = useColorMode()
 
@@ -25,15 +38,16 @@ useSeoMeta({
 })
 </script>
 
-<template>
-	<div>
-		<NuxtLoadingIndicator />
+<style lang="scss">
+@media (width<=768px) {
+	.hidden-on-mobile {
+		display: none;
+	}
+}
 
-		<NuxtLayout>
-			<NuxtPage />
-		</NuxtLayout>
-
-		<UNotifications />
-		<UModals />
-	</div>
-</template>
+@media (widh>=768px) {
+	.hidden-on-desktop {
+		display: none;
+	}
+}
+</style>
