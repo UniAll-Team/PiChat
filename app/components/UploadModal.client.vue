@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Meta, UploadResult } from '@uppy/core'
 import Uppy from '@uppy/core'
 import Tus from '@uppy/tus'
 import { DashboardModal } from '@uppy/vue'
@@ -52,7 +53,7 @@ const locale_strings = {
 
 const isOpen = defineModel<boolean>()
 const emit = defineEmits<{
-	completed: []
+	complete: [result: UploadResult<Meta, Record<string, never>>]
 }>()
 
 const nanoid = customAlphabet(alphanumeric)
@@ -94,10 +95,11 @@ uppy.on('file-added', (file) => {
 			originalName: file.name,
 			// 用户自定义的文件名
 			customName: file.name,
+			lastModified: (file.data as File).lastModified,
 		})
 	}
 
-	// console.log('file-added', file.meta)
+	console.debug('file-added', file)
 })
 
 uppy.on('upload-error', (file, error) => {
@@ -122,13 +124,14 @@ uppy.on('upload-success', async (file, response) => {
 		return
 	}
 
-	console.log('upload-success', data)
+	console.debug('upload-success', data)
 
 	galleryStore.lastObjectId = data?.[0]?.id
 })
 
 uppy.on('complete', (result) => {
-	emit('completed')
+	console.info('complete', result)
+	emit('complete', result)
 })
 
 function handleClose() {

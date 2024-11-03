@@ -29,15 +29,16 @@
 			</UDashboardNavbar>
 
 			<UDashboardPanelContent>
-				<ImageGallery />
+				<ImageGallery :key="uploadID" />
 			</UDashboardPanelContent>
 		</UDashboardPanel>
 	</UDashboardPage>
 
-	<UploadModal v-model="isUploadModalOpen" />
+	<UploadModal v-model="isUploadModalOpen" @complete="onComplete" />
 </template>
 
 <script lang="ts" setup>
+import type { Meta, UploadResult } from '@uppy/core'
 import { sub } from 'date-fns'
 import type { Range } from '~/types/dashboard'
 
@@ -48,6 +49,7 @@ definePageMeta({
 const imageDescription = ref('')
 const isSearchFocused = ref(false)
 const isUploadModalOpen = ref(false)
+const uploadID = ref('0')
 
 const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
 
@@ -64,17 +66,23 @@ const handleSearchBlur = () => {
 }
 
 // 搜索处理函数
-const handleSearch = async () => {
+async function handleSearch() {
 	if (!imageDescription.value.trim()) return
 
 	try {
 		// 这里添加您的搜索逻辑
 		// 例如：
 		// await searchImages(imageDescription.value)
-		console.log('Searching for:', imageDescription.value)
+		console.debug('Searching for:', imageDescription.value)
 	} catch (error) {
 		console.error('Search failed:', error)
 	}
+}
+
+// 上传完成后的处理函数
+function onComplete(result: UploadResult<Meta, Record<string, never>>) {
+	console.debug('Upload complete:', result)
+	uploadID.value = result.uploadID
 }
 </script>
 

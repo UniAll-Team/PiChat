@@ -1,9 +1,13 @@
 <template>
 	<div>
-		<div v-for="(itemGroup, updatedAt) in itemGroups" :key="updatedAt">
-			<!-- 你的列表项内容 -->
-			<h3 class="text-lg">{{ formatLocalDate(updatedAt, 'zhCN') }}</h3>
-			<img v-for="item in itemGroup" :key="item.id" :src="item.url" alt="图片" class="w-24 h-24 sm:w-60 sm:h-auto" />
+		<div class="images-groups-container">
+			<div v-for="(imageGroup, lastModifiedDate) in imageGroups" :key="lastModifiedDate" class="images-group-container">
+				<!-- 你的列表项内容 -->
+				<h3 class="">{{ lastModifiedDate }}</h3>
+				<div class="images-container">
+					<img v-for="image in imageGroup" :key="image.id" :src="image.url" alt="图片" class="" />
+				</div>
+			</div>
 		</div>
 
 		<InfiniteLoading @infinite="load">
@@ -24,7 +28,7 @@
 import _ from 'lodash'
 import type { Database } from '~/types/database'
 
-const itemGroups = ref({})
+const imageGroups = ref({})
 const page = ref(1)
 const pageSize = 10
 
@@ -65,20 +69,26 @@ async function load(state?: any) {
 
 		const newItemGroups = _(data)
 			.zip(publicUrls)
-			.map(([item, url]) => {
+			.map(([image, url]) => {
+				console.debug('image', image)
+
+				const lastModifiedDate = formatUnixDate((image.user_metadata as any)?.lastModified, 'zhCN')
+
+				console.debug('lastModifiedDate', lastModifiedDate)
 				return {
-					...item,
+					...image,
+					lastModifiedDate,
 					url,
 				}
 			})
-			.groupBy('updated_at')
+			.groupBy('lastModifiedDate')
 			.value()
 
-		console.log('newItemGroups', newItemGroups)
+		console.debug('newItemGroups', newItemGroups)
 		if (_.isEmpty(newItemGroups)) {
 			state?.complete()
 		} else {
-			itemGroups.value = _.merge(itemGroups.value, newItemGroups)
+			imageGroups.value = _.merge(imageGroups.value, newItemGroups)
 			page.value++
 			state?.loaded()
 		}
@@ -90,3 +100,32 @@ async function load(state?: any) {
 	}
 }
 </script>
+<style lang="scss" scoped>
+.images-groups-container {
+	display: grid;
+	grid-template-rows: repeat(auto-fill, auto);
+	gap: 1.5rem;
+}
+
+.images-group-container {
+	display: grid;
+	grid-template-rows: repeat(2, auto);
+}
+
+.images-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	gap: 10px;
+}
+
+img {
+	width: 100%;
+	height: auto;
+}
+
+@media (width>=640px) {
+	.images-container {
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	}
+}
+</style>
