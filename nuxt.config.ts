@@ -4,6 +4,9 @@ export default defineNuxtConfig({
 
 	modules: [
 		'nuxt-zod-i18n',
+		"nuxt-lodash",
+		'nuxt-swiper',
+		'nuxt-chatgpt',
 		'@nuxtjs/i18n',
 		'@vite-pwa/nuxt',
 		'@nuxtjs/supabase',
@@ -104,6 +107,12 @@ export default defineNuxtConfig({
 		compatibilityVersion: 4,
 	},
 
+	lodash: {
+		prefix: '_',
+		prefixSkip: false,
+		upperAfterPrefix: false,
+	},
+
 	supabase: {
 		redirect: true,
 		redirectOptions: {
@@ -111,6 +120,10 @@ export default defineNuxtConfig({
 			callback: '/',
 			exclude: ['/', '/signup', '/docs', '/pricing'],
 		},
+	},
+
+	chatgpt: {
+		apiKey: process.env.OPENAI_API_KEY,
 	},
 
 	stripe: {

@@ -1,10 +1,10 @@
 pnpm add \
-    lodash \
     date-fns \
     zod \
     mathjs \
     type-fest \
     pinia-plugin-persistedstate \
+    vue-photo-album \
     v3-infinite-loading \
     nanoid \
     nanoid-dictionary@beta \
@@ -20,7 +20,8 @@ pnpm add \
 
 pnpm add -D \
     sass-embedded \
-    nuxt-chatgpt
+    nuxt-chatgpt \
+    nuxt-lodash
 
 set modules \
     nuxt-zod-i18n \
@@ -30,7 +31,8 @@ set modules \
     supabase \
     sentry \
     stripe-next \
-    @samk-dev/nuxt-vcalendar
+    @samk-dev/nuxt-vcalendar \
+    nuxt-swiper
 
 for module in $modules
     http_proxy npx nuxi module add $module

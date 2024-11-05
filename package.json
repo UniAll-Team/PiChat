@@ -36,12 +36,12 @@
 		"@vite-pwa/nuxt": "^0.10.6",
 		"@vueuse/nuxt": "^11.2.0",
 		"date-fns": "^4.1.0",
-		"lodash": "^4.17.21",
 		"mathjs": "^13.2.0",
 		"nanoid": "^5.0.8",
 		"nanoid-dictionary": "5.0.0-beta.1",
-		"nuxt": "^3.13.2",
+		"nuxt": "^3.14.0",
 		"nuxt-og-image": "^3.0.8",
+		"nuxt-swiper": "^1.2.2",
 		"nuxt-zod-i18n": "^1.10.0",
 		"pinia-plugin-persistedstate": "^4.1.2",
 		"type-fest": "^4.26.1",
@@ -51,6 +51,7 @@
 	"devDependencies": {
 		"@nuxthq/studio": "^2.2.1",
 		"nuxt-chatgpt": "^0.2.5",
+		"nuxt-lodash": "^2.5.3",
 		"sass-embedded": "^1.80.6",
 		"vue-tsc": "^2.1.10"
 	},
