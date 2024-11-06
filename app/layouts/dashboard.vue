@@ -45,7 +45,7 @@ const links = [
 		id: 'home',
 		label: 'Home',
 		icon: 'i-heroicons-home',
-		to: '/dashboard',
+		to: '/home',
 	},
 	/* {
 		id: 'shared',

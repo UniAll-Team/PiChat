@@ -5,7 +5,7 @@
 		</template>
 
 		<template #right v-if="user">
-			<UButton label="Dashboard" color="gray" to="/dashboard" />
+			<UButton label="Dashboard" color="gray" to="/home" />
 			<UButton label="Sign out" icon="i-heroicons-arrow-right-20-solid" trailing color="gray"
 				@click="supabse.auth.signOut()" />
 		</template>

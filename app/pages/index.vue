@@ -63,7 +63,7 @@
 					label: '免费开始使用',
 					size: 'xl',
 					color: 'black',
-					to: '/dashboard'
+					to: '/home'
 				}
 			]" class="bg-gray-100/50 dark:bg-gray-800/50" />
 		</ULandingSection>
@@ -74,7 +74,7 @@
 const heroLinks = [
 	{
 		label: '立即开始',
-		to: '/dashboard',
+		to: '/home',
 		size: 'xl',
 		color: 'black',
 		icon: 'i-heroicons-arrow-right-20-solid',

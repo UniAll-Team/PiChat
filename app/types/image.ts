@@ -1,10 +1,9 @@
+import type { Database } from "./database"
 
-export type Image = {
-	id: number
+export type Image = Database['public']['Views']['image_details']['Row'] & {
 	alt: string
 	url?: string
 	srcSet?: string[]
-	[other: string]: any
 }
 
 export type Images = Image[]

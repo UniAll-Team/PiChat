@@ -62,12 +62,12 @@ import type { Image, Images } from '~/types/image'
 // 获取图片列表
 const { imageGroups, load } = useImageGroups()
 
+const { selectedImages, hasSelectedImages } = storeToRefs(useImagesStore())
+
 // 图片选择相关
 const {
-	selectedImages,
 	showPreview,
 	previewImage,
-	hasSelectedImages,
 	isSelectedImage,
 	toggleSelect,
 	handleImageClick,
@@ -154,13 +154,8 @@ function useImageGroups() {
 }
 
 function useImagePicker() {
-	const selectedImages = ref([])
-
 	const showPreview = ref(false)
 	const previewImage = ref(null)
-
-	// 计算属性：是否有选中的图片
-	const hasSelectedImages = computed(() => selectedImages.value.length > 0)
 
 	// 方法
 	function toggleSelect(image: Image) {
@@ -192,10 +187,8 @@ function useImagePicker() {
 	}
 
 	return {
-		selectedImages,
 		showPreview,
 		previewImage,
-		hasSelectedImages,
 		isSelectedImage,
 		toggleSelect,
 		handleImageClick,

@@ -1,20 +1,21 @@
 <template>
-	<DashboardModal :uppy="uppy" :open="isOpen" :onRequestCloseModal="handleClose" :width="800" :height="550"
-		:props="{ onRequestCloseModal: handleClose }" note="只能上传图片，免费用户最大上传 5MB，pro 用户最大上传 10MB"
+	<DashboardModal :uppy="uppy" :open="isOpen"
+		:onRequestCloseModal="handleClose" :width="800"
+		:height="550"
+		:props="{ onRequestCloseModal: handleClose }"
+		note="只能上传图片，免费用户最大上传 5MB，pro 用户最大上传 10MB"
 		:locale="{ strings: locale_strings }" />
 </template>
 
 <script lang="ts" setup>
 import type { Meta, UploadResult } from '@uppy/core'
+
 import Uppy from '@uppy/core'
 import Tus from '@uppy/tus'
 import { DashboardModal } from '@uppy/vue'
 import Webcam from '@uppy/webcam'
 import * as math from 'mathjs'
-import { customAlphabet } from 'nanoid'
-import { alphanumeric } from 'nanoid-dictionary'
 
-// Don't forget the CSS: core and UI components + plugins you are using
 import '@uppy/core/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
 import '@uppy/webcam/dist/style.css'
@@ -29,8 +30,6 @@ const config = useRuntimeConfig()
 const supabaseConfig = config.public.supabase
 
 const userQuota = await useUserRemainingQuota()
-
-const galleryStore = useGalleryStore()
 
 const locale_strings = {
 	chooseFiles: '选择文件',
@@ -56,7 +55,7 @@ const emit = defineEmits<{
 	complete: [result: UploadResult<Meta, Record<string, never>>]
 }>()
 
-const nanoid = customAlphabet(alphanumeric)
+const nanoid = initSafeNanoid()
 
 const uppy = new Uppy({
 	restrictions: {
@@ -125,8 +124,6 @@ uppy.on('upload-success', async (file, response) => {
 	}
 
 	console.debug('upload-success', data)
-
-	galleryStore.lastObjectId = data?.[0]?.id
 })
 
 uppy.on('complete', (result) => {

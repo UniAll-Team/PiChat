@@ -4,7 +4,6 @@ pnpm add \
     mathjs \
     type-fest \
     pinia-plugin-persistedstate \
-    vue-photo-album \
     v3-infinite-loading \
     nanoid \
     nanoid-dictionary@beta \
@@ -16,7 +15,8 @@ pnpm add \
     @uppy/progress-bar \
     @uppy/status-bar \
     @uppy/webcam \
-    @uppy/file-input
+    @uppy/file-input \
+    client-zip
 
 pnpm add -D \
     sass-embedded \
