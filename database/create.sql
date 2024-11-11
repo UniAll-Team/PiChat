@@ -7,6 +7,9 @@ create table images (
 	embedding halfvec(3072)
 );
 
+-- 创建HNSW内积索引
+CREATE INDEX ON images USING hnsw (embedding halfvec_ip_ops);
+
 create policy "Enable users to view their own data only"
 on public.images
 as PERMISSIVE
@@ -197,7 +200,7 @@ FOR EACH ROW
 EXECUTE FUNCTION auth.add_cycle_indexed_count();
 
 -- 使用embedding搜索图像
-CREATE OR REPLACE FUNCTION match_documents (
+CREATE OR REPLACE FUNCTION search_images (
 	query_embedding halfvec(3072),
 	match_threshold float,
 	match_count int
@@ -219,9 +222,9 @@ RETURNS TABLE (
 LANGUAGE sql STABLE AS $$
 SELECT
 	img.*,
-	1 - (img.embedding <#> query_embedding) AS similarity
+	-(img.embedding <#> query_embedding) AS similarity
 FROM image_details img
-WHERE 1 - (img.embedding <#> query_embedding) > match_threshold
+WHERE -(img.embedding <#> query_embedding) > match_threshold
 ORDER BY similarity DESC
 LIMIT match_count;
 $$;

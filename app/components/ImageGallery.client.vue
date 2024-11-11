@@ -1,20 +1,30 @@
 <template>
 	<div>
 		<div class="images-groups-container">
-			<div v-for="(imageGroup, lastModifiedDate) in imageGroups" :key="lastModifiedDate" class="images-group-container">
+			<div
+				v-for="(imageGroup, lastModifiedDate) in imageGroups"
+				:key="lastModifiedDate"
+				class="images-group-container">
 				<h3 class="">{{ lastModifiedDate }}</h3>
 				<div class="images-container">
 					<!-- 你的列表项内容 -->
-					<div v-for="(image) in imageGroup" :key="image.id" class="image-wrapper">
+					<div v-for="(image) in imageGroup" :key="image.id"
+						class="image-wrapper">
 						<!-- 选择按钮 -->
-						<button class="select-btn" :class="{ 'selected': isSelectedImage(image) }"
+						<button class="select-btn"
+							:class="{ 'selected': isSelectedImage(image) }"
 							@click.stop="toggleSelect(image)">
-							<UIcon v-if="isSelectedImage(image)" name="i-heroicons-check" class="text-white" />
-							<UIcon v-else name="i-heroicons-plus" class="text-gray-700" />
+							<UIcon v-if="isSelectedImage(image)"
+								name="i-heroicons-check"
+								class="text-white" />
+							<UIcon v-else name="i-heroicons-plus"
+								class="text-gray-700" />
 						</button>
 
 						<!-- 图片 -->
-						<img :src="image.url" :alt="image.alt ?? ''" @click="handleImageClick(image)" class="gallery-image"
+						<img :src="image.url" :alt="image.alt ?? ''"
+							@click="handleImageClick(image)"
+							class="gallery-image"
 							:class="{ 'selectable': hasSelectedImages }" />
 					</div>
 				</div>
@@ -44,10 +54,13 @@
 			}
 		}">
 			<div class="fixed top-12 right-12 z-10">
-				<UButton icon="i-heroicons-x-mark" color="white" variant="ghost" @click="closePreview" />
+				<UButton icon="i-heroicons-x-mark" color="white"
+					variant="ghost" @click="closePreview" />
 			</div>
-			<div class="flex items-center justify-center w-full h-full">
-				<img :src="previewImage?.url" :alt="previewImage?.alt || ''"
+			<div
+				class="flex items-center justify-center w-full h-full">
+				<img :src="previewImage?.url"
+					:alt="previewImage?.alt || ''"
 					class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain" />
 			</div>
 		</UModal>
@@ -55,9 +68,21 @@
 </template>
 
 <script lang="ts" setup>
-import _ from 'lodash'
+import type { Range } from '~/types/dashboard'
 import type { Database } from '~/types/database'
 import type { Image, Images } from '~/types/image'
+
+import _ from 'lodash'
+
+// 定义组件的 props
+const { description, dateRange } = defineProps<{
+	dateRange: Range,
+	description: string,
+}>()
+
+const isSearching = computed(() => Boolean(description))
+
+const { text2embedding } = useServerFunctions()
 
 // 获取图片列表
 const { imageGroups, load } = useImageGroups()
@@ -78,6 +103,7 @@ function useImageGroups() {
 	const imageGroups = ref<{ [lastModifiedDate: string]: Images }>({})
 	const page = ref(1)
 	const pageSize = 10
+	const hasMoreData = ref(true)
 
 	const supabase = useSupabaseClient<Database>()
 	const { toastError } = useAppToast()
@@ -96,9 +122,47 @@ function useImageGroups() {
 		return data
 	}
 
+	async function searchImages() {
+		const embedding = await text2embedding(description)
+
+		const { data, error } = await supabase
+			.rpc('search_images', {
+				query_embedding: embedding,
+				match_threshold: 0.3,
+				match_count: pageSize
+			})
+
+		if (error) {
+			throw error
+		}
+
+		return data
+	}
+
 	async function load(state?: any) {
 		try {
-			const data = await getImages()
+			console.debug('load', 'description', description)
+
+			// 如果没有更多数据且不是第一页，直接完成
+			if (!hasMoreData.value && page.value > 1) {
+				state?.complete()
+				return
+			}
+
+			const data = await (isSearching.value ? searchImages() : getImages())
+
+			console.debug('data', data)
+
+			// 如果没有数据或数据不足一页，设置没有更多数据
+			if (_isEmpty(data) || data.length < pageSize) {
+				hasMoreData.value = false
+			}
+
+			// 如果没有数据，直接完成
+			if (_isEmpty(data)) {
+				state?.complete()
+				return
+			}
 
 			const publicUrls = data.map((item) => {
 				const { data } = supabase
@@ -113,6 +177,8 @@ function useImageGroups() {
 					})
 				return data.publicUrl
 			})
+
+			console.debug('publicUrls', publicUrls)
 
 			const newItemGroups = _(data)
 				.zip(publicUrls)
@@ -132,12 +198,14 @@ function useImageGroups() {
 				.value()
 
 			console.debug('newItemGroups', newItemGroups)
-			if (_.isEmpty(newItemGroups)) {
+
+			imageGroups.value = _merge(imageGroups.value, newItemGroups)
+			page.value++
+			state?.loaded()
+
+			// 如果没有更多数据，直接完成
+			if (!hasMoreData.value) {
 				state?.complete()
-			} else {
-				imageGroups.value = _.merge(imageGroups.value, newItemGroups)
-				page.value++
-				state?.loaded()
 			}
 		} catch (error) {
 			toastError({
@@ -149,10 +217,9 @@ function useImageGroups() {
 
 	return {
 		imageGroups,
-		load,
+		load
 	}
 }
-
 function useImagePicker() {
 	const showPreview = ref(false)
 	const previewImage = ref(null)

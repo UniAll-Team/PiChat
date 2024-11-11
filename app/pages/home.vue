@@ -4,7 +4,7 @@
 			<UDashboardNavbar>
 				<template #left>
 					<!-- 在移动端搜索框聚焦时隐藏 -->
-					<HomeDateRangePicker v-model="range"
+					<HomeDateRangePicker v-model="dateRange"
 						class="-ml-2.5"
 						:class="{ 'hidden-on-mobile': isSearchFocused }" />
 				</template>
@@ -57,13 +57,13 @@
 							:class="{ 'mobile-search-focused': isSearchFocused, 'mobile-search-input': !isSearchFocused }"
 							@focus="handleSearchFocus"
 							@blur="handleSearchBlur"
-							@keyup.enter="handleSearch">
+							@change="handleSearch"
+							@input="handleClearSearch">
 							<template #trailing>
 								<UButton v-show="imageDescription !== ''"
 									class='hidden-on-mobile' color="gray"
 									variant="link" icon="i-heroicons-x-mark"
-									:padded="false"
-									@click="imageDescription = ''" />
+									:padded="false" @click="clearSearch" />
 							</template>
 						</UInput>
 					</template>
@@ -72,7 +72,8 @@
 			</UDashboardNavbar>
 
 			<UDashboardPanelContent>
-				<ImageGallery :key="uploadID" />
+				<ImageGallery :key="galleryID" :dateRange
+					:description.trim="imageDescription" />
 			</UDashboardPanelContent>
 		</UDashboardPanel>
 	</UDashboardPage>
@@ -98,7 +99,10 @@ const user = useSupabaseUser()
 
 const { toastError, toastSuccess } = useAppToast()
 
-const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
+const nanoid = initSafeNanoid()
+const galleryID = ref(nanoid())
+
+const dateRange = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
 
 // 搜索框聚焦状态
 const {
@@ -107,12 +111,12 @@ const {
 	handleSearchBlur
 } = useSearchStyles()
 // 搜索处理函数
-const { imageDescription, handleSearch } = useSearchAction()
+const { imageDescription, handleSearch, clearSearch, handleClearSearch } = useSearchAction()
 
 // 上传模态框状态
 const { openUploadModal, isUploadModalOpen } = useUploadModal()
 // 上传处理函数
-const { uploadID, onComplete } = useUploadAction()
+const { onComplete } = useUploadAction()
 
 // 图片选择状态
 const imagesStore = useImagesStore()
@@ -146,22 +150,33 @@ function useSearchAction() {
 	const imageDescription = ref('')
 
 	// 搜索处理函数
-	async function handleSearch() {
-		if (!imageDescription.value.trim()) return
+	function handleSearch() {
+		console.debug('Searching:', imageDescription.value)
 
-		try {
-			// 这里添加您的搜索逻辑
-			// 例如：
-			// await searchImages(imageDescription.value)
-			console.debug('Searching for:', imageDescription.value)
-		} catch (error) {
-			console.error('Search failed:', error)
+		galleryID.value = nanoid()
+	}
+
+	// 清空搜索框
+	function handleClearSearch() {
+		if (Boolean(imageDescription.value)) {
+			return
 		}
+
+		clearSearch()
+	}
+
+	function clearSearch() {
+		imageDescription.value = ''
+		console.debug('Clear search')
+
+		galleryID.value = nanoid()
 	}
 
 	return {
 		imageDescription,
 		handleSearch,
+		clearSearch,
+		handleClearSearch,
 	}
 }
 
@@ -178,16 +193,14 @@ function useUploadModal() {
 }
 
 function useUploadAction() {
-	// 上传 ID
-	const uploadID = ref('0')
 	// 上传完成后的处理函数
 	function onComplete(result: UploadResult<Meta, Record<string, never>>) {
 		console.debug('Upload complete:', result)
-		uploadID.value = result.uploadID
+		// 刷新图片列表
+		galleryID.value = nanoid()
 	}
 
 	return {
-		uploadID,
 		onComplete,
 	}
 }
@@ -212,7 +225,7 @@ function useImagesAction() {
 			return
 		}
 
-		uploadID.value = data[0].id
+		galleryID.value = data[0].id
 
 		toastSuccess({
 			title: '删除成功',

@@ -1,5 +1,4 @@
 import _ from "lodash"
-import { userPlans } from "~/constants/user/userPlans"
 
 export function useUserPlan() {
 	const user = useSupabaseUser()

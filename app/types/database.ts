@@ -41,7 +41,6 @@ export type Database = {
       image_details: {
         Row: {
           created_at: string | null
-          document: string | null
           embedding: unknown | null
           filename: string | null
           id: number | null
@@ -63,7 +62,27 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      search_images: {
+        Args: {
+          query_embedding: unknown
+          match_threshold: number
+          match_count: number
+        }
+        Returns: {
+          id: number
+          owner_id: string
+          name: string
+          filename: string
+          embedding: unknown
+          created_at: string
+          updated_at: string
+          last_accessed_at: string
+          version: string
+          metadata: Json
+          user_metadata: Json
+          similarity: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
