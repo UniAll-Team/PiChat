@@ -5,7 +5,7 @@ export default defineNuxtConfig({
 	modules: [
 		'nuxt-server-fn',
 		'nuxt-zod-i18n',
-		"nuxt-lodash",
+		'nuxt-lodash',
 		'nuxt-swiper',
 		// '@bit0r/nuxt-chatgpt',
 		'@nuxtjs/i18n',

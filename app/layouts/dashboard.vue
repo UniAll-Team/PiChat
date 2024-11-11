@@ -1,7 +1,9 @@
 <template>
 	<UDashboardLayout>
-		<UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
-			<UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
+		<UDashboardPanel :width="250"
+			:resizable="{ min: 200, max: 300 }" collapsible>
+			<UDashboardNavbar class="!border-transparent"
+				:ui="{ left: 'flex-1' }">
 				<template #left>
 					<UserDropdown />
 				</template>
@@ -36,7 +38,6 @@
 </template>
 
 <script lang="ts" setup>
-const route = useRoute()
 const { isHelpSlideoverOpen } = useDashboard()
 const { toastSuccess, toastError } = useAppToast()
 

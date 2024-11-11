@@ -66,8 +66,8 @@ importers:
         specifier: ^4.0.4
         version: 4.0.4(@uppy/core@4.2.3)
       '@uppy/tus':
-        specifier: ^4.1.3
-        version: 4.1.3(@uppy/core@4.2.3)
+        specifier: ^4.1.4
+        version: 4.1.4(@uppy/core@4.2.3)
       '@uppy/vue':
         specifier: ^2.0.2
         version: 2.0.2(@uppy/core@4.2.3)(@uppy/dashboard@4.1.2(@uppy/core@4.2.3))(@uppy/drag-drop@4.0.4(@uppy/core@4.2.3))(@uppy/file-input@4.0.3(@uppy/core@4.2.3))(@uppy/progress-bar@4.0.1(@uppy/core@4.2.3))(@uppy/status-bar@4.0.4(@uppy/core@4.2.3))(vue@3.5.12(typescript@5.6.3))
@@ -2212,8 +2212,8 @@ packages:
   '@supabase/realtime-js@2.10.7':
     resolution: {integrity: sha512-OLI0hiSAqQSqRpGMTUwoIWo51eUivSYlaNBgxsXZE7PSoWh12wPRdVt0psUMaUzEonSB85K21wGc7W5jHnT6uA==}
 
-  '@supabase/ssr@0.5.1':
-    resolution: {integrity: sha512-+G94H/GZG0nErZ3FQV9yJmsC5Rj7dmcfCAwOt37hxeR1La+QTl8cE9whzYwPUrTJjMLGNXoO+1BMvVxwBAbz4g==}
+  '@supabase/ssr@0.5.2':
+    resolution: {integrity: sha512-n3plRhr2Bs8Xun1o4S3k1CDv17iH5QY9YcoEvXX3bxV1/5XSasA0mNXYycFmADIdtdE6BG9MRjP5CGIs8qxC8A==}
     peerDependencies:
       '@supabase/supabase-js': ^2.43.4
 
@@ -2226,8 +2226,8 @@ packages:
   '@surma/rollup-plugin-off-main-thread@2.2.3':
     resolution: {integrity: sha512-lR8q/9W7hZpMWweNiAKU7NQerBnzQQLvi8qnTDU/fxItPhtZVMbPV3lbCwjhIlNBe9Bbr5V+KHshvWmVSG9cxQ==}
 
-  '@swc/helpers@0.5.13':
-    resolution: {integrity: sha512-UoKGxQ3r5kYI9dALKJapMmuK+1zWM/H17Z1+iwnNmzcJRnfFuevZs375TA5rW31pu4BS4NoSy1fRsexDXfWn5w==}
+  '@swc/helpers@0.5.15':
+    resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
   '@tailwindcss/aspect-ratio@0.4.2':
     resolution: {integrity: sha512-8QPrypskfBa7QIMuKHg2TA7BqES6vhBrDLOv8Unb6FcFyd3TjKbc6lcmb9UPQHxfl24sXoJ41ux/H7qQQvfaSQ==}
@@ -2266,6 +2266,9 @@ packages:
 
   '@types/connect@3.4.36':
     resolution: {integrity: sha512-P63Zd/JUGq+PdrM1lv0Wv5SBYeA2+CORvbrXbngriYY0jzLUWfQMQQxOhjONEz/wlHOAxOdY7CY65rgQdTjq2w==}
+
+  '@types/cookie@0.6.0':
+    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -2456,8 +2459,8 @@ packages:
     peerDependencies:
       '@uppy/core': ^4.2.3
 
-  '@uppy/tus@4.1.3':
-    resolution: {integrity: sha512-oX6Krds1iygLsTbYnvkP7pnGZa2UeiHq0RRxm40IDtVcfeHnNS3lD84VDTYfwxdWzdvfezCHnWBkgNXC+mjWNw==}
+  '@uppy/tus@4.1.4':
+    resolution: {integrity: sha512-QnJI66ws6xJEt/qnThgy9Lmg18JxEm3nmTKw8KxF4MTVQG5SmTMWb+qC22uOTiBU82bsdwORQWtd7huCVOcs3Q==}
     peerDependencies:
       '@uppy/core': ^4.2.3
 
@@ -2504,15 +2507,15 @@ packages:
       '@vite-pwa/assets-generator':
         optional: true
 
-  '@vitejs/plugin-vue-jsx@4.0.1':
-    resolution: {integrity: sha512-7mg9HFGnFHMEwCdB6AY83cVK4A6sCqnrjFYF4WIlebYAQVVJ/sC/CiTruVdrRlhrFoeZ8rlMxY9wYpPTIRhhAg==}
+  '@vitejs/plugin-vue-jsx@4.1.0':
+    resolution: {integrity: sha512-KuRejz7KAFvhXDzOudlaS2IyygAwoAEEMtHAdcRSy/8cA5iKH043Qudcz48zsC0M0vvN5iKwIwNMuWbBYn6/Yg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       vite: ^5.0.0
       vue: ^3.0.0
 
-  '@vitejs/plugin-vue@5.1.4':
-    resolution: {integrity: sha512-N2XSI2n3sQqp5w7Y/AN/L2XDjBIRGqXko+eDp42sydYSBeJuSm5a1sLf8zakmo8u7tA8NmBgoDLA1HeOESjp9A==}
+  '@vitejs/plugin-vue@5.1.5':
+    resolution: {integrity: sha512-dlnib73G05CDBAUR/YpuZcQQ47fpjihnnNouAAqN62z+oqSsWJ+kh52GRzIxpkgFG3q11eXK7Di7RMmoCwISZA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       vite: ^5.0.0
@@ -3168,8 +3171,8 @@ packages:
   cookie-es@1.2.2:
     resolution: {integrity: sha512-+W7VmiVINB+ywl1HGXJXmrqkOhpKrIiVZV6tQuV54ZyQC7MMuBt81Vc336GMLoHBq5hV/F9eXgt5Mnx0Rha5Fg==}
 
-  cookie@0.6.0:
-    resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
+  cookie@0.7.2:
+    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
 
   cookies@0.9.1:
@@ -8900,8 +8903,8 @@ snapshots:
     dependencies:
       '@nuxt/kit': 3.14.159(magicast@0.3.5)(rollup@4.25.0)(webpack-sources@3.2.3)
       '@rollup/plugin-replace': 6.0.1(rollup@4.25.0)
-      '@vitejs/plugin-vue': 5.1.4(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))
-      '@vitejs/plugin-vue-jsx': 4.0.1(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))
+      '@vitejs/plugin-vue': 5.1.5(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))
+      '@vitejs/plugin-vue-jsx': 4.1.0(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))
       autoprefixer: 10.4.20(postcss@8.4.48)
       clear: 0.1.0
       consola: 3.2.3
@@ -9065,7 +9068,7 @@ snapshots:
 
   '@nuxtjs/supabase@1.4.2':
     dependencies:
-      '@supabase/ssr': 0.5.1(@supabase/supabase-js@2.46.1)
+      '@supabase/ssr': 0.5.2(@supabase/supabase-js@2.46.1)
       '@supabase/supabase-js': 2.46.1
       defu: 6.1.4
       pathe: 1.1.2
@@ -10024,10 +10027,11 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@supabase/ssr@0.5.1(@supabase/supabase-js@2.46.1)':
+  '@supabase/ssr@0.5.2(@supabase/supabase-js@2.46.1)':
     dependencies:
       '@supabase/supabase-js': 2.46.1
-      cookie: 0.6.0
+      '@types/cookie': 0.6.0
+      cookie: 0.7.2
 
   '@supabase/storage-js@2.7.1':
     dependencies:
@@ -10052,7 +10056,7 @@ snapshots:
       magic-string: 0.25.9
       string.prototype.matchall: 4.0.11
 
-  '@swc/helpers@0.5.13':
+  '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.8.1
 
@@ -10091,6 +10095,8 @@ snapshots:
   '@types/connect@3.4.36':
     dependencies:
       '@types/node': 22.9.0
+
+  '@types/cookie@0.6.0': {}
 
   '@types/debug@4.1.12':
     dependencies:
@@ -10343,7 +10349,7 @@ snapshots:
       '@uppy/utils': 6.0.4
       exifr: 7.1.3
 
-  '@uppy/tus@4.1.3(@uppy/core@4.2.3)':
+  '@uppy/tus@4.1.4(@uppy/core@4.2.3)':
     dependencies:
       '@uppy/companion-client': 4.1.1(@uppy/core@4.2.3)
       '@uppy/core': 4.2.3
@@ -10407,7 +10413,7 @@ snapshots:
       - workbox-build
       - workbox-window
 
-  '@vitejs/plugin-vue-jsx@4.0.1(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))':
+  '@vitejs/plugin-vue-jsx@4.1.0(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/plugin-transform-typescript': 7.25.9(@babel/core@7.26.0)
@@ -10417,7 +10423,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@5.1.4(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))':
+  '@vitejs/plugin-vue@5.1.5(vite@5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0))(vue@3.5.12(typescript@5.6.3))':
     dependencies:
       vite: 5.4.10(@types/node@22.9.0)(sass-embedded@1.80.6)(sass@1.80.3)(terser@5.36.0)
       vue: 3.5.12(typescript@5.6.3)
@@ -11176,7 +11182,7 @@ snapshots:
 
   cookie-es@1.2.2: {}
 
-  cookie@0.6.0: {}
+  cookie@0.7.2: {}
 
   cookies@0.9.1:
     dependencies:
@@ -11931,7 +11937,7 @@ snapshots:
 
   fontkit@2.0.4:
     dependencies:
-      '@swc/helpers': 0.5.13
+      '@swc/helpers': 0.5.15
       brotli: 1.3.3
       clone: 2.1.2
       dfa: 1.2.0
