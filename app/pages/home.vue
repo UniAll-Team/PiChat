@@ -101,7 +101,11 @@ const { toastError, toastSuccess } = useAppToast()
 const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
 
 // 搜索框聚焦状态
-const { isSearchFocused, handleSearchFocus, handleSearchBlur } = useSearchStyles()
+const {
+	isSearchFocused,
+	handleSearchFocus,
+	handleSearchBlur
+} = useSearchStyles()
 // 搜索处理函数
 const { imageDescription, handleSearch } = useSearchAction()
 
@@ -198,7 +202,7 @@ function useImagesAction() {
 		const { data, error } = await supabase
 			.storage
 			.from('images')
-			.remove(selectedImageNames.value)
+			.remove(_map(selectedImages.value, 'name'))
 
 		if (error) {
 			toastError({
@@ -208,10 +212,14 @@ function useImagesAction() {
 			return
 		}
 
+		uploadID.value = data[0].id
+
 		toastSuccess({
 			title: '删除成功',
 			description: '选中的图片已被删除',
 		})
+
+		resetSelectedImages()
 	}
 
 	async function downloadSelectedImages() {
@@ -248,10 +256,22 @@ function useImagesAction() {
 
 			link.href = URL.createObjectURL(blob)
 			link.download = 'images.zip'
+
 		}
 
 		link.click()
+
+		if (selectedImages.value.length > 1) {
+			URL.revokeObjectURL(link.href)
+		}
 		link.remove()
+
+		toastSuccess({
+			title: '下载成功',
+			description: '选中的图片已被下载',
+		})
+
+		resetSelectedImages()
 	}
 
 	return {

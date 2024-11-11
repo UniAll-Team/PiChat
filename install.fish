@@ -1,4 +1,4 @@
-pnpm add \
+ni \
     date-fns \
     zod \
     mathjs \
@@ -16,12 +16,14 @@ pnpm add \
     @uppy/status-bar \
     @uppy/webcam \
     @uppy/file-input \
+    openai \
     client-zip
 
-pnpm add -D \
+ni -D \
     sass-embedded \
-    nuxt-chatgpt \
-    nuxt-lodash
+    # nuxt-chatgpt \
+    nuxt-lodash \
+    nuxt-server-fn
 
 set modules \
     nuxt-zod-i18n \

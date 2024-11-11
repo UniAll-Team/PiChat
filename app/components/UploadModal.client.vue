@@ -8,21 +8,24 @@
 </template>
 
 <script lang="ts" setup>
+import type { StorageApiError } from '@supabase/storage-js'
 import type { Meta, UploadResult } from '@uppy/core'
+import type { Database } from '~/types/database'
 
 import Uppy from '@uppy/core'
 import Tus from '@uppy/tus'
 import { DashboardModal } from '@uppy/vue'
 import Webcam from '@uppy/webcam'
 import * as math from 'mathjs'
+const { createImageEmbedding } = useServerFunctions()
 
 import '@uppy/core/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
 import '@uppy/webcam/dist/style.css'
 
-const { toastError } = useAppToast()
+const { toastError, toastSuccess } = useAppToast()
 
-const supabase = useSupabaseClient()
+const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
 const session = useSupabaseSession()
 
@@ -84,24 +87,44 @@ uppy.on('file-added', (file) => {
 	const contentType = file.type
 	const fileExtension = contentType.split('/')[1]
 
-	file.meta = {
-		...file.meta,
-		bucketName: 'images',
-		objectName: `${user.value.id}/${nanoid()}.${fileExtension}`,
-		contentType,
-		metadata: JSON.stringify({
-			// 上传文件的原始名称
-			originalName: file.name,
-			// 用户自定义的文件名
-			customName: file.name,
-			lastModified: (file.data as File).lastModified,
-		})
+	// 创建一个临时的 URL，用于获取图片的宽高
+	const url = URL.createObjectURL(file.data)
+	const image = new Image()
+	image.src = url
+
+	image.onload = () => {
+		// 设置文件的元数据，而且只能用赋值不能用 uppy.setFileMeta
+		file.meta = {
+			...file.meta,
+			bucketName: 'images',
+			objectName: `${user.value.id}/${nanoid()}.${fileExtension}`,
+			contentType,
+			metadata: JSON.stringify({
+				// 上传文件的原始名称
+				originalName: file.name,
+				// 用户自定义的文件名
+				customName: file.name,
+				// 文件的最后修改时间
+				lastModified: (file.data as File).lastModified,
+				// 文件的大小
+				width: image.naturalWidth,
+				height: image.naturalHeight,
+			})
+		}
+
+		// 释放 URL
+		URL.revokeObjectURL(url)
+		console.debug('file-added', file)
 	}
 
-	console.debug('file-added', file)
+	image.onerror = () => {
+		// 释放 URL
+		URL.revokeObjectURL(url)
+	}
 })
 
 uppy.on('upload-error', (file, error) => {
+	console.error('upload-error', file, error)
 	if (error.message === 'Request Entity Too Large') {
 		toastError({ title: '文件过大，请重新选择' })
 	} else {
@@ -110,20 +133,44 @@ uppy.on('upload-error', (file, error) => {
 })
 
 uppy.on('upload-success', async (file, response) => {
-	const { data, error } = await supabase
-		.storage
-		.from('images')
-		.list(user.value.id, {
-			limit: 1,
-			sortBy: { column: 'updated_at', order: 'desc' },
-		})
+	console.debug('file', file, 'response', response)
 
+	// 获取上传文件的信息
+	const name = String(file.meta.objectName)
+	const userMetadata = JSON.parse(String(file.meta.metadata))
+	const { width, height }: { width: number, height: number } = userMetadata
+
+	// 获取图片的签名URL
+	const { signedUrl, error } = await useSignedUrl(name, width, height)
 	if (error) {
-		toastError({ title: '上传失败，请重试', description: error.message })
+		console.dir(error)
+
+		if (error.name == 'StorageApiError' && (error as StorageApiError).status == 400) {
+			toastSuccess({ title: '文件已存在，无需重复上传' })
+		} else {
+			toastError({ title: '创建签名URL失败，请点击左侧联系客服', description: error.message })
+		}
+
+		return
+	}
+	console.debug('signedUrl', signedUrl)
+
+	// 创建图片的embedding
+	const { embedding, document } = await createImageEmbedding(signedUrl)
+	console.debug('file', name, 'document', document, 'embedding', embedding)
+	if (!(document && embedding)) {
+		toastError({ title: '创建图片索引失败，请点击左侧联系客服' })
 		return
 	}
 
-	console.debug('upload-success', data)
+
+	// 更新文件的embedding
+	const updateError = await useUpdateEmbedding(name, embedding, document)
+	if (updateError) {
+		console.error('updateError', updateError)
+		toastError({ title: '更新图片索引失败，请点击左侧联系客服', description: updateError.message })
+		return
+	}
 })
 
 uppy.on('complete', (result) => {
@@ -133,6 +180,40 @@ uppy.on('complete', (result) => {
 
 function handleClose() {
 	isOpen.value = false
+}
+
+async function useSignedUrl(name: string, width: number, height: number) {
+	const { width: newWidth, height: newHeight } = resizeAspectRatio({ width, height })
+
+	// 对比resize后的宽高和原始宽高，如果一样则不需要再次resize
+	if (width == newWidth) {
+		var options = {
+			transform: {
+				width: newWidth,
+				height: newHeight,
+				resize: 'contain' as const
+			}
+		}
+	}
+
+	const { data, error } = await supabase
+		.storage
+		.from('images')
+		.createSignedUrl(name, 7 * 60, options)
+
+	return { signedUrl: data?.signedUrl, error }
+}
+
+async function useUpdateEmbedding(name: string, embedding: any, document?: any) {
+	const { error } = await supabase
+		.from('images')
+		.update({
+			embedding,
+			document,
+		})
+		.eq('name', name)
+
+	return error
 }
 </script>
 

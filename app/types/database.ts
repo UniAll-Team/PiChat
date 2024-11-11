@@ -12,22 +12,25 @@ export type Database = {
       images: {
         Row: {
           document: string | null
-          embedding: string | null
+          embedding: unknown | null
           id: number
+          name: string
           object_id: string
           user_id: string | null
         }
         Insert: {
           document?: string | null
-          embedding?: string | null
+          embedding?: unknown | null
           id?: never
+          name: string
           object_id: string
           user_id?: string | null
         }
         Update: {
           document?: string | null
-          embedding?: string | null
+          embedding?: unknown | null
           id?: never
+          name?: string
           object_id?: string
           user_id?: string | null
         }
@@ -39,7 +42,7 @@ export type Database = {
         Row: {
           created_at: string | null
           document: string | null
-          embedding: string | null
+          embedding: unknown | null
           filename: string | null
           id: number | null
           last_accessed_at: string | null

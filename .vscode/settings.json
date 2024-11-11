@@ -1,0 +1,7 @@
+{
+	"i18n-ally.localesPaths": [
+		"app/locales"
+	],
+	"editor.lineNumbers": "off",
+	"editor.glyphMargin": false
+}

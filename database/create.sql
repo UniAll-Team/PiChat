@@ -1,9 +1,10 @@
 create table images (
 	id int generated always as identity primary key,
-	object_id uuid unique not null references storage.objects(id) on update cascade on delete cascade,
-	user_id UUID COMMENT '上传这个图片的用户，注意不能非空或使用外键，否则无法通过仪表盘上传',
+	object_id UUID unique not null references storage.objects(id) on update cascade on delete cascade,
+	name text unique not null,
+	user_id UUID,	-- 上传这个图片的用户，注意不能非空或使用外键，否则无法通过仪表盘上传图片
 	document text,
-	embedding vector(2048)
+	embedding halfvec(3072)
 );
 
 create policy "Enable users to view their own data only"
@@ -15,13 +16,13 @@ using (
 	(select auth.uid()) = user_id
 );
 
-create policy "Enable insert for authenticated users only"
+create policy "Enable insert for users based on user_id"
 on public.images
 as PERMISSIVE
 for INSERT
 to authenticated
 with check (
-	true
+	(select auth.uid()) = user_id
 );
 
 create policy "Enable delete for users based on user_id"
@@ -75,14 +76,15 @@ BEGIN
 	INTO total_size
 	FROM storage.objects
 	WHERE name LIKE search_path || '%'
-	  AND name != search_path  -- 排除文件夹本身
-	  AND storage.extension(name) != '';  -- 只计算文件，不计算子文件夹
+		AND name != search_path  -- 排除文件夹本身
+		AND storage.extension(name) != '';  -- 只计算文件，不计算子文件夹
 	RETURN total_size;
 END;
 $$ LANGUAGE plpgsql;
 
 -- 获取当前用户的文件夹大小
-CREATE VIEW used_storage AS
+CREATE VIEW used_storage
+WITH (security_invoker) AS
 SELECT storage.get_folder_size(auth.uid()::TEXT) AS used_storage;
 
 CREATE POLICY "根据用户订阅的计划限制上传"
@@ -96,13 +98,13 @@ WITH CHECK (
 		CASE (auth.jwt()->>'plan')::text
 			WHEN 'pro/mouth' THEN
 				(auth.jwt()->>'cycle_indexed_count')::int < 1777
-					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024  -- 177GB for pro plan
+					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024	-- 177GB for pro plan
 			WHEN 'pro/year' THEN
 				(auth.jwt()->>'cycle_indexed_count')::int < 17777
-					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024  -- 177GB for pro plan
+					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024	-- 177GB for pro plan
 			ELSE
 				(auth.jwt()->>'cycle_indexed_count')::int < 177
-					AND storage.get_folder_size(auth.uid()::text) < 10 * 1024 * 1024 * 1024  -- 10GB for free plan
+					AND storage.get_folder_size(auth.uid()::text) < 5 * 1024 * 1024 * 1024	-- 5GB for free plan
 		END
 	)
 );
@@ -112,8 +114,8 @@ CREATE OR REPLACE FUNCTION public.insert_new_image()
 RETURNS trigger AS $$
 BEGIN
 	IF NEW.bucket_id = 'images' THEN
-		INSERT INTO public.images(object_id, user_id)
-		VALUES (NEW.id, NEW.owner_id::UUID);
+		INSERT INTO public.images(object_id, user_id, name)
+		VALUES (NEW.id, NEW.owner_id::UUID, NEW.name);
 	END IF;
 	RETURN NEW;
 END;

@@ -3,10 +3,11 @@ export default defineNuxtConfig({
 	extends: ['@nuxt/ui-pro'],
 
 	modules: [
+		'nuxt-server-fn',
 		'nuxt-zod-i18n',
 		"nuxt-lodash",
 		'nuxt-swiper',
-		'nuxt-chatgpt',
+		// '@bit0r/nuxt-chatgpt',
 		'@nuxtjs/i18n',
 		'@vite-pwa/nuxt',
 		'@nuxtjs/supabase',
@@ -24,6 +25,13 @@ export default defineNuxtConfig({
 		'@samk-dev/nuxt-vcalendar',
 	],
 
+	runtimeConfig: {
+		openai: {
+			apiKey: process.env.OPENAI_API_KEY,
+			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+		},
+	},
+
 	app: {
 		head: {
 			title: 'PiCHat',
@@ -32,10 +40,19 @@ export default defineNuxtConfig({
 
 	imports: {
 		dirs: [
-			'./composables',
-			'./utils',
 			'./stores',
-		]
+			'./constants',
+		],
+	},
+
+	nitro: {
+		prerender: {
+			routes: ['/', '/docs'],
+			crawlLinks: true,
+		},
+		imports: {
+			dirs: ['./constants'],
+		}
 	},
 
 	i18n: {
@@ -83,13 +100,6 @@ export default defineNuxtConfig({
 		disableTransition: true,
 	},
 
-	nitro: {
-		prerender: {
-			routes: ['/', '/docs'],
-			crawlLinks: true,
-		},
-	},
-
 	routeRules: {
 		'/api/search.json': { prerender: true },
 		'/docs': { redirect: '/docs/getting-started', prerender: false },
@@ -122,9 +132,10 @@ export default defineNuxtConfig({
 		},
 	},
 
-	chatgpt: {
-		apiKey: process.env.OPENAI_API_KEY,
-	},
+	// chatgpt: {
+	// 	apiKey: process.env.OPENAI_API_KEY,
+	// 	baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+	// },
 
 	stripe: {
 		server: {
