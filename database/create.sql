@@ -131,10 +131,9 @@ CREATE OR REPLACE VIEW image_details
 WITH (security_invoker) AS
 SELECT
 	i.id,
-	o.owner_id,
+	o.owner_id::UUID,
 	o.name,
 	storage.filename(o.name) AS filename,
-	i.document,
 	i.embedding,
 	o.created_at,
 	o.updated_at,
@@ -196,3 +195,33 @@ CREATE TRIGGER increment_cycle_indexed_count_trigger
 AFTER UPDATE OF embedding ON images
 FOR EACH ROW
 EXECUTE FUNCTION auth.add_cycle_indexed_count();
+
+-- 使用embedding搜索图像
+CREATE OR REPLACE FUNCTION match_documents (
+	query_embedding halfvec(3072),
+	match_threshold float,
+	match_count int
+)
+RETURNS TABLE (
+	id int,
+	owner_id UUID,
+	name text,
+	filename text,
+	embedding halfvec(3072),
+	created_at timestamp with time zone,
+	updated_at timestamp with time zone,
+	last_accessed_at timestamp with time zone,
+	version text,
+	metadata jsonb,
+	user_metadata jsonb,
+	similarity float
+)
+LANGUAGE sql STABLE AS $$
+SELECT
+	img.*,
+	1 - (img.embedding <#> query_embedding) AS similarity
+FROM image_details img
+WHERE 1 - (img.embedding <#> query_embedding) > match_threshold
+ORDER BY similarity DESC
+LIMIT match_count;
+$$;
