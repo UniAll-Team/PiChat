@@ -23,7 +23,20 @@ export default defineNuxtConfig({
 		'@sentry/nuxt/module',
 		'@sentry/nuxt',
 		'@samk-dev/nuxt-vcalendar',
+		'nuxt-viewport'
 	],
+
+	// debug: true,
+
+	logLevel: 'verbose',
+
+	devtools: {
+		enabled: true,
+	},
+
+	features: {
+		devLogs: true,
+	},
 
 	runtimeConfig: {
 		openai: {
@@ -103,10 +116,6 @@ export default defineNuxtConfig({
 	routeRules: {
 		'/api/search.json': { prerender: true },
 		'/docs': { redirect: '/docs/getting-started', prerender: false },
-	},
-
-	devtools: {
-		enabled: true,
 	},
 
 	typescript: {

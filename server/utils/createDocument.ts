@@ -26,5 +26,7 @@ export async function createDocument(openai: OpenAI, imageURL: string) {
 		model: 'gpt-4o-mini',
 	})
 
+	console.debug(completion)
+
 	return completion.choices[0].message.content
 }

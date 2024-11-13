@@ -32,7 +32,11 @@ const session = useSupabaseSession()
 const config = useRuntimeConfig()
 const supabaseConfig = config.public.supabase
 
-const userQuota = await useUserRemainingQuota()
+const { error, userQuota } = await useUserQuota()
+
+if (error) {
+	toastError({ title: '获取用户配额失败，请点击左侧联系客服', description: error.message })
+}
 
 const locale_strings = {
 	chooseFiles: '选择文件',
@@ -58,20 +62,23 @@ const emit = defineEmits<{
 	complete: [result: UploadResult<Meta, Record<string, never>>]
 }>()
 
-const nanoid = initSafeNanoid()
+const nanoid = newSafeNanoid()
+
 
 const uppy = new Uppy({
 	restrictions: {
-		maxNumberOfFiles: userQuota.value.uploadQuota,
-		maxTotalFileSize: userQuota.value.storageQuota,
+		maxNumberOfFiles: userQuota.value.uploadRemaining,
+		maxTotalFileSize: userQuota.value.storageRemaining,
 		maxFileSize: userQuota.value.fileSizeLimit,
 		allowedFileTypes: ['image/*'],
 	},
 }).use(Tus, {
 	endpoint: `${supabaseConfig.url}/storage/v1/upload/resumable`,
-	headers: {
-		authorization: `Bearer ${session.value?.access_token}`,
-		apikey: supabaseConfig.key,
+	headers: () => {
+		return {
+			authorization: `Bearer ${session.value?.access_token}`,
+			apikey: supabaseConfig.key,
+		}
 	},
 	// allowedMetaFields: [
 	// 	'bucketName',

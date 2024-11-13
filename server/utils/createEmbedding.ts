@@ -7,5 +7,7 @@ export async function createEmbedding(openai: OpenAI, document: string) {
 		encoding_format: 'float'
 	})
 
+	console.debug(embedding)
+
 	return embedding.data[0].embedding
 }

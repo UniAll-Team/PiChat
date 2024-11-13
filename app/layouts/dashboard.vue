@@ -23,8 +23,7 @@
 				<UDivider class="sticky bottom-0" />
 
 				<template #footer>
-
-					<!-- <UserDropdown /> -->
+					<UserQuota />
 				</template>
 			</UDashboardSidebar>
 		</UDashboardPanel>

@@ -20,6 +20,7 @@ ni \
     client-zip
 
 ni -D \
+    nuxi \
     sass-embedded \
     # nuxt-chatgpt \
     nuxt-lodash \
@@ -34,6 +35,7 @@ set modules \
     sentry \
     stripe-next \
     @samk-dev/nuxt-vcalendar \
+    nuxt-viewport \
     nuxt-swiper
 
 for module in $modules

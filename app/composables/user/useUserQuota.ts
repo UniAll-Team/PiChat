@@ -1,17 +1,26 @@
-
-export async function useUserRemainingQuota() {
+export async function useUserQuota() {
 	const userPlan = useUserPlan()
-	const userUsed = await useUserUsed()
+	const { error, userUsed } = await useUserUsed()
 
-	return computed(() => {
-		const storageQuota = userPlan.value.storageLimit - userUsed.value.usedStorage
-		const indexingQuota = userPlan.value.cycleIndexingLimit - userUsed.value.cycleIndexedCount
+	if (error) {
+		console.error(error)
+		return { error }
+	}
+
+	const userQuota = computed(() => {
+		const storageRemaining = userPlan.value.storageQuota - userUsed.value.storageUsed
+		const cycleIndexingRemaining = userPlan.value.cycleIndexingQuota - userUsed.value.cycleIndexedCount
 
 		return {
-			storageQuota: storageQuota,
-			indexingQuota: indexingQuota,
-			fileSizeLimit: userPlan.value.fileSizeLimit,
-			uploadQuota: Math.max(storageQuota / userPlan.value.fileSizeLimit, indexingQuota)
+			...userUsed.value,
+			...userPlan.value,
+			storageRemaining,
+			cycleIndexingRemaining,
+			uploadRemaining: Math.round(Math.max(storageRemaining / userPlan.value.fileSizeLimit, cycleIndexingRemaining))
 		}
 	})
+
+	return {
+		userQuota
+	}
 }

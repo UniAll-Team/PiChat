@@ -99,7 +99,7 @@ const user = useSupabaseUser()
 
 const { toastError, toastSuccess } = useAppToast()
 
-const nanoid = initSafeNanoid()
+const nanoid = newSafeNanoid()
 const galleryID = ref(nanoid())
 
 const dateRange = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
