@@ -77,25 +77,27 @@ export default defineNuxtConfig({
 		},
 		lazy: true,
 		langDir: 'locales/',
-		defaultLocale: 'en',
+		defaultLocale: 'zh-Hans',
 		locales: [
 			{
 				code: 'en',
-				language: 'en-US',
+				language: 'en',
 				name: 'English',
-				file: 'en-US.ts',
+				file: 'en.yaml',
 			},
 			{
 				code: 'ar',
-				language: 'ar-SA',
+				language: 'ar',
 				name: 'العربية',
-				file: 'ar-SA.ts',
+				file: 'ar.yaml',
 			},
 			{
-				code: 'zh-CN',
-				language: 'zh-CN',
+				code: 'zh-Hans',
+				language: 'zh',
 				name: '简体中文',
-				file: 'zh-CN.ts',
+				files: [
+					'zh-Hans.yaml'
+				],
 			},
 		],
 	},

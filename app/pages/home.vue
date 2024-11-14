@@ -17,21 +17,21 @@
 							variant="outline"
 							@click="resetSelectedImages">
 							<span class="hidden-on-mobile">
-								取消
+								{{ t('actions.cancel') }}
 							</span>
 						</UButton>
 						<UButton icon="i-heroicons-arrow-down-tray"
 							color="gray" variant="outline"
 							@click="downloadSelectedImages">
 							<span class="hidden-on-mobile">
-								下载
+								{{ t('actions.download') }}
 							</span>
 						</UButton>
 						<UButton icon="i-heroicons-trash" color="red"
 							variant="outline"
 							@click="deleteSelectedImages">
 							<span class="hidden-on-mobile">
-								删除
+								{{ t('actions.delete') }}
 							</span>
 						</UButton>
 					</template>
@@ -44,11 +44,11 @@
 							@click="openUploadModal"
 							:class="{ 'hidden-on-mobile': isSearchFocused }">
 							<span class="hidden-on-mobile">
-								上传
+								{{ t('actions.upload') }}
 							</span>
 						</UButton>
 
-						<UInput placeholder="Search"
+						<UInput :placeholder="t('placeholders.search')"
 							v-model="imageDescription"
 							icon="i-heroicons-magnifying-glass"
 							color="gray" autocomplete="off"
@@ -82,6 +82,71 @@
 		@complete="onComplete" />
 </template>
 
+<i18n lang="yaml">
+en:
+  actions:
+    cancel: Cancel
+    download: Download
+    delete: Delete
+    upload: Upload
+    search: Search
+
+  messages:
+    deleteSuccess:
+      title: Delete Successful
+      description: Selected images have been deleted
+    deleteError:
+      title: Delete Failed
+    downloadSuccess:
+      title: Download Successful
+      description: Selected images have been downloaded
+
+  placeholders:
+    search: Search
+
+zh-Hans:
+  actions:
+    cancel: 取消
+    download: 下载
+    delete: 删除
+    upload: 上传
+    search: 搜索
+
+  messages:
+    deleteSuccess:
+      title: 删除成功
+      description: 选中的图片已被删除
+    deleteError:
+      title: 删除失败
+    downloadSuccess:
+      title: 下载成功
+      description: 选中的图片已被下载
+
+  placeholders:
+    search: 搜索
+
+ar:
+  actions:
+    cancel: إلغاء
+    download: تحميل
+    delete: حذف
+    upload: تحميل
+    search: بحث
+
+  messages:
+    deleteSuccess:
+      title: تم الحذف بنجاح
+      description: تم حذف الصور المحددة
+    deleteError:
+      title: فشل الحذف
+    downloadSuccess:
+      title: تم التحميل بنجاح
+      description: تم تحميل الصور المحددة
+
+  placeholders:
+    search: بحث
+</i18n>
+
 <script lang="ts" setup>
 import type { Meta, UploadResult } from '@uppy/core'
 import type { Range } from '~/types/dashboard'
@@ -89,6 +154,8 @@ import type { Database } from '~/types/database'
 
 import { downloadZip } from 'client-zip'
 import { sub } from 'date-fns'
+
+const { t } = useI18n()
 
 definePageMeta({
 	layout: 'dashboard',
@@ -219,7 +286,7 @@ function useImagesAction() {
 
 		if (error) {
 			toastError({
-				title: '删除失败',
+				title: t('messages.deleteError.title'),
 				description: error.message,
 			})
 			return
@@ -228,8 +295,8 @@ function useImagesAction() {
 		galleryID.value = data[0].id
 
 		toastSuccess({
-			title: '删除成功',
-			description: '选中的图片已被删除',
+			title: t('messages.deleteSuccess.title'),
+			description: t('messages.deleteSuccess.description'),
 		})
 
 		resetSelectedImages()
@@ -280,8 +347,8 @@ function useImagesAction() {
 		link.remove()
 
 		toastSuccess({
-			title: '下载成功',
-			description: '选中的图片已被下载',
+			title: t('messages.downloadSuccess.title'),
+			description: t('messages.downloadSuccess.description'),
 		})
 
 		resetSelectedImages()
