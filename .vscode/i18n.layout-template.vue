@@ -1,7 +1,7 @@
 <template>
-  <div>
-
-  </div>
+	<div>
+		<slot />
+	</div>
 </template>
 
 <i18n lang="yaml">
