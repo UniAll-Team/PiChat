@@ -13,7 +13,8 @@
 		<AppFooter />
 
 		<ClientOnly>
-			<LazyUContentSearch :files="files" :navigation="navigation" />
+			<LazyUContentSearch :files="files"
+				:navigation="navigation" />
 		</ClientOnly>
 
 		<UNotifications />
@@ -21,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ParsedContent } from '@nuxt/content'
 import type { NuxtError } from '#app'
+import type { ParsedContent } from '@nuxt/content'
 
 useSeoMeta({
 	title: 'Page not found',
@@ -33,12 +34,6 @@ defineProps({
 	error: {
 		type: Object as PropType<NuxtError>,
 		required: true
-	}
-})
-
-useHead({
-	htmlAttrs: {
-		lang: 'zh-CN'
 	}
 })
 

@@ -210,7 +210,6 @@ RETURNS TABLE (
 	owner_id UUID,
 	name text,
 	filename text,
-	embedding halfvec(3072),
 	created_at timestamp with time zone,
 	updated_at timestamp with time zone,
 	last_accessed_at timestamp with time zone,
@@ -221,10 +220,19 @@ RETURNS TABLE (
 )
 LANGUAGE sql STABLE AS $$
 SELECT
-	img.*,
-	-(img.embedding <#> query_embedding) AS similarity
-FROM image_details img
-WHERE -(img.embedding <#> query_embedding) > match_threshold
+	id,
+	owner_id,
+	name,
+	filename,
+	created_at,
+	updated_at,
+	last_accessed_at,
+	version,
+	metadata,
+	user_metadata,
+	-(embedding <#> query_embedding) AS similarity
+FROM image_details
+WHERE -(embedding <#> query_embedding) > match_threshold
 ORDER BY similarity DESC
 LIMIT match_count;
 $$;

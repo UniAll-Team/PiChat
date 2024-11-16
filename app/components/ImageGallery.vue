@@ -1,15 +1,14 @@
 <template>
 	<div>
 		<div class="images-groups-container">
-			<div
-				v-for="(imageGroup, lastModifiedDate) in imageGroups"
-				:key="lastModifiedDate"
+			<div v-for="imageGroupEntry in imageGroups"
+				:key="imageGroupEntry[0]"
 				class="images-group-container">
-				<h3 class="">{{ lastModifiedDate }}</h3>
+				<h3 class="">{{ imageGroupEntry[0] }}</h3>
 				<div class="images-container">
 					<!-- 你的列表项内容 -->
-					<div v-for="(image) in imageGroup" :key="image.id"
-						class="image-wrapper">
+					<div v-for="image in imageGroupEntry[1]"
+						:key="image.id" class="image-wrapper">
 						<!-- 选择按钮 -->
 						<button class="select-btn"
 							:class="{ 'selected': isSelectedImage(image) }"
@@ -31,17 +30,19 @@
 			</div>
 		</div>
 
-		<InfiniteLoading @infinite="load">
-			<template #spinner>
-				<div>Loading...</div>
-			</template>
-			<template #complete>
-				<div>没有更多数据了</div>
-			</template>
-			<template #error>
-				<div>出错了</div>
-			</template>
-		</InfiniteLoading>
+		<ClientOnly>
+			<InfiniteLoading @infinite="load">
+				<template #spinner>
+					<div>Loading...</div>
+				</template>
+				<template #complete>
+					<div>没有更多数据了</div>
+				</template>
+				<template #error>
+					<div>出错了</div>
+				</template>
+			</InfiniteLoading>
+		</ClientOnly>
 
 		<UModal v-model="showPreview" :ui="{
 			container: 'items-center justify-center',
@@ -100,7 +101,10 @@ const {
 } = useImagePicker()
 
 function useImageGroups() {
-	const imageGroups = ref<{ [lastModifiedDate: string]: Images }>({})
+	type ImageGroup = [string, Image[]]
+	type ImageGroups = ImageGroup[]
+
+	const imageGroups = ref<ImageGroups>([])
 	const page = ref(1)
 	const pageSize = 10
 	const hasMoreData = ref(true)
@@ -111,7 +115,7 @@ function useImageGroups() {
 	async function getImages() {
 		const { data, error } = await supabase
 			.from('image_details')
-			.select('*')
+			.select(imageColumns)
 			.order('id', { ascending: false })
 			.range((page.value - 1) * pageSize, page.value * pageSize - 1)
 
@@ -149,7 +153,7 @@ function useImageGroups() {
 				return
 			}
 
-			const data = await (isSearching.value ? searchImages() : getImages())
+			const data = <Images>await (isSearching.value ? searchImages() : getImages())
 
 			console.debug('data', data)
 
@@ -185,21 +189,26 @@ function useImageGroups() {
 				.map(([image, url]) => {
 					console.debug('image', image)
 
-					const lastModifiedDate = formatUnixDate((image.user_metadata as any)?.lastModified, 'zhCN')
+					const lastModified = image.user_metadata?.lastModified
+					const lastModifiedDate = formatUnixDate(lastModified, 'zhCN')
 
 					console.debug('lastModifiedDate', lastModifiedDate)
+
 					return {
 						...image,
+						lastModified,
 						lastModifiedDate,
 						url,
 					}
 				})
 				.groupBy('lastModifiedDate')
+				.entries()
+				.orderBy('[1][0].lastModified', 'desc')
 				.value()
 
 			console.debug('newItemGroups', newItemGroups)
 
-			imageGroups.value = _merge(imageGroups.value, newItemGroups)
+			imageGroups.value.push(...newItemGroups)
 			page.value++
 			state?.loaded()
 

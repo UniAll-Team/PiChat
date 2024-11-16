@@ -73,7 +73,6 @@ export type Database = {
           owner_id: string
           name: string
           filename: string
-          embedding: unknown
           created_at: string
           updated_at: string
           last_accessed_at: string
