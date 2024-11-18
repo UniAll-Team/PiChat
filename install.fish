@@ -39,5 +39,5 @@ set modules \
     nuxt-swiper
 
 for module in $modules
-    http_proxy npx nuxi module add $module
+    http_proxy pnpx nuxi module add $module
 end

@@ -4,27 +4,33 @@
 			<UButton color="gray" variant="ghost" :ui="{
 				inline: 'grid grid-cols-2 grid-rows-3 gap-y-0 h-12 w-13 sm:inline-flex sm:items-center',
 			}" :class="[open && 'bg-gray-50 dark:bg-gray-800']">
-				<span class="row-start-1 row-end-2 col-start-1 col-end-2  leading-none	sm:leading-normal">
+				<span
+					class="row-start-1 row-end-2 col-start-1 col-end-2  leading-none	sm:leading-normal">
 					{{ format(selected.start, 'd/MM/yy') }}
 				</span>
-				<span class="row-start-2 row-end-3 col-start-1 col-end-2 leading-none	sm:leading-normal">
+				<span
+					class="row-start-2 row-end-3 col-start-1 col-end-2 leading-none	sm:leading-normal">
 					-
 				</span>
-				<span class="row-start-3 row-end-4 col-start-1 col-end-2 leading-none	sm:leading-normal">
+				<span
+					class="row-start-3 row-end-4 col-start-1 col-end-2 leading-none	sm:leading-normal">
 					{{ format(selected.end, 'd/MM/yy') }}
 				</span>
 
 				<template #trailing>
-					<UIcon name="i-heroicons-chevron-down-20-solid" class="w-5 h-5 row-start-1 row-end-4 col-start-2 col-end-3" />
+					<UIcon name="i-heroicons-chevron-down-20-solid"
+						class="w-5 h-5 row-start-1 row-end-4 col-start-2 col-end-3" />
 				</template>
 			</UButton>
 		</template>
 
 		<template #panel="{ close }">
-			<div class="flex items-center sm:divide-x divide-gray-200 dark:divide-gray-800">
+			<div
+				class="flex items-center sm:divide-x divide-gray-200 dark:divide-gray-800">
 				<div class="hidden sm:flex flex-col py-4">
-					<UButton v-for="(range, index) in ranges" :key="index" :label="range.label" color="gray" variant="ghost"
-						class="rounded-none px-6"
+					<UButton v-for="(range, index) in ranges"
+						:key="index" :label="range.label" color="gray"
+						variant="ghost" class="rounded-none px-6"
 						:class="[isRangeSelected(range.duration) ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50']"
 						truncate @click="selectRange(range.duration)" />
 				</div>
@@ -36,8 +42,10 @@
 </template>
 
 <script lang="ts" setup>
-import { type Duration, format, isSameDay, sub } from 'date-fns'
+import type { Duration } from 'date-fns'
 import type { Range } from '~/types/dashboard'
+
+import { format, isSameDay, sub } from 'date-fns'
 
 const ranges: {
 	label: string
@@ -51,10 +59,7 @@ const ranges: {
 		{ label: 'Last year', duration: { years: 1 } },
 	]
 
-const selected = defineModel({
-	type: Object as PropType<Range>,
-	required: true,
-})
+const selected = defineModel<Range>()
 
 function isRangeSelected(duration: Duration) {
 	return (

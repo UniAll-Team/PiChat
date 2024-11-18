@@ -63,15 +63,19 @@ export default defineNuxtConfig({
 	},
 
 	i18n: {
-		strategy: 'prefix_and_default',
+		// debug: true,
+		// 必须使用 `no_prefix`，否则用户点击其他路径时又会跳转到默认语言
+		strategy: 'no_prefix',
 		detectBrowserLanguage: {
-			useCookie: true,
-			redirectOn: 'root',
+			redirectOn: 'all',
 			alwaysRedirect: true,
+			useCookie: true,
+			cookieCrossOrigin: true,
+			fallbackLocale: 'en',
 		},
 		lazy: true,
 		langDir: 'locales/',
-		defaultLocale: 'zh-Hans',
+		defaultLocale: 'en',
 		locales: [
 			{
 				code: 'en',
@@ -87,13 +91,16 @@ export default defineNuxtConfig({
 			},
 			{
 				code: 'zh-Hans',
-				language: 'zh',
+				language: 'zh-Hans',
 				name: '简体中文',
 				files: [
 					'zh-Hans.yaml'
 				],
 			},
 		],
+		experimental: {
+			switchLocalePathLinkSSR: true,
+		}
 	},
 
 	hooks: {

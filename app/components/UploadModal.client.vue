@@ -101,6 +101,7 @@ uppy.on('file-added', (file) => {
 
 	image.onload = () => {
 		// 设置文件的元数据，而且只能用赋值不能用 uppy.setFileMeta
+		const lastModified = (file.data as File).lastModified
 		file.meta = {
 			...file.meta,
 			bucketName: 'images',
@@ -112,7 +113,9 @@ uppy.on('file-added', (file) => {
 				// 用户自定义的文件名
 				customName: file.name,
 				// 文件的最后修改时间
-				lastModified: (file.data as File).lastModified,
+				lastModified,
+				// 文件的最后修改时间的字符串形式
+				lastModifiedDate: new Date(lastModified).toISOString(),
 				// 文件的大小
 				width: image.naturalWidth,
 				height: image.naturalHeight,

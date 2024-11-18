@@ -1,5 +1,16 @@
 <template>
 	<UDashboardPanelContent class="pb-24">
+		<UDashboardSection title="Language"
+			description="Select your preferred language.">
+			<template #links>
+				<USelectMenu v-model="locale" :options="locales"
+					option-attribute="name" value-attribute="code"
+					color="gray" />
+			</template>
+		</UDashboardSection>
+
+		<UDivider class="mb-4" />
+
 		<UDashboardSection title="Theme"
 			description="Customize the look and feel of your dashboard.">
 			<template #links>
@@ -9,7 +20,7 @@
 
 		<UDivider class="mb-4" />
 
-		<UForm :state :schema @submit="onSubmit">
+		<UForm :state :schema @submit="updateProfile">
 			<UDashboardSection title="Profile"
 				description="This information will be displayed publicly so be careful what you share.">
 				<template #links>
@@ -80,51 +91,66 @@ import { z } from 'zod'
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 
+const { locale, locales, setLocale } = useI18n()
+
+watch(locale, () => {
+	console.debug('Switching locale to', locale.value)
+	setLocale(locale.value)
+	// 需要强制刷新页面，因为 Nuxt 无法动态切换语言
+	location.reload()
+})
+
 const { toastSuccess, toastError } = useAppToast()
 
 const isDeleteAccountModalOpen = ref(false)
 
-const state = ref({
-	full_name: user.value.user_metadata?.full_name,
-	email: user.value.email,
-	bio: user.value.user_metadata?.bio,
-	password: '',
-	repeatPassword: '',
-})
+const { state, schema, updateProfile } = useUserProfile()
 
-const schema = z.object({
-	full_name: z.string().min(2).optional(),
-	email: z.string().email(),
-	bio: z.string().max(255).optional(),
-	password: z.string().min(8).optional().or(z.literal('')),
-	repeatPassword: z.string().min(8).optional().or(z.literal('')),
-}).refine(({ password, repeatPassword }) => password === repeatPassword,
-	{
-		message: 'Passwords must match',
-		path: ['password'],
+function useUserProfile() {
+	const state = ref({
+		full_name: user.value.user_metadata?.full_name,
+		email: user.value.email,
+		bio: user.value.user_metadata?.bio,
+		password: '',
+		repeatPassword: '',
+	})
+
+	const schema = z.object({
+		full_name: z.string().min(2).optional(),
+		email: z.string().email(),
+		bio: z.string().max(255).optional(),
+		password: z.string().min(8).optional().or(z.literal('')),
+		repeatPassword: z.string().min(8).optional().or(z.literal('')),
+	}).refine(({ password, repeatPassword }) => password === repeatPassword,
+		{
+			message: 'Passwords must match',
+			path: ['password'],
+		}
+	)
+
+	async function updateProfile() {
+		const { error } = await supabase
+			.auth
+			.updateUser({
+				email: state.value.email,
+				password: state.value.password || undefined,
+				data: {
+					full_name: state.value.full_name || undefined,
+					bio: state.value.bio || undefined,
+				}
+			})
+
+		if (error) {
+			toastError({
+				title: 'Profile update failed'
+				, description: error.message
+			})
+			return
+		}
+
+		toastSuccess({ title: 'Profile updated' })
 	}
-)
 
-async function onSubmit() {
-	const { error } = await supabase
-		.auth
-		.updateUser({
-			email: state.value.email,
-			password: state.value.password || undefined,
-			data: {
-				full_name: state.value.full_name || undefined,
-				bio: state.value.bio || undefined,
-			}
-		})
-
-	if (error) {
-		toastError({
-			title: 'Profile update failed'
-			, description: error.message
-		})
-		return
-	}
-
-	toastSuccess({ title: 'Profile updated' })
+	return { state, schema, updateProfile }
 }
 </script>

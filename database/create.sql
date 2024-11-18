@@ -3,6 +3,7 @@ create table images (
 	object_id UUID unique not null references storage.objects(id) on update cascade on delete cascade,
 	name text unique not null,
 	user_id UUID,	-- 上传这个图片的用户，注意不能非空或使用外键，否则无法通过仪表盘上传图片
+	last_modified_date timestamp without time zone default now(),
 	document text,
 	embedding halfvec(3072)
 );
@@ -117,8 +118,8 @@ CREATE OR REPLACE FUNCTION public.insert_new_image()
 RETURNS trigger AS $$
 BEGIN
 	IF NEW.bucket_id = 'images' THEN
-		INSERT INTO public.images(object_id, user_id, name)
-		VALUES (NEW.id, NEW.owner_id::UUID, NEW.name);
+		INSERT INTO public.images(object_id, user_id, name, last_modified_date)
+		VALUES (NEW.id, NEW.owner_id::UUID, NEW.name, NEW.user_metadata->>'lastModifiedDate');
 	END IF;
 	RETURN NEW;
 END;
@@ -138,6 +139,7 @@ SELECT
 	o.name,
 	storage.filename(o.name) AS filename,
 	i.embedding,
+	i.last_modified,
 	o.created_at,
 	o.updated_at,
 	o.last_accessed_at,

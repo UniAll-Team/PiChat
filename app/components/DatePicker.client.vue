@@ -1,19 +1,22 @@
 <template>
-	<VCalendarDatePicker v-if="date && (date as DatePickerRangeObject)?.start && (date as DatePickerRangeObject)?.end"
-		v-model.range="date" :columns="smallerThanSm ? 1 : 2" :rows="smallerThanSm ? 2 : 1"
+	<VCalendarDatePicker
+		v-if="date && (date as DatePickerRangeObject)?.start && (date as DatePickerRangeObject)?.end"
+		v-model.range="date" :columns="smallerThanSm ? 1 : 2"
+		:rows="smallerThanSm ? 2 : 1"
 		v-bind="{ ...attrs, ...$attrs }" />
-	<VCalendarDatePicker v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" />
+	<VCalendarDatePicker v-else v-model="date"
+		v-bind="{ ...attrs, ...$attrs }" />
 </template>
 
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { DatePicker as VCalendarDatePicker } from 'v-calendar'
-
 import type {
 	DatePickerDate,
 	DatePickerRangeObject,
-	// @ts-expect-error - no types available
 } from 'v-calendar/dist/types/src/use/datePicker'
+
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import { DatePicker as VCalendarDatePicker } from 'v-calendar'
+
 import 'v-calendar/dist/style.css'
 
 defineOptions({
