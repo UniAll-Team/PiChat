@@ -1,7 +1,8 @@
 <template>
 	<h1>测试</h1>
 	<div v-if="page">
-		<UPageHero title="选择一个方案，留住珍贵回忆" align="center" description="所有账户都有免费方案，但是我们推荐您为自己的美好回忆和珍贵图像付费。">
+		<UPageHero title="选择一个方案，留住珍贵回忆" align="center"
+			description="所有账户都有免费方案，但是我们推荐您为自己的美好回忆和珍贵图像付费。">
 			<template #links>
 				<UPricingToggle v-model="isYearly" class="w-48" />
 			</template>
@@ -9,21 +10,25 @@
 
 		<UContainer>
 			<UPricingGrid class="lg:grid-cols-2">
-				<UPricingCard v-for="(plan, index) in plans" :key="index" v-bind="plan"
-					:price="isYearly ? plan.price.year : plan.price.month" :cycle="isYearly ? '/year' : '/month'"
+				<UPricingCard v-for="(plan, index) in plans"
+					:key="index" v-bind="plan"
+					:price="isYearly ? plan.price.year : plan.price.month"
+					:cycle="isYearly ? '/year' : '/month'"
 					:features="isYearly ? plan.features.year : plan.features.month" />
 			</UPricingGrid>
 		</UContainer>
 
 		<ULandingSection>
 			<ULandingLogos>
-				<UIcon v-for="icon in logos.icons" :key="icon" :name="icon"
+				<UIcon v-for="icon in logos.icons" :key="icon"
+					:name="icon"
 					class="w-12 h-12 flex-shrink-0 text-gray-500 dark:text-gray-400" />
 			</ULandingLogos>
 		</ULandingSection>
 
 		<ULandingSection title="常见问题">
-			<ULandingFAQ :items="faqs" multiple class="max-w-4xl mx-auto" />
+			<ULandingFAQ :items="faqs" multiple
+				class="max-w-4xl mx-auto" />
 		</ULandingSection>
 	</div>
 </template>
@@ -56,11 +61,11 @@ const plans = [
 		features:
 		{
 			month: [
-				'10 GB存储',
+				'5 GB存储',
 				'177 次上传/月',
 			],
 			year: [
-				'10 GB存储',
+				'5 GB存储',
 				'177 次上传/月',
 			],
 		}

@@ -3,10 +3,10 @@
 		<UDashboardPanel grow>
 			<UDashboardNavbar>
 				<template #left>
-					<!-- 在移动端搜索框聚焦时隐藏 -->
+					<!-- 在搜索框聚焦时隐藏 -->
 					<HomeDateRangePicker v-model="dateRange"
 						class="-ml-2.5"
-						:class="{ 'hidden-on-mobile': isSearchFocused }" />
+						:class="{ 'hidden': isSearchFocused }" />
 				</template>
 
 				<template #right>
@@ -42,7 +42,7 @@
 						<UButton icon="i-heroicons-arrow-up-tray"
 							color="gray" variant="outline"
 							@click="openUploadModal"
-							:class="{ 'hidden-on-mobile': isSearchFocused }">
+							:class="{ 'hidden': isSearchFocused }">
 							<span class="hidden-on-mobile">
 								{{ t('actions.upload') }}
 							</span>
@@ -54,11 +54,10 @@
 							color="gray" autocomplete="off"
 							variant="outline"
 							:ui="{ icon: { trailing: { pointer: '' } } }"
-							:class="{ 'mobile-search-focused': isSearchFocused, 'mobile-search-input': !isSearchFocused }"
+							:class="{ 'search-expand': isSearchFocused, 'mobile-search-input': !isSearchFocused }"
 							@focus="handleSearchFocus"
 							@blur="handleSearchBlur"
-							@change="handleSearch"
-							@input="handleClearSearch">
+							@change="handleSearch">
 							<template #trailing>
 								<UButton v-show="imageDescription !== ''"
 									class='hidden-on-mobile' color="gray"
@@ -220,7 +219,11 @@ function useSearchAction() {
 	function handleSearch() {
 		console.debug('Searching:', imageDescription.value)
 
-		galleryID.value = nanoid()
+		if (imageDescription.value) {
+			galleryID.value = nanoid()
+		} else {
+			clearSearch()
+		}
 	}
 
 	// 清空搜索框
@@ -362,17 +365,17 @@ function useImagesAction() {
 </script>
 
 <style lang="scss" scoped>
-@media (width<=768px) {
-	.mobile-search-focused {
-		position: absolute;
-		left: 1rem;
-		right: 1rem;
-		top: 1rem;
-		z-index: 10;
-	}
+.search-expand {
+	position: absolute;
+	left: 1rem;
+	right: 1rem;
+	top: 1rem;
+	z-index: 10;
+}
 
+@media (width<=768px) {
 	.mobile-search-input {
-		width: 4.2rem;
+		width: 7rem;
 	}
 }
 </style>

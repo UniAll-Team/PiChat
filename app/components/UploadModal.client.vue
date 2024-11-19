@@ -17,13 +17,14 @@ import Tus from '@uppy/tus'
 import { DashboardModal } from '@uppy/vue'
 import Webcam from '@uppy/webcam'
 import * as math from 'mathjs'
-const { createImageEmbedding } = useServerFunctions()
 
 import '@uppy/core/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
 import '@uppy/webcam/dist/style.css'
 
 const { toastError, toastSuccess } = useAppToast()
+
+const { createImageEmbedding } = useServerFunctions()
 
 const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
@@ -147,11 +148,9 @@ uppy.on('upload-success', async (file, response) => {
 
 	// 获取上传文件的信息
 	const name = String(file.meta.objectName)
-	const userMetadata = JSON.parse(String(file.meta.metadata))
-	const { width, height }: { width: number, height: number } = userMetadata
 
 	// 获取图片的签名URL
-	const { signedUrl, error } = await useSignedUrl(name, width, height)
+	const { signedUrl, error } = await getSignedUrl(name)
 	if (error) {
 		console.dir(error)
 
@@ -173,7 +172,6 @@ uppy.on('upload-success', async (file, response) => {
 		return
 	}
 
-
 	// 更新文件的embedding
 	const updateError = await useUpdateEmbedding(name, embedding, document)
 	if (updateError) {
@@ -192,16 +190,18 @@ function handleClose() {
 	isOpen.value = false
 }
 
-async function useSignedUrl(name: string, width: number, height: number) {
-	const { width: newWidth, height: newHeight } = resizeAspectRatio({ width, height })
+async function getSignedUrl(name: string, width?: number, height?: number) {
+	if (width && height) {
+		const { width: newWidth, height: newHeight } = resizeAspectRatio({ width, height })
 
-	// 对比resize后的宽高和原始宽高，如果一样则不需要再次resize
-	if (width == newWidth) {
-		var options = {
-			transform: {
-				width: newWidth,
-				height: newHeight,
-				resize: 'contain' as const
+		// 对比resize后的宽高和原始宽高，如果一样则不需要再次resize
+		if (width == newWidth) {
+			var options = {
+				transform: {
+					width: newWidth,
+					height: newHeight,
+					resize: 'contain' as const
+				}
 			}
 		}
 	}
