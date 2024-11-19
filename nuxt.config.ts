@@ -79,14 +79,15 @@ export default defineNuxtConfig({
 		locales: [
 			{
 				code: 'en',
-				language: 'en',
+				language: 'en-US',
 				name: 'English',
 				file: 'en.yaml',
 			},
 			{
 				code: 'ar',
-				language: 'ar',
+				language: 'ar-SA',
 				name: 'العربية',
+				dir: 'rtl',
 				file: 'ar.yaml',
 			},
 			{

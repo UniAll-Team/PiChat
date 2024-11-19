@@ -2,6 +2,7 @@ ni \
     date-fns \
     zod \
     mathjs \
+    pretty-bytes \
     type-fest \
     pinia-plugin-persistedstate \
     v3-infinite-loading \
