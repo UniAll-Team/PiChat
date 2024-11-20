@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Range } from '~/types/dashboard'
+import type { DateRange } from '~/types/dashboard'
 import type { Database } from '~/types/database'
 import type { Image, Images } from '~/types/image'
 
@@ -77,7 +77,7 @@ import _ from 'lodash'
 
 // 定义组件的 props
 const { description, dateRange } = defineProps<{
-	dateRange: Range,
+	dateRange: DateRange,
 	description: string,
 }>()
 
@@ -86,11 +86,16 @@ const isSearching = computed(() => Boolean(description))
 const { text2embedding } = useServerFunctions()
 
 // 获取图片列表
-const { imageGroups, load } = useImageGroups()
+const { imageGroups, load, reload } = useImageGroups()
 
-const { selectedImages, hasSelectedImages } = storeToRefs(useImagesStore())
+watch([() => description, () => dateRange], () => {
+	console.debug('检测到变量改变，重新加载', description, dateRange)
+	reload()
+})
 
 // 图片选择相关
+const { selectedImages, hasSelectedImages } = storeToRefs(useImagesStore())
+
 const {
 	showPreview,
 	previewImage,
@@ -141,6 +146,14 @@ function useImageGroups() {
 		}
 
 		return data
+	}
+
+	function reload() {
+		imageGroups.value = []
+		page.value = 1
+		hasMoreData.value = true
+
+		load()
 	}
 
 	async function load(state?: any) {
@@ -226,7 +239,8 @@ function useImageGroups() {
 
 	return {
 		imageGroups,
-		load
+		load,
+		reload,
 	}
 }
 function useImagePicker() {

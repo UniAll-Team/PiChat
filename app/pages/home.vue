@@ -4,7 +4,7 @@
 			<UDashboardNavbar>
 				<template #left>
 					<!-- 在搜索框聚焦时隐藏 -->
-					<HomeDateRangePicker v-model="dateRange"
+					<DateRangePicker v-model="dateRange"
 						class="-ml-2.5"
 						:class="{ 'hidden': isSearchFocused }" />
 				</template>
@@ -49,7 +49,7 @@
 						</UButton>
 
 						<UInput :placeholder="t('placeholders.search')"
-							v-model="imageDescription"
+							v-model="searchInput"
 							icon="i-heroicons-magnifying-glass"
 							color="gray" autocomplete="off"
 							variant="outline"
@@ -59,7 +59,7 @@
 							@blur="handleSearchBlur"
 							@change="handleSearch">
 							<template #trailing>
-								<UButton v-show="imageDescription !== ''"
+								<UButton v-show="searchInput !== ''"
 									class='hidden-on-mobile' color="gray"
 									variant="link" icon="i-heroicons-x-mark"
 									:padded="false" @click="clearSearch" />
@@ -71,8 +71,8 @@
 			</UDashboardNavbar>
 
 			<UDashboardPanelContent>
-				<ImageGallery :key="galleryID" :dateRange
-					:description.trim="imageDescription" />
+				<ImageGallery :dateRange
+					:description="imageDescription" />
 			</UDashboardPanelContent>
 		</UDashboardPanel>
 	</UDashboardPage>
@@ -148,7 +148,7 @@ ar:
 
 <script lang="ts" setup>
 import type { Meta, UploadResult } from '@uppy/core'
-import type { Range } from '~/types/dashboard'
+import type { DateRange } from '~/types/dashboard'
 import type { Database } from '~/types/database'
 
 import { downloadZip } from 'client-zip'
@@ -168,7 +168,7 @@ const { toastError, toastSuccess } = useAppToast()
 const nanoid = newSafeNanoid()
 const galleryID = ref(nanoid())
 
-const dateRange = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
+const dateRange = ref<DateRange>({ start: sub(new Date(), { days: 14 }), end: new Date() })
 
 // 搜索框聚焦状态
 const {
@@ -177,7 +177,7 @@ const {
 	handleSearchBlur
 } = useSearchStyles()
 // 搜索处理函数
-const { imageDescription, handleSearch, clearSearch, handleClearSearch } = useSearchAction()
+const { searchInput, imageDescription, handleSearch, clearSearch } = useSearchAction()
 
 // 上传模态框状态
 const { openUploadModal, isUploadModalOpen } = useUploadModal()
@@ -213,40 +213,30 @@ function useSearchStyles() {
 }
 
 function useSearchAction() {
+	const searchInput = ref('')
 	const imageDescription = ref('')
 
 	// 搜索处理函数
 	function handleSearch() {
-		console.debug('Searching:', imageDescription.value)
+		console.debug('Searching:', searchInput.value)
 
-		if (imageDescription.value) {
-			galleryID.value = nanoid()
+		if (Boolean(searchInput.value)) {
+			imageDescription.value = searchInput.value
 		} else {
 			clearSearch()
 		}
 	}
 
-	// 清空搜索框
-	function handleClearSearch() {
-		if (Boolean(imageDescription.value)) {
-			return
-		}
-
-		clearSearch()
-	}
-
 	function clearSearch() {
-		imageDescription.value = ''
 		console.debug('Clear search')
-
-		galleryID.value = nanoid()
+		imageDescription.value = searchInput.value = ''
 	}
 
 	return {
+		searchInput,
 		imageDescription,
 		handleSearch,
 		clearSearch,
-		handleClearSearch,
 	}
 }
 

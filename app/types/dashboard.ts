@@ -37,7 +37,7 @@ export interface Notification {
 
 export type Period = 'daily' | 'weekly' | 'monthly'
 
-export interface Range {
+export interface DateRange {
 	start: Date
 	end: Date
 }
