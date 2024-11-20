@@ -14,6 +14,7 @@ export type Database = {
           document: string | null
           embedding: unknown | null
           id: number
+          last_modified_date: string | null
           name: string
           object_id: string
           user_id: string | null
@@ -22,6 +23,7 @@ export type Database = {
           document?: string | null
           embedding?: unknown | null
           id?: never
+          last_modified_date?: string | null
           name: string
           object_id: string
           user_id?: string | null
@@ -30,6 +32,7 @@ export type Database = {
           document?: string | null
           embedding?: unknown | null
           id?: never
+          last_modified_date?: string | null
           name?: string
           object_id?: string
           user_id?: string | null
@@ -45,6 +48,7 @@ export type Database = {
           filename: string | null
           id: number | null
           last_accessed_at: string | null
+          last_modified_date: string | null
           metadata: Json | null
           name: string | null
           owner_id: string | null
@@ -62,26 +66,46 @@ export type Database = {
       }
     }
     Functions: {
-      search_images: {
-        Args: {
-          query_embedding: unknown
-          match_threshold: number
-          match_count: number
-        }
-        Returns: {
-          id: number
-          owner_id: string
-          name: string
-          filename: string
-          created_at: string
-          updated_at: string
-          last_accessed_at: string
-          version: string
-          metadata: Json
-          user_metadata: Json
-          similarity: number
-        }[]
-      }
+      search_images:
+        | {
+            Args: {
+              query_embedding: unknown
+            }
+            Returns: {
+              id: number
+              owner_id: string
+              name: string
+              filename: string
+              last_modified_date: string
+              created_at: string
+              updated_at: string
+              last_accessed_at: string
+              version: string
+              metadata: Json
+              user_metadata: Json
+              similarity: number
+            }[]
+          }
+        | {
+            Args: {
+              query_embedding: unknown
+              match_threshold: number
+              match_count: number
+            }
+            Returns: {
+              id: number
+              owner_id: string
+              name: string
+              filename: string
+              created_at: string
+              updated_at: string
+              last_accessed_at: string
+              version: string
+              metadata: Json
+              user_metadata: Json
+              similarity: number
+            }[]
+          }
     }
     Enums: {
       [_ in never]: never

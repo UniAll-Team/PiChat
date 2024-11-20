@@ -165,10 +165,11 @@ const user = useSupabaseUser()
 
 const { toastError, toastSuccess } = useAppToast()
 
-const nanoid = newSafeNanoid()
-const galleryID = ref(nanoid())
-
 const dateRange = ref<DateRange>({ start: sub(new Date(), { days: 14 }), end: new Date() })
+
+function resetDateRange() {
+	dateRange.value = { start: sub(new Date(), { days: 14 }), end: new Date() }
+}
 
 // 搜索框聚焦状态
 const {
@@ -257,7 +258,7 @@ function useUploadAction() {
 	function onComplete(result: UploadResult<Meta, Record<string, never>>) {
 		console.debug('Upload complete:', result)
 		// 刷新图片列表
-		galleryID.value = nanoid()
+		resetDateRange()
 	}
 
 	return {
@@ -285,14 +286,15 @@ function useImagesAction() {
 			return
 		}
 
-		galleryID.value = data[0].id
-
 		toastSuccess({
 			title: t('messages.deleteSuccess.title'),
 			description: t('messages.deleteSuccess.description'),
 		})
 
 		resetSelectedImages()
+
+		// 刷新图片列表
+		resetDateRange()
 	}
 
 	async function downloadSelectedImages() {

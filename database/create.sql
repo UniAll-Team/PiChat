@@ -3,7 +3,7 @@ create table images (
 	object_id UUID unique not null references storage.objects(id) on update cascade on delete cascade,
 	name text unique not null,
 	user_id UUID,	-- 上传这个图片的用户，注意不能非空或使用外键，否则无法通过仪表盘上传图片
-	last_modified_date timestamp without time zone default now(),
+	last_modified_date timestamp default now(),
 	document text,
 	embedding halfvec(3072)
 );
@@ -119,7 +119,7 @@ RETURNS trigger AS $$
 BEGIN
 	IF NEW.bucket_id = 'images' THEN
 		INSERT INTO public.images(object_id, user_id, name, last_modified_date)
-		VALUES (NEW.id, NEW.owner_id::UUID, NEW.name, NEW.user_metadata->>'lastModifiedDate');
+		VALUES (NEW.id, NEW.owner_id::UUID, NEW.name, to_timestamp((NEW.user_metadata->>'lastModified')::bigint / 1000));
 	END IF;
 	RETURN NEW;
 END;
@@ -139,7 +139,7 @@ SELECT
 	o.name,
 	storage.filename(o.name) AS filename,
 	i.embedding,
-	i.last_modified,
+	i.last_modified_date,
 	o.created_at,
 	o.updated_at,
 	o.last_accessed_at,
@@ -203,18 +203,17 @@ EXECUTE FUNCTION auth.add_cycle_indexed_count();
 
 -- 使用embedding搜索图像
 CREATE OR REPLACE FUNCTION search_images (
-	query_embedding halfvec(3072),
-	match_threshold float,
-	match_count int
+	query_embedding halfvec(3072)
 )
 RETURNS TABLE (
 	id int,
 	owner_id UUID,
 	name text,
 	filename text,
-	created_at timestamp with time zone,
-	updated_at timestamp with time zone,
-	last_accessed_at timestamp with time zone,
+	last_modified_date timestamp,
+	created_at timestamptz,
+	updated_at timestamptz,
+	last_accessed_at timestamptz,
 	version text,
 	metadata jsonb,
 	user_metadata jsonb,
@@ -233,8 +232,5 @@ SELECT
 	metadata,
 	user_metadata,
 	-(embedding <#> query_embedding) AS similarity
-FROM image_details
-WHERE -(embedding <#> query_embedding) > match_threshold
-ORDER BY similarity DESC
-LIMIT match_count;
+FROM image_details;
 $$;

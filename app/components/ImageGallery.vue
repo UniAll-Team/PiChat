@@ -83,14 +83,18 @@ const { description, dateRange } = defineProps<{
 
 const isSearching = computed(() => Boolean(description))
 
+const dateRangeKey = computed(() =>
+	`${dateRange.start.toISOString()}_${dateRange.end.toISOString()}`
+)
+
 const { text2embedding } = useServerFunctions()
 
 // 获取图片列表
 const { imageGroups, load, reload } = useImageGroups()
 
-watch([() => description, () => dateRange], () => {
-	console.debug('检测到变量改变，重新加载', description, dateRange)
-	reload()
+watch([() => description, dateRangeKey], async () => {
+	console.debug('传入参数变化', description, dateRangeKey.value)
+	await reload()
 })
 
 // 图片选择相关
@@ -121,7 +125,9 @@ function useImageGroups() {
 		const { data, error } = await supabase
 			.from('image_details')
 			.select(imageColumns)
-			.order('id', { ascending: false })
+			.gte('last_modified_date', dateRange.start.toISOString())
+			.lte('last_modified_date', dateRange.end.toISOString())
+			.order('last_modified_date', { ascending: false })
 			.range((page.value - 1) * pageSize, page.value * pageSize - 1)
 
 		if (error) {
@@ -136,10 +142,13 @@ function useImageGroups() {
 
 		const { data, error } = await supabase
 			.rpc('search_images', {
-				query_embedding: embedding,
-				match_threshold: 0.3,
-				match_count: pageSize
+				query_embedding: embedding
 			})
+			.gte('similarity', 0.3)
+			.gte('last_modified_date', dateRange.start.toISOString())
+			.lte('last_modified_date', dateRange.end.toISOString())
+			.order('similarity', { ascending: false })
+			.limit(pageSize)
 
 		if (error) {
 			throw error
@@ -148,12 +157,12 @@ function useImageGroups() {
 		return data
 	}
 
-	function reload() {
+	async function reload() {
 		imageGroups.value = []
 		page.value = 1
 		hasMoreData.value = true
 
-		load()
+		await load()
 	}
 
 	async function load(state?: any) {

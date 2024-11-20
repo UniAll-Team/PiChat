@@ -115,8 +115,8 @@ uppy.on('file-added', (file) => {
 				customName: file.name,
 				// 文件的最后修改时间
 				lastModified,
-				// 文件的最后修改时间的字符串形式
-				lastModifiedDate: new Date(lastModified).toISOString(),
+				// @deprecated 文件的最后修改时间
+				// lastModifiedDate: new Date(lastModified).toISOString(),
 				// 文件的大小
 				width: image.naturalWidth,
 				height: image.naturalHeight,
