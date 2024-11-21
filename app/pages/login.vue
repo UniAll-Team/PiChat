@@ -1,18 +1,27 @@
 <template>
-	<UCard class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
-		<UAuthForm :fields="fields" :schema="schema" :providers="providers" title="Welcome back" align="top"
-			icon="i-heroicons-lock-closed" :ui="{ base: 'text-center', footer: 'text-center' }"
-			:submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }" @submit="login">
+	<UCard
+		class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
+		<UAuthForm :fields="fields" :schema="schema"
+			:providers="providers" title="Welcome back"
+			align="top" icon="i-heroicons-lock-closed"
+			:ui="{ base: 'text-center', footer: 'text-center' }"
+			:submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"
+			@submit="login">
 			<template #description>
-				Don't have an account? <NuxtLink to="/signup" class="text-primary font-medium">Sign up</NuxtLink>.
+				Don't have an account? <NuxtLink to="/signup"
+					class="text-primary font-medium">Sign up
+				</NuxtLink>.
 			</template>
 
 			<template #password-hint>
-				<NuxtLink to="/" class="text-primary font-medium">Forgot password?</NuxtLink>
+				<NuxtLink to="/" class="text-primary font-medium">
+					Forgot password?</NuxtLink>
 			</template>
 
 			<template #footer>
-				By signing in, you agree to our <NuxtLink to="/" class="text-primary font-medium">Terms of Service</NuxtLink>.
+				By signing in, you agree to our <NuxtLink to="/"
+					class="text-primary font-medium">Terms of Service
+				</NuxtLink>.
 			</template>
 		</UAuthForm>
 	</UCard>
@@ -73,7 +82,7 @@ async function login(data: any) {
 			color: 'green',
 		})
 
-		await navigateTo('/docs')
+		await navigateTo('/home')
 	}
 }
 </script>

@@ -1,6 +1,8 @@
 <template>
 	<UPage v-if="page">
-		<UPageHeader :title="page.title" :description="page.description" :links="page.links" :headline="headline" />
+		<UPageHeader :title="page.title"
+			:description="page.description" :links="page.links"
+			:headline="headline" />
 
 		<UPageBody prose>
 			<ContentRenderer v-if="page.body" :value="page" />
@@ -26,11 +28,13 @@ if (!page.value) {
 	throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 }
 
-const { data: surround } = await useAsyncData(`${route.path}-surround`, () => queryContent('/docs')
-	.where({ _extension: 'md', navigation: { $ne: false } })
-	.only(['title', 'description', '_path'])
-	.findSurround(withoutTrailingSlash(route.path))
-	, { default: () => [] })
+const { data: surround } = await useAsyncData(`${route.path}-surround`,
+	() => queryContent('/docs')
+		.where({ _extension: 'md', navigation: { $ne: false } })
+		.only(['title', 'description', '_path'])
+		.findSurround(withoutTrailingSlash(route.path)),
+	{ default: () => [] }
+)
 
 useSeoMeta({
 	title: page.value.title,

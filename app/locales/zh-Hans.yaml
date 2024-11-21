@@ -1,3 +1,6 @@
+free: 免费版
+pro: 专业版
+
 zodI18n:
   errors:
     invalid_type: 预期输入为{expected}，而输入为{received}

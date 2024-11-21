@@ -1,3 +1,6 @@
+free: Free
+pro: Pro
+
 zodI18n:
   errors:
     invalid_type: Expected {expected}, received {received}

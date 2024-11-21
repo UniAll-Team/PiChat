@@ -30,8 +30,7 @@
 
 		<slot />
 
-		<!-- ~/components/HelpSlideover.vue -->
-		<HelpSlideover />
+		<!-- <HelpSlideover /> -->
 
 	</UDashboardLayout>
 </template>
@@ -43,8 +42,10 @@ en:
   settings: Settings
   general: General
   notifications: Notifications
+  upgradeToPro: Upgrade to Pro
   invitePeople: Invite people
   helpSupport: Help & Support
+  customerService: Customer Service
   linkCopiedToClipboard: Link copied to clipboard
   youCanNowShareThisLink: You can now share this link with others
   failedToCopyLink: Failed to copy link
@@ -56,8 +57,10 @@ zh-Hans:
   settings: 设置
   general: 常规
   notifications: 通知
+  upgradeToPro: 升级到专业版
   invitePeople: 邀请他人
   helpSupport: 帮助与支持
+  customerService: 联系客服
   linkCopiedToClipboard: 链接已复制到剪贴板
   youCanNowShareThisLink: 您现在可以与他人分享此链接
   failedToCopyLink: 复制链接失败
@@ -69,8 +72,10 @@ ar:
   settings: الإعدادات
   general: عام
   notifications: الإشعارات
+  upgradeToPro: الترقية إلى النسخة المحترفة
   invitePeople: دعوة الأشخاص
   helpSupport: المساعدة والدعم
+  customerService: خدمة العملاء
   linkCopiedToClipboard: تم نسخ الرابط إلى الحافظة
   youCanNowShareThisLink: يمكنك الآن مشاركة هذا الرابط مع الآخرين
   failedToCopyLink: فشل في نسخ الرابط
@@ -120,6 +125,11 @@ const links = [
 
 const footerLinks = [
 	{
+		label: t('upgradeToPro'),
+		icon: 'i-heroicons-credit-card',
+		to: '/pricing'
+	},
+	{
 		label: t('invitePeople'),
 		icon: 'i-heroicons-plus',
 		click: async () => {
@@ -138,10 +148,15 @@ const footerLinks = [
 			}
 		},
 	},
+	// {
+	// 	label: t('helpSupport'),
+	// 	icon: 'i-heroicons-question-mark-circle',
+	// 	click: () => (isHelpSlideoverOpen.value = true),
+	// },
 	{
-		label: t('helpSupport'),
-		icon: 'i-heroicons-question-mark-circle',
-		click: () => (isHelpSlideoverOpen.value = true),
-	},
+		label: t('customerService'),
+		icon: 'i-heroicons-chat-bubble-left-right',
+		to: '/docs/contact-us',
+	}
 ]
 </script>

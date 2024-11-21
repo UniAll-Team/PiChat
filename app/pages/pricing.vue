@@ -1,6 +1,5 @@
 <template>
-	<h1>测试</h1>
-	<div v-if="page">
+	<div>
 		<UPageHero title="选择一个方案，留住珍贵回忆" align="center"
 			description="所有账户都有免费方案，但是我们推荐您为自己的美好回忆和珍贵图像付费。">
 			<template #links>
@@ -143,10 +142,6 @@ const faqs = [
 		content: '当然，您可以随时切换到其他计划。只需要在您的账户页面中进行操作即可。',
 	}
 ]
-
-const page = {
-	'navigation.icon': 'i-heroicons-credit-card'
-}
 
 const title = 'Pricing'
 const description = "Choose the plan that's right for you."

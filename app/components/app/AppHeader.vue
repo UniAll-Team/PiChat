@@ -33,7 +33,7 @@ en:
   nav:
     docs: Docs
     pricing: Pricing
-    blog: Blog
+    customer-service: Customer Service
   signin: Sign in
   signup: Sign up
   signout: Sign out
@@ -44,7 +44,7 @@ zh-Hans:
   nav:
     docs: 文档
     pricing: 定价
-    blog: 博客
+    customer-service: 客服
   signin: 登录
   signup: 注册
   signout: 登出
@@ -55,7 +55,7 @@ ar:
   nav:
     docs: الوثائق
     pricing: التسعير
-    blog: المدونة
+    customer-service: خدمة العملاء
   signin: تسجيل الدخول
   signup: اشترك
   signout: تسجيل الخروج
@@ -78,9 +78,8 @@ const links = [{
 	label: t('nav.pricing'),
 	to: '/pricing'
 }, {
-	label: t('nav.blog'),
-	to: '/blog'
-}]
+	label: t('nav.customer-service'),
+	to: '/docs/customer-service'
+}
+]
 </script>
-
-<style scoped lang="scss"></style>

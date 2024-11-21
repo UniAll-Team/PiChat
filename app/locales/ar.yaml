@@ -1,3 +1,6 @@
+free: مجاني
+pro: محترف
+
 zodI18n:
   errors:
     invalid_type: المتوقع {expected}، المستلم {received}
