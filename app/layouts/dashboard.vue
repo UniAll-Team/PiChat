@@ -10,11 +10,10 @@
 			</UDashboardNavbar>
 
 			<UDashboardSidebar>
-				<template #header>
-
-				</template>
-
-				<UDashboardSidebarLinks :links="links" />
+				<ClientOnly>
+					<!-- 这里要使用client-only，不然会水合失败，不知道为什么 -->
+					<UDashboardSidebarLinks :links="links" />
+				</ClientOnly>
 
 				<div class="flex-1" />
 
@@ -29,8 +28,6 @@
 		</UDashboardPanel>
 
 		<slot />
-
-		<!-- <HelpSlideover /> -->
 
 	</UDashboardLayout>
 </template>
@@ -83,7 +80,6 @@ ar:
 </i18n>
 
 <script lang="ts" setup>
-const { isHelpSlideoverOpen } = useDashboard()
 const { toastSuccess, toastError } = useAppToast()
 
 const { t } = useI18n()
@@ -104,22 +100,20 @@ const links = [
 	{
 		id: 'settings',
 		label: t('settings'),
-		to: '/settings',
 		icon: 'i-heroicons-cog-8-tooth',
 		children: [
 			{
+				id: 'general',
 				label: t('general'),
 				to: '/settings',
 				exact: true,
 			},
 			{
+				id: 'notifications',
 				label: t('notifications'),
 				to: '/settings/notifications',
 			},
-		],
-		tooltip: {
-			text: t('settings'),
-		},
+		]
 	},
 ]
 
@@ -148,11 +142,6 @@ const footerLinks = [
 			}
 		},
 	},
-	// {
-	// 	label: t('helpSupport'),
-	// 	icon: 'i-heroicons-question-mark-circle',
-	// 	click: () => (isHelpSlideoverOpen.value = true),
-	// },
 	{
 		label: t('customerService'),
 		icon: 'i-heroicons-chat-bubble-left-right',

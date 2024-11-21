@@ -143,41 +143,28 @@ uppy.on('upload-error', (file, error) => {
 	}
 })
 
-uppy.on('upload-success', async (file, response) => {
-	console.debug('file', file, 'response', response)
-
-	// 获取上传文件的信息
-	const name = String(file.meta.objectName)
-
-	// 获取图片的签名URL
-	const { signedUrl, error } = await getSignedUrl(name)
-	if (error) {
-		console.dir(error)
-
-		if (error.name == 'StorageApiError' && (error as StorageApiError).status == 400) {
-			toastSuccess({ title: '文件已存在，无需重复上传' })
-		} else {
-			toastError({ title: '创建签名URL失败，请点击左侧联系客服', description: error.message })
+uppy.addPostProcessor(async (fileIDs: string[]) => {
+	for (const [idx, fileID] of fileIDs.entries()) {
+		const file = uppy.getFile(fileID)
+		if (!file) {
+			continue
 		}
 
-		return
-	}
-	console.debug('signedUrl', signedUrl)
+		const name = String(file.meta.objectName)
 
-	// 创建图片的embedding
-	const { embedding, document } = await createImageEmbedding(signedUrl)
-	console.debug('file', name, 'document', document, 'embedding', embedding)
-	if (!(document && embedding)) {
-		toastError({ title: '创建图片索引失败，请点击左侧联系客服' })
-		return
-	}
+		uppy.emit('postprocess-progress', file, {
+			mode: 'determinate',
+			message: '正在建立图片索引...',
+			value: idx / fileIDs.length
+		})
 
-	// 更新文件的embedding
-	const updateError = await useUpdateEmbedding(name, embedding, document)
-	if (updateError) {
-		console.error('updateError', updateError)
-		toastError({ title: '更新图片索引失败，请点击左侧联系客服', description: updateError.message })
-		return
+		await createEmbedding(name)
+
+		uppy.emit('postprocess-complete', file, {
+			mode: 'determinate',
+			message: '图片索引建立完成',
+			value: (idx + 1) / fileIDs.length
+		})
 	}
 })
 
@@ -214,7 +201,7 @@ async function getSignedUrl(name: string, width?: number, height?: number) {
 	return { signedUrl: data?.signedUrl, error }
 }
 
-async function useUpdateEmbedding(name: string, embedding: any, document?: any) {
+async function updateEmbedding(name: string, embedding: any, document?: any) {
 	const { error } = await supabase
 		.from('images')
 		.update({
@@ -224,6 +211,39 @@ async function useUpdateEmbedding(name: string, embedding: any, document?: any) 
 		.eq('name', name)
 
 	return error
+}
+
+async function createEmbedding(name: string) {
+	// 获取图片的签名URL
+	const { signedUrl, error } = await getSignedUrl(name)
+	if (error) {
+		console.dir(error)
+
+		if (error.name == 'StorageApiError' && (error as StorageApiError).status == 400) {
+			toastSuccess({ title: '文件已存在，无需重复上传' })
+		} else {
+			toastError({ title: '创建签名URL失败，请点击左侧联系客服', description: error.message })
+		}
+
+		return
+	}
+	console.debug('signedUrl', signedUrl)
+
+	// 创建图片的embedding
+	const { embedding, document } = await createImageEmbedding(signedUrl)
+	console.debug('file', name, 'document', document, 'embedding', embedding)
+	if (!(document && embedding)) {
+		toastError({ title: '创建图片索引失败，请点击左侧联系客服' })
+		return
+	}
+
+	// 更新文件的embedding
+	const updateError = await updateEmbedding(name, embedding, document)
+	if (updateError) {
+		console.error('updateError', updateError)
+		toastError({ title: '更新图片索引失败，请点击左侧联系客服', description: updateError.message })
+		return
+	}
 }
 </script>
 
