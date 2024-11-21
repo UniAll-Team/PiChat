@@ -71,11 +71,11 @@ export default defineNuxtConfig({
 			alwaysRedirect: true,
 			useCookie: true,
 			cookieCrossOrigin: true,
-			fallbackLocale: 'en',
+			fallbackLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
 		},
 		lazy: true,
 		langDir: 'locales/',
-		defaultLocale: 'en',
+		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
 		locales: [
 			{
 				code: 'en',
@@ -104,6 +104,15 @@ export default defineNuxtConfig({
 		}
 	},
 
+	content: {
+		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
+		locales: [
+			'en',
+			'zh-Hans',
+			'ar'
+		]
+	},
+
 	hooks: {
 		// Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
 		'components:extend': (components) => {
@@ -118,8 +127,7 @@ export default defineNuxtConfig({
 	},
 
 	routeRules: {
-		'/api/search.json': { prerender: true },
-		'/docs': { redirect: '/docs/getting-started', prerender: false },
+		'/docs': { redirect: '/docs/getting-started/usage' },
 	},
 
 	typescript: {

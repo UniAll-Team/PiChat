@@ -79,7 +79,6 @@ const links = [{
 	to: '/pricing'
 }, {
 	label: t('nav.customer-service'),
-	to: '/docs/customer-service'
-}
-]
+	to: '/docs/contact-us'
+}]
 </script>

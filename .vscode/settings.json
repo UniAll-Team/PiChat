@@ -5,6 +5,6 @@
 	],
 	"nuxtr.vueFiles.pages.defaultTemplate": "i18n.vue",
 	"nuxtr.vueFiles.layouts.defaultTemplate": "i18n.vue",
-	"editor.lineNumbers": "off",
-	"editor.glyphMargin": false
+	"editor.lineNumbers": "on",
+	"editor.glyphMargin": true
 }
