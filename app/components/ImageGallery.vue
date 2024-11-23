@@ -239,10 +239,7 @@ function useImageGroups() {
 				state?.complete()
 			}
 		} catch (error) {
-			toastError({
-				title: '加载失败',
-				description: error.message,
-			})
+			toastError('加载失败', error.message)
 		}
 	}
 

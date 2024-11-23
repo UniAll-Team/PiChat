@@ -456,7 +456,7 @@ const testimonials = [
 			name: t('testimonials.review1.author.name'),
 			description: t('testimonials.review1.author.description'),
 			avatar: {
-				src: '/api/placeholder/120/120',
+				src: '',
 				loading: 'lazy',
 			},
 		},
@@ -467,7 +467,7 @@ const testimonials = [
 			name: t('testimonials.review2.author.name'),
 			description: t('testimonials.review2.author.description'),
 			avatar: {
-				src: '/api/placeholder/120/120',
+				src: '',
 				loading: 'lazy',
 			},
 		},
@@ -478,7 +478,7 @@ const testimonials = [
 			name: t('testimonials.review3.author.name'),
 			description: t('testimonials.review3.author.description'),
 			avatar: {
-				src: '/api/placeholder/120/120',
+				src: '',
 				loading: 'lazy',
 			},
 		},
@@ -489,7 +489,7 @@ const testimonials = [
 			name: t('testimonials.review4.author.name'),
 			description: t('testimonials.review4.author.description'),
 			avatar: {
-				src: '/api/placeholder/120/120',
+				src: '',
 				loading: 'lazy',
 			},
 		},
@@ -498,11 +498,8 @@ const testimonials = [
 
 // SEO Meta tags
 useSeoMeta({
-	titleTemplate: '',
-	title: 'PiChat - 智能照片管理助手',
-	ogTitle: 'PiChat - 智能照片管理助手',
+	titleTemplate: '%s - 智能照片管理助手',
 	description: 'PiChat是一款智能照片管理工具，支持自然语言搜索，让您轻松找到任何想要的照片瞬间。',
-	ogDescription: 'PiChat是一款智能照片管理工具，支持自然语言搜索，让您轻松找到任何想要的照片瞬间。',
 })
 </script>
 

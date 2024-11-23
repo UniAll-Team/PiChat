@@ -68,9 +68,6 @@ console.debug('localeProperties', localeProperties.value, 'storageValues', stora
 const { toastError } = useAppToast()
 
 if (error) {
-	toastError({
-		title: t('error.title'),
-		description: error.message
-	})
+	toastError(t('error.title'), error.message)
 }
 </script>

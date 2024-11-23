@@ -279,17 +279,11 @@ function useImagesAction() {
 			.remove(_map(selectedImages.value, 'name'))
 
 		if (error) {
-			toastError({
-				title: t('messages.deleteError.title'),
-				description: error.message,
-			})
+			toastError(t('messages.deleteError.title'), error.message)
 			return
 		}
 
-		toastSuccess({
-			title: t('messages.deleteSuccess.title'),
-			description: t('messages.deleteSuccess.description'),
-		})
+		toastSuccess(t('messages.deleteSuccess.title'), t('messages.deleteSuccess.description'))
 
 		resetSelectedImages()
 
@@ -341,10 +335,7 @@ function useImagesAction() {
 		}
 		link.remove()
 
-		toastSuccess({
-			title: t('messages.downloadSuccess.title'),
-			description: t('messages.downloadSuccess.description'),
-		})
+		toastSuccess(t('messages.downloadSuccess.title'), t('messages.downloadSuccess.description'))
 
 		resetSelectedImages()
 	}

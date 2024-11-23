@@ -10,10 +10,11 @@
 			</UDashboardNavbar>
 
 			<UDashboardSidebar>
+				<!-- 这里要使用client-only，不然会水合失败，不知道为什么 -->
 				<ClientOnly>
-					<!-- 这里要使用client-only，不然会水合失败，不知道为什么 -->
 					<UDashboardSidebarLinks :links="links" />
 				</ClientOnly>
+				<!-- <UDashboardSidebarLinks :links="links" /> -->
 
 				<div class="flex-1" />
 
@@ -103,13 +104,11 @@ const links = [
 		icon: 'i-heroicons-cog-8-tooth',
 		children: [
 			{
-				id: 'general',
 				label: t('general'),
 				to: '/settings',
 				exact: true,
 			},
 			{
-				id: 'notifications',
 				label: t('notifications'),
 				to: '/settings/notifications',
 			},
@@ -130,15 +129,9 @@ const footerLinks = [
 			// 复制网址链接到剪贴板
 			try {
 				await navigator.clipboard.writeText(window.location.origin)
-				toastSuccess({
-					title: t('linkCopiedToClipboard'),
-					description: t('youCanNowShareThisLink'),
-				})
+				toastSuccess(t('linkCopiedToClipboard'), t('youCanNowShareThisLink'))
 			} catch (error) {
-				toastError({
-					title: t('failedToCopyLink'),
-					description: t('pleaseEnableClipboardPermission'),
-				})
+				toastError(t('failedToCopyLink'), t('pleaseEnableClipboardPermission'))
 			}
 		},
 	},

@@ -135,7 +135,7 @@ const faqs = [
 	},
 	{
 		label: '我如何联系你们？',
-		content: '是的，使用下方的邮件地址联系我们，我们会尽快回复您。',
+		content: '点击上方的“客服”按钮，就能使用不同的方式联系我们。',
 	},
 	{
 		label: '我能否切换到其他计划？',
@@ -143,19 +143,9 @@ const faqs = [
 	}
 ]
 
-const title = 'Pricing'
-const description = "Choose the plan that's right for you."
 useSeoMeta({
-	title: title,
-	ogTitle: title,
-	description: description,
-	ogDescription: description,
-})
-
-defineOgImage({
-	component: 'Saas',
-	title: title,
-	description: description,
+	titleTemplate: '%s - Pricing',
+	description: "Choose the plan that's right for you."
 })
 
 const isYearly = ref(false)

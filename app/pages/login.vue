@@ -30,15 +30,17 @@
 <script setup lang="ts">
 import { z } from 'zod'
 
-const supabase = useSupabaseClient()
-const toast = useToast()
-
 definePageMeta({
 	layout: 'auth',
 })
 
-useHead({
-	title: '%s - Login',
+const supabase = useSupabaseClient()
+
+const { toastError, toastSuccess } = useAppToast()
+
+useSeoMeta({
+	titleTemplate: '%s - Login',
+	description: 'Login to your account',
 })
 
 const fields = [
@@ -61,7 +63,7 @@ const schema = z.object({
 	password: z.string().min(1, { message: 'Password is required' }),
 })
 
-const providers = useProviders()
+const providers = useLoginProviders()
 
 async function login(data: any) {
 	const { error } = await supabase.auth.signInWithPassword({
@@ -70,19 +72,13 @@ async function login(data: any) {
 	})
 
 	if (error) {
-		toast.add({
-			title: 'Login Error',
-			description: error.message,
-			color: 'red',
-		})
-	} else {
-		toast.add({
-			title: 'Login Successful',
-			description: 'You have successfully logged in.',
-			color: 'green',
-		})
+		toastError('Login Error', error.message)
 
-		await navigateTo('/home')
+		return
 	}
+
+	toastSuccess('Login Successful', 'You have successfully logged in.')
+
+	await navigateTo('/home')
 }
 </script>

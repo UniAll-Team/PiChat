@@ -43,7 +43,62 @@ export default defineNuxtConfig({
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
 		},
+
+		public: {
+			google: {
+				clientID: process.env.GOOGLE_CLIENT_ID
+			}
+		}
+
 	},
+
+	app: {
+		head: {
+			title: 'PiCHat',
+			meta: [
+				{ charset: 'utf-8' },
+				{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
+				{ hid: 'description', name: 'description', content: 'PiCHat is an AI-powered smart photo album.' },
+			],
+			link: [
+				{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+				{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16.png' },
+				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' },
+				{ rel: 'icon', type: 'image/png', sizes: '180x180', href: '/favicon-180.png' },
+			],
+		},
+	},
+
+	/* pwa: {
+		manifest: {
+			name: 'PiCHat',
+			short_name: 'PiCHat',
+			description: 'PiCHat is an AI-powered smart photo album.',
+			theme_color: '#000000',
+			lang: 'zh-Hans',
+			icons: [
+				{
+					src: '/icon-192.png',
+					sizes: '192x192',
+					type: 'image/png',
+				},
+				{
+					src: '/icon-512.png',
+					sizes: '512x512',
+					type: 'image/png',
+				},
+				{
+					src: '/icon-1024.png',
+					sizes: '1024x1024',
+					type: 'image/png',
+				},
+			]
+		},
+		devOptions: {
+			enabled: true,
+			type: 'module',
+		},
+	}, */
 
 	imports: {
 		dirs: [
@@ -67,7 +122,7 @@ export default defineNuxtConfig({
 		// 必须使用 `no_prefix`，否则用户点击其他路径时又会跳转到默认语言
 		strategy: 'no_prefix',
 		detectBrowserLanguage: {
-			redirectOn: 'all',
+			redirectOn: 'root',
 			alwaysRedirect: true,
 			useCookie: true,
 			cookieCrossOrigin: true,
@@ -76,27 +131,25 @@ export default defineNuxtConfig({
 		lazy: true,
 		langDir: 'locales/',
 		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
+		baseUrl: process.env.NUXT_BASE_URL || 'http://localhost:3000',
 		locales: [
 			{
 				code: 'en',
-				language: 'en-US',
+				language: 'en',
 				name: 'English',
 				file: 'en.yaml',
 			},
 			{
 				code: 'ar',
-				language: 'ar-SA',
+				language: 'ar',
 				name: 'العربية',
-				dir: 'rtl',
 				file: 'ar.yaml',
 			},
 			{
 				code: 'zh-Hans',
 				language: 'zh-Hans',
 				name: '简体中文',
-				files: [
-					'zh-Hans.yaml'
-				],
+				file: 'zh-Hans.yaml',
 			},
 		],
 		experimental: {
@@ -166,54 +219,6 @@ export default defineNuxtConfig({
 			key: process.env.STRIPE_PUBLIC_KEY,
 		},
 	},
-
-	app: {
-		head: {
-			title: 'PiCHat',
-			meta: [
-				{ charset: 'utf-8' },
-				{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-				{ hid: 'description', name: 'description', content: 'PiCHat is an AI-powered smart photo album.' },
-			],
-			link: [
-				{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-				{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16.png' },
-				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' },
-				{ rel: 'icon', type: 'image/png', sizes: '180x180', href: '/favicon-180.png' },
-			],
-		},
-	},
-
-	/* 	pwa: {
-			manifest: {
-				name: 'PiCHat',
-				short_name: 'PiCHat',
-				description: 'PiCHat is an AI-powered smart photo album.',
-				theme_color: '#000000',
-				lang: 'zh-Hans',
-				icons: [
-					{
-						src: '/icon-192.png',
-						sizes: '192x192',
-						type: 'image/png',
-					},
-					{
-						src: '/icon-512.png',
-						sizes: '512x512',
-						type: 'image/png',
-					},
-					{
-						src: '/icon-1024.png',
-						sizes: '1024x1024',
-						type: 'image/png',
-					},
-				]
-			},
-			devOptions: {
-				enabled: true,
-				type: 'module',
-			},
-		}, */
 
 	compatibilityDate: '2024-07-11',
 })

@@ -17,6 +17,7 @@ ni \
     @uppy/status-bar \
     @uppy/webcam \
     @uppy/file-input \
+    vue3-google-login \
     openai \
     client-zip
 
@@ -40,5 +41,6 @@ set modules \
     nuxt-swiper
 
 for module in $modules
+    # 必须使用npm源不能使用镜像源，否则会出现找不到模块的情况
     http_proxy pnpx nuxi module add $module
 end

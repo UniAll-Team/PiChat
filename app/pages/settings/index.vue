@@ -253,14 +253,11 @@ function useUserProfile() {
 			})
 
 		if (error) {
-			toastError({
-				title: t('toast.error.title'),
-				description: error.message
-			})
+			toastError(t('toast.error.title'), error.message)
 			return
 		}
 
-		toastSuccess({ title: t('toast.success') })
+		toastSuccess(t('toast.success'))
 	}
 
 	return { state, schema, updateProfile }

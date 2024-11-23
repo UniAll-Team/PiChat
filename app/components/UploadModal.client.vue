@@ -36,7 +36,7 @@ const supabaseConfig = config.public.supabase
 const { error, userQuota } = await useUserQuota()
 
 if (error) {
-	toastError({ title: '获取用户配额失败，请点击左侧联系客服', description: error.message })
+	toastError('获取用户配额失败，请点击左侧联系客服', error.message)
 }
 
 const locale_strings = {
@@ -137,9 +137,9 @@ uppy.on('file-added', (file) => {
 uppy.on('upload-error', (file, error) => {
 	console.error('upload-error', file, error)
 	if (error.message === 'Request Entity Too Large') {
-		toastError({ title: '文件过大，请重新选择' })
+		toastError('文件过大，请重新选择')
 	} else {
-		toastError({ title: '上传失败，请重试', description: error.message })
+		toastError('上传失败，请重试', error.message)
 	}
 })
 
@@ -220,9 +220,9 @@ async function createEmbedding(name: string) {
 		console.dir(error)
 
 		if (error.name == 'StorageApiError' && (error as StorageApiError).status == 400) {
-			toastSuccess({ title: '文件已存在，无需重复上传' })
+			toastSuccess('文件已存在，无需重复上传')
 		} else {
-			toastError({ title: '创建签名URL失败，请点击左侧联系客服', description: error.message })
+			toastError('创建签名URL失败，请点击左侧联系客服', error.message)
 		}
 
 		return
@@ -233,7 +233,7 @@ async function createEmbedding(name: string) {
 	const { embedding, document } = await createImageEmbedding(signedUrl)
 	console.debug('file', name, 'document', document, 'embedding', embedding)
 	if (!(document && embedding)) {
-		toastError({ title: '创建图片索引失败，请点击左侧联系客服' })
+		toastError('创建图片索引失败，请点击左侧联系客服')
 		return
 	}
 
@@ -241,7 +241,7 @@ async function createEmbedding(name: string) {
 	const updateError = await updateEmbedding(name, embedding, document)
 	if (updateError) {
 		console.error('updateError', updateError)
-		toastError({ title: '更新图片索引失败，请点击左侧联系客服', description: updateError.message })
+		toastError('更新图片索引失败，请点击左侧联系客服', updateError.message)
 		return
 	}
 }
