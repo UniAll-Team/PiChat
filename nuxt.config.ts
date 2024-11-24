@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 		'@vite-pwa/nuxt',
 		'@nuxtjs/supabase',
 		'@nuxt/content',
-		'@nuxt/fonts',
+		// '@nuxt/fonts',
 		'@nuxt/image',
 		'@nuxt/ui',
 		'@nuxthq/studio',
@@ -43,13 +43,6 @@ export default defineNuxtConfig({
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
 		},
-
-		public: {
-			google: {
-				clientID: process.env.GOOGLE_CLIENT_ID
-			}
-		}
-
 	},
 
 	app: {
@@ -65,11 +58,12 @@ export default defineNuxtConfig({
 				{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16.png' },
 				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' },
 				{ rel: 'icon', type: 'image/png', sizes: '180x180', href: '/favicon-180.png' },
+				{ rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon-180.png' },
 			],
 		},
 	},
 
-	/* pwa: {
+	pwa: {
 		manifest: {
 			name: 'PiCHat',
 			short_name: 'PiCHat',
@@ -77,6 +71,11 @@ export default defineNuxtConfig({
 			theme_color: '#000000',
 			lang: 'zh-Hans',
 			icons: [
+				{
+					src: '/icon-64.png',
+					sizes: '64x64',
+					type: 'image/png',
+				},
 				{
 					src: '/icon-192.png',
 					sizes: '192x192',
@@ -94,11 +93,14 @@ export default defineNuxtConfig({
 				},
 			]
 		},
+		registerWebManifestInRouteRules: true,
 		devOptions: {
 			enabled: true,
 			type: 'module',
+			navigateFallback: '/',
+			navigateFallbackAllowlist: [/^\/$/],
 		},
-	}, */
+	},
 
 	imports: {
 		dirs: [
