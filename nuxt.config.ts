@@ -7,9 +7,9 @@ export default defineNuxtConfig({
 		'nuxt-zod-i18n',
 		'nuxt-lodash',
 		'nuxt-swiper',
+		'nuxt-viewport',
 		// '@bit0r/nuxt-chatgpt',
 		'@nuxtjs/i18n',
-		'@vite-pwa/nuxt',
 		'@nuxtjs/supabase',
 		'@nuxt/content',
 		// '@nuxt/fonts',
@@ -17,13 +17,12 @@ export default defineNuxtConfig({
 		'@nuxt/ui',
 		'@nuxthq/studio',
 		'@vueuse/nuxt',
-		'nuxt-og-image',
 		'@pinia/nuxt',
+		'@nuxtjs/seo',
 		'@unlok-co/nuxt-stripe',
 		'@sentry/nuxt/module',
-		'@sentry/nuxt',
 		'@samk-dev/nuxt-vcalendar',
-		'nuxt-viewport'
+		'@vite-pwa/nuxt',
 	],
 
 	// debug: true,
@@ -47,11 +46,16 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
-			title: 'PiCHat',
+			title: process.env.NUXT_SITE_NAME,
+			// seoMeta: {
+			// 	description: process.env.NUXT_SITE_DESCRIPTION,
+			// 	ogImage: `${process.env.NUXT_PUBLIC_SITE_URL}/icon-og.png`,
+			// 	ogSiteName: process.env.NUXT_SITE_NAME,
+			// },
 			meta: [
 				{ charset: 'utf-8' },
 				{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-				{ hid: 'description', name: 'description', content: 'PiCHat is an AI-powered smart photo album.' },
+				{ hid: 'description', name: 'description', content: process.env.NUXT_SITE_DESCRIPTION },
 			],
 			link: [
 				{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -65,9 +69,8 @@ export default defineNuxtConfig({
 
 	pwa: {
 		manifest: {
-			name: 'PiCHat',
-			short_name: 'PiCHat',
-			description: 'PiCHat is an AI-powered smart photo album.',
+			name: process.env.NUXT_SITE_NAME,
+			description: process.env.NUXT_SITE_DESCRIPTION,
 			theme_color: '#000000',
 			lang: 'zh-Hans',
 			icons: [
@@ -133,7 +136,7 @@ export default defineNuxtConfig({
 		lazy: true,
 		langDir: 'locales/',
 		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
-		baseUrl: process.env.NUXT_BASE_URL || 'http://localhost:3000',
+		baseUrl: process.env.NUXT_PUBLIC_I18N_BASE_URL || 'http://localhost:3000',
 		locales: [
 			{
 				code: 'en',
@@ -220,6 +223,30 @@ export default defineNuxtConfig({
 		client: {
 			key: process.env.STRIPE_PUBLIC_KEY,
 		},
+	},
+
+	site: {
+		name: process.env.NUXT_SITE_NAME,
+		description: process.env.NUXT_SITE_DESCRIPTION,
+	},
+
+	linkChecker: {
+		failOnError: true,
+		report: {
+			markdown: true,
+		}
+	},
+
+	seo: {
+		automaticDefaults: true,
+	},
+
+	ogImage: {
+		zeroRuntime: true,
+	},
+
+	robots: {
+		blockNonSeoBots: true,
 	},
 
 	compatibilityDate: '2024-07-11',

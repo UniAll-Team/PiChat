@@ -2,7 +2,7 @@
 	<UCard
 		class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
 		<UAuthForm :fields="fields" :schema="schema"
-			:providers="providers" title="Welcome back"
+			:providers="<any>providers" title="Welcome back"
 			align="top" icon="i-heroicons-lock-closed"
 			:ui="{ base: 'text-center', footer: 'text-center' }"
 			:submit-button="{ trailingIcon: 'i-heroicons-arrow-right-20-solid' }"

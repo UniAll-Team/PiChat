@@ -73,8 +73,7 @@ const { t } = useI18n()
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 
-const { isHelpSlideoverOpen } = useDashboard()
-const { isDashboardSearchModalOpen } = useUIState()
+const { logout } = useUserLogout()
 
 const userPlan = useUserPlan()
 
@@ -100,10 +99,7 @@ const items = computed(() => {
 			{
 				label: t('menuItems.signOut'),
 				icon: 'i-heroicons-arrow-left-on-rectangle',
-				click: () => {
-					supabase.auth.signOut()
-					navigateTo('/')
-				}
+				click: logout
 			},
 		],
 	]

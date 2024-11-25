@@ -2,7 +2,7 @@
 	<UCard
 		class="max-w-sm w-full bg-white/75 dark:bg-white/5 backdrop-blur">
 		<UAuthForm :fields="fields" :schema="schema"
-			:providers="providers" align="top"
+			:providers="<any>providers" align="top"
 			title="Create an account"
 			:ui="{ base: 'text-center', footer: 'text-center' }"
 			:submit-button="{ label: 'Create account' }"
@@ -42,6 +42,8 @@ definePageMeta({
 
 const supabase = useSupabaseClient()
 
+const config = useRuntimeConfig()
+
 const { toastError, toastSuccess } = useAppToast()
 
 const fields = [
@@ -73,9 +75,12 @@ const schema = z.object({
 const providers = useLoginProviders()
 
 async function signup(data: any) {
-	const { error } = await supabase.auth.signInWithPassword({
+	const { error } = await supabase.auth.signUp({
 		email: data.email,
 		password: data.password,
+		options: {
+			emailRedirectTo: config.public.i18n.baseUrl
+		}
 	})
 
 	if (error) {

@@ -1,6 +1,7 @@
 ni \
     date-fns \
     zod \
+    yaml \
     mathjs \
     pretty-bytes \
     type-fest \
@@ -29,10 +30,11 @@ ni -D \
     nuxt-server-fn
 
 set modules \
-    nuxt-zod-i18n \
     i18n \
     pinia \
     @vite-pwa/nuxt \
+    @nuxtjs/seo \
+    nuxt-zod-i18n \
     supabase \
     sentry \
     stripe-next \
