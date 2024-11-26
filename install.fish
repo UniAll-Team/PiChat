@@ -12,6 +12,7 @@ ni \
     @uppy/core \
     @uppy/tus \
     @uppy/vue \
+    @uppy/locales \
     @uppy/dashboard \
     @uppy/drag-drop \
     @uppy/progress-bar \

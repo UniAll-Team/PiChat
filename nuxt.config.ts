@@ -8,7 +8,6 @@ export default defineNuxtConfig({
 		'nuxt-lodash',
 		'nuxt-swiper',
 		'nuxt-viewport',
-		// '@bit0r/nuxt-chatgpt',
 		'@nuxtjs/i18n',
 		'@nuxtjs/supabase',
 		'@nuxt/content',
@@ -42,6 +41,12 @@ export default defineNuxtConfig({
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
 		},
+		public: {
+			sentry: {
+				dsn: process.env.SENTRY_DSN,
+				environment: process.env.SENTRY_ENVIRONMENT,
+			}
+		}
 	},
 
 	app: {
@@ -124,7 +129,7 @@ export default defineNuxtConfig({
 
 	i18n: {
 		// debug: true,
-		// 必须使用 `no_prefix`，否则用户点击其他路径时又会跳转到默认语言
+		// must use `no_prefix`, otherwise user will be redirected to default language when clicking other paths
 		strategy: 'no_prefix',
 		detectBrowserLanguage: {
 			redirectOn: 'root',
@@ -211,11 +216,6 @@ export default defineNuxtConfig({
 		},
 	},
 
-	// chatgpt: {
-	// 	apiKey: process.env.OPENAI_API_KEY,
-	// 	baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-	// },
-
 	stripe: {
 		server: {
 			key: process.env.STRIPE_SECRET_KEY,
@@ -223,6 +223,13 @@ export default defineNuxtConfig({
 		client: {
 			key: process.env.STRIPE_PUBLIC_KEY,
 		},
+	},
+
+	sourcemap: { client: true },
+	sentry: {
+		sourceMapsUploadOptions: {
+			authToken: process.env.SENTRY_AUTH_TOKEN,
+		}
 	},
 
 	site: {
