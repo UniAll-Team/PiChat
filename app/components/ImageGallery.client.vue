@@ -1,15 +1,13 @@
 <template>
 	<div>
-		<div class="images-groups-container">
+		<div class="images-groups-container" ref="containerRef">
 			<div v-for="imageGroupEntry in imageGroups"
 				:key="imageGroupEntry[0]"
 				class="images-group-container">
-				<h3 class="">{{ imageGroupEntry[0] }}</h3>
+				<h3>{{ imageGroupEntry[0] }}</h3>
 				<div class="images-container">
-					<!-- 你的列表项内容 -->
 					<div v-for="image in imageGroupEntry[1]"
 						:key="image.id" class="image-wrapper">
-						<!-- 选择按钮 -->
 						<button class="select-btn"
 							:class="{ 'selected': isSelectedImage(image) }"
 							@click.stop="toggleSelect(image)">
@@ -20,29 +18,23 @@
 								class="text-gray-700" />
 						</button>
 
-						<!-- 图片 -->
 						<img :src="image.url" :alt="image.alt ?? ''"
 							@click="handleImageClick(image)"
 							class="gallery-image"
-							:class="{ 'selectable': hasSelectedImages }" />
+							:class="{ 'selectable': hasSelectedImages }"
+							loading="lazy" /> <!-- 添加懒加载 -->
 					</div>
 				</div>
 			</div>
+
+			<!-- 加载状态指示器 -->
+			<div ref="sentinel" class="loading-sentinel">
+				<p v-if="loading">{{ t('loading') }}</p>
+				<p v-else-if="error">{{ t('error.title') }}</p>
+				<p v-else-if="!hasMore">{{ t('complete') }}</p>
+			</div>
 		</div>
 
-		<ClientOnly>
-			<InfiniteLoading @infinite="load">
-				<template #spinner>
-					<div>Loading...</div>
-				</template>
-				<template #complete>
-					<div>没有更多数据了</div>
-				</template>
-				<template #error>
-					<div>出错了</div>
-				</template>
-			</InfiniteLoading>
-		</ClientOnly>
 
 		<UModal v-model="showPreview" :ui="{
 			container: 'items-center justify-center',
@@ -68,6 +60,35 @@
 	</div>
 </template>
 
+<i18n lang="yaml">
+en:
+  loading: 'Loading...'
+  complete: 'No more data'
+  error:
+    title: 'Failed to load'
+    message: 'Failed to load. You can click {link} to contact us.'
+    link: 'here'
+  modalCloseButtonAlt: 'Close the preview'
+
+zh-Hans:
+  loading: '加载中……'
+  complete: '没有更多数据'
+  error:
+    title: '加载失败'
+    message: '加载失败，你可以点击{link}联系我们。'
+    link: '这里'
+  modalCloseButtonAlt: '关闭预览'
+
+ar:
+  loading: 'جار التحميل...'
+  complete: 'لا توجد بيانات إضافية'
+  error:
+    title: 'فشل التحميل'
+    message: 'فشل التحميل. يمكنك النقر فوق {link} للاتصال بنا.'
+    link: 'هنا'
+  modalCloseButtonAlt: 'إغلاق المعاينة'
+</i18n>
+
 <script lang="ts" setup>
 import type { DateRange } from '~/types/dashboard'
 import type { Database } from '~/types/database'
@@ -75,11 +96,21 @@ import type { Image, Images } from '~/types/image'
 
 import _ from 'lodash'
 
+const { t, locale } = useI18n()
+const localeMap = {
+	en: 'enUS',
+	'zh-Hans': 'zhCN',
+	ar: 'arSA',
+}
+
 // 定义组件的 props
 const { description, dateRange } = defineProps<{
 	dateRange: DateRange,
 	description: string,
 }>()
+
+const supabase = useSupabaseClient<Database>()
+const { toastError } = useAppToast()
 
 const isSearching = computed(() => Boolean(description))
 
@@ -90,12 +121,7 @@ const dateRangeKey = computed(() =>
 const { text2embedding } = useServerFunctions()
 
 // 获取图片列表
-const { imageGroups, load, reload } = useImageGroups()
-
-watch([() => description, dateRangeKey], async () => {
-	console.debug('传入参数变化', description, dateRangeKey.value)
-	await reload()
-})
+const { containerRef, imageGroups, loading, error, hasMore, sentinel } = useImageGroups()
 
 // 图片选择相关
 const { selectedImages, hasSelectedImages } = storeToRefs(useImagesStore())
@@ -113,13 +139,60 @@ function useImageGroups() {
 	type ImageGroup = [string, Image[]]
 	type ImageGroups = ImageGroup[]
 
-	const imageGroups = ref<ImageGroups>([])
-	const page = ref(1)
+	let page = 1
 	const pageSize = 10
-	const hasMoreData = ref(true)
 
-	const supabase = useSupabaseClient<Database>()
-	const { toastError } = useAppToast()
+	const imageGroups = ref<ImageGroups>([])
+	const containerRef = ref<HTMLElement | null>(null)
+	const sentinel = ref<HTMLElement | null>(null)
+	const loading = ref(false)
+	const error = ref(false)
+	const hasMore = ref(true)
+
+	// 使用 Intersection Observer 替代 InfiniteLoading
+	onMounted(async () => {
+		const observer = new IntersectionObserver(async ([entry]) => {
+			console.debug('Intersection entry:', entry)
+			console.debug('hasMore:', hasMore.value)
+			console.debug('loading:', loading.value)
+
+			if (entry.isIntersecting && hasMore.value && !loading.value) {
+				await loadMore()
+			}
+		}, {
+			rootMargin: '100px'
+		})
+
+		// 使用 nextTick 确保 DOM 已完全渲染
+		await nextTick()
+
+		const sentinelElement = sentinel.value
+		if (sentinelElement) {
+			observer.observe(sentinelElement)
+			console.debug('Observer started')
+		} else {
+			console.error('Sentinel not found')
+			// 可以添加降级处理逻辑
+			loadMore() // 直接调用加载更多
+		}
+
+		return () => observer.disconnect()
+	})
+
+	// 监听搜索条件变化
+	watch(
+		[() => description, dateRangeKey],
+		_debounce(async () => {
+			try {
+				// 重置状态
+				reset()
+				await loadMore()
+			} catch (err) {
+				error.value = true
+				toastError(t('error.title'), err.message)
+			}
+		}, 1000)
+	)
 
 	async function getImages() {
 		const { data, error } = await supabase
@@ -128,7 +201,7 @@ function useImageGroups() {
 			.gte('last_modified_date', dateRange.start.toISOString())
 			.lte('last_modified_date', dateRange.end.toISOString())
 			.order('last_modified_date', { ascending: false })
-			.range((page.value - 1) * pageSize, page.value * pageSize - 1)
+			.range((page - 1) * pageSize, page * pageSize - 1)
 
 		if (error) {
 			throw error
@@ -157,23 +230,23 @@ function useImageGroups() {
 		return data
 	}
 
-	async function reload() {
+	// 重置加载状态
+	function reset() {
 		imageGroups.value = []
-		page.value = 1
-		hasMoreData.value = true
-
-		await load()
+		hasMore.value = true
+		loading.value = false
+		error.value = false
+		page = 1
 	}
 
-	async function load(state?: any) {
+	async function loadMore() {
 		try {
+			if (loading.value || !hasMore.value) return
+
 			console.debug('load', 'description', description)
 
-			// 如果没有更多数据且不是第一页，直接完成
-			if (!hasMoreData.value && page.value > 1) {
-				state?.complete()
-				return
-			}
+			loading.value = true
+			error.value = false
 
 			const data = <Images>await (isSearching.value ? searchImages() : getImages())
 
@@ -181,13 +254,7 @@ function useImageGroups() {
 
 			// 如果没有数据或数据不足一页，设置没有更多数据
 			if (_isEmpty(data) || data.length < pageSize) {
-				hasMoreData.value = false
-			}
-
-			// 如果没有数据，直接完成
-			if (_isEmpty(data)) {
-				state?.complete()
-				return
+				hasMore.value = false
 			}
 
 			const publicUrls = data.map((item) => {
@@ -212,7 +279,7 @@ function useImageGroups() {
 					console.debug('image', image)
 
 					const lastModified = image.user_metadata?.lastModified
-					const lastModifiedDate = formatUnixDate(lastModified, 'zhCN')
+					const lastModifiedDate = formatUnixDate(lastModified, localeMap[locale.value])
 
 					console.debug('lastModifiedDate', lastModifiedDate)
 
@@ -231,24 +298,25 @@ function useImageGroups() {
 			console.debug('newItemGroups', newItemGroups)
 
 			imageGroups.value.push(...newItemGroups)
-			page.value++
-			state?.loaded()
-
-			// 如果没有更多数据，直接完成
-			if (!hasMoreData.value) {
-				state?.complete()
-			}
+			page++
 		} catch (error) {
-			toastError('加载失败', error.message)
+			error.value = true
+			toastError(t('error.title'), error.message)
+		} finally {
+			loading.value = false
 		}
 	}
 
 	return {
+		containerRef,
+		sentinel,
 		imageGroups,
-		load,
-		reload,
+		loading,
+		hasMore,
+		error,
 	}
 }
+
 function useImagePicker() {
 	const showPreview = ref(false)
 	const previewImage = ref(null)
@@ -299,31 +367,39 @@ function useImagePicker() {
 	display: grid;
 	grid-template-rows: repeat(auto-fill, auto);
 	gap: 1.5rem;
+	/* 添加 contain 优化 */
+	contain: content;
+	content-visibility: auto;
+	contain-intrinsic-size: 100% auto;
+	/* 预估高度 */
 }
 
 .images-group-container {
 	display: grid;
-	grid-template-rows: repeat(2, auto);
+	grid-template-rows: auto 1fr;
+	/* 添加 contain 优化 */
+	contain: layout;
+	content-visibility: auto;
+	contain-intrinsic-size: 100% auto;
 }
 
 .images-container {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
 	gap: 10px;
-}
 
-@media (width>=640px) {
-	.images-container {
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	@media (width>=640px) {
+		grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
 	}
 }
 
-// 图片选择器样式
 .image-wrapper {
 	position: relative;
 	aspect-ratio: 1;
 	overflow: hidden;
-	@apply rounded-lg;
+	border-radius: 0.5rem;
+	/* 添加 contain 优化 */
+	contain: layout paint;
 }
 
 .gallery-image {
@@ -332,9 +408,15 @@ function useImagePicker() {
 	object-fit: cover;
 	cursor: pointer;
 	transition: transform 0.3s ease;
+	/* 优化变换性能 */
+	will-change: transform;
 
 	&:hover {
 		transform: scale(1.05);
+	}
+
+	&.selectable {
+		cursor: default;
 	}
 }
 
@@ -345,17 +427,27 @@ function useImagePicker() {
 	width: 1.5rem;
 	height: 1.5rem;
 	border-radius: 50%;
-	@apply bg-white/80 hover:bg-white;
+	background-color: rgb(255 255 255 / 0.8);
 	border: 2px solid #fff;
 	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	display: grid;
+	place-items: center;
 	z-index: 1;
 	transition: all 0.3s ease;
+
+	&:hover {
+		background-color: rgb(255 255 255);
+	}
 
 	&.selected {
 		@apply bg-primary border-primary;
 	}
+}
+
+.loading-sentinel {
+	height: 50px;
+	display: grid;
+	place-items: center;
+	contain: size layout;
 }
 </style>
