@@ -6,7 +6,7 @@
 			}" :class="[open && 'bg-gray-50 dark:bg-gray-800']">
 				<span
 					class="row-start-1 row-end-2 col-start-1 col-end-2 leading-none sm:leading-normal">
-					{{ format(selected.start, 'd/MM/yy') }}
+					{{ format(dateRange.start) }}
 				</span>
 				<span
 					class="row-start-2 row-end-3 col-start-1 col-end-2 leading-none sm:leading-normal">
@@ -14,7 +14,7 @@
 				</span>
 				<span
 					class="row-start-3 row-end-4 col-start-1 col-end-2 leading-none sm:leading-normal">
-					{{ format(selected.end, 'd/MM/yy') }}
+					{{ format(dateRange.end) }}
 				</span>
 
 				<template #trailing>
@@ -28,22 +28,21 @@
 			<div
 				class="flex items-center sm:divide-x divide-gray-200 dark:divide-gray-800">
 				<div class="hidden sm:flex flex-col py-4">
-					<UButton v-for="(range, index) in ranges"
-						:key="index" :label="range.label" color="gray"
-						variant="ghost" class="rounded-none px-6"
-						:class="[isRangeSelected(range.duration) ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50']"
+					<UButton
+						v-for="(presetDateRange, index) in presetDateRanges"
+						:key="index" :label="presetDateRange.label"
+						color="gray" variant="ghost"
+						class="rounded-none px-6"
+						:class="isSelectedDateRange(presetDateRange.duration) ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50'"
 						truncate
-						@click="selectDateRange(range.duration)" />
+						@click="selectDateRange(presetDateRange.duration)" />
 				</div>
 
 				<ClientOnly>
-					<VCalendarDatePicker
-						v-if="selected?.start && selected?.end"
-						v-model.range="selected"
+					<VDatePicker is-required v-model.range="dateRange"
 						:columns="smallerThanSm ? 1 : 2"
 						:rows="smallerThanSm ? 2 : 1"
-						v-bind="calendarAttrs" @input="close" />
-					<VCalendarDatePicker v-else v-model="selected"
+						:min-date="new Date(1999, 0, 1)" :max-date="now"
 						v-bind="calendarAttrs" @input="close" />
 				</ClientOnly>
 			</div>
@@ -56,50 +55,73 @@ import type { Duration } from 'date-fns'
 import type { DateRange } from '~/types/dashboard'
 
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { format, isSameDay, sub } from 'date-fns'
-import { DatePicker as VCalendarDatePicker } from 'v-calendar'
+import { isSameDay, sub } from 'date-fns'
 
-import 'v-calendar/dist/style.css'
+const dateRange = defineModel<DateRange>()
 
-const ranges: {
-	label: string
-	duration: Duration
-}[] =
-	[
-		{ label: 'Last 7 days', duration: { days: 7 } },
-		{ label: 'Last 14 days', duration: { days: 14 } },
-		{ label: 'Last 30 days', duration: { days: 30 } },
-		{ label: 'Last 3 months', duration: { months: 3 } },
-		{ label: 'Last 6 months', duration: { months: 6 } },
-		{ label: 'Last year', duration: { years: 1 } },
-	]
+const { smallerThanSm, calendarAttrs } = useStyles()
+const {
+	now,
+	presetDateRanges,
+	format,
+	isSelectedDateRange,
+	selectDateRange
+} = useDateRange()
 
-const selected = defineModel<DateRange>()
+function useDateRange() {
+	const now = new Date()
+	const presetDateRanges: {
+		label: string
+		duration: Duration
+	}[] = [
+			{ label: 'Last 7 days', duration: { days: 7 } },
+			{ label: 'Last 14 days', duration: { days: 14 } },
+			{ label: 'Last 30 days', duration: { days: 30 } },
+			{ label: 'Last 3 months', duration: { months: 3 } },
+			{ label: 'Last 6 months', duration: { months: 6 } },
+			{ label: 'Last year', duration: { years: 1 } },
+		]
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerThanSm = breakpoints.smaller('sm')
+	const format = useDateFormat('P')
 
-const calendarAttrs = {
-	transparent: true,
-	borderless: true,
-	color: 'primary',
-	'is-dark': { selector: 'html', darkClass: 'dark' },
-	'first-day-of-week': 2,
-}
-
-function isRangeSelected(duration: Duration) {
-	if (!selected.value || typeof selected.value === 'string' || selected.value instanceof Date) {
-		return false
+	function isSelectedDateRange(duration: Duration) {
+		if (!dateRange.value || typeof dateRange.value === 'string' || dateRange.value instanceof Date) {
+			return false
+		}
+		const range = dateRange.value
+		return (
+			isSameDay(range.start, sub(now, duration)) &&
+			isSameDay(range.end, now)
+		)
 	}
-	const range = selected.value
-	return (
-		isSameDay(range.start, sub(new Date(), duration)) &&
-		isSameDay(range.end, new Date())
-	)
+
+	function selectDateRange(duration: Duration) {
+		dateRange.value = { start: sub(now, duration), end: now }
+	}
+
+	return {
+		now,
+		presetDateRanges,
+		dateRange,
+		format,
+		isSelectedDateRange,
+		selectDateRange
+	}
 }
 
-function selectDateRange(duration: Duration) {
-	selected.value = { start: sub(new Date(), duration), end: new Date() }
+function useStyles() {
+	const breakpoints = useBreakpoints(breakpointsTailwind)
+	const smallerThanSm = breakpoints.smaller('sm')
+
+	const calendarAttrs = {
+		transparent: true,
+		borderless: true,
+		color: 'primary',
+		'is-dark': { selector: 'html', darkClass: 'dark' },
+		'first-day-of-week': 2,
+	}
+
+	return { smallerThanSm, calendarAttrs }
 }
 </script>
 

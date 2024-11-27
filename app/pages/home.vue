@@ -165,11 +165,12 @@ const user = useSupabaseUser()
 
 const { toastError, toastSuccess } = useAppToast()
 
-const dateRange = ref<DateRange>({ start: sub(new Date(), { days: 14 }), end: new Date() })
+const dateRange = ref<DateRange>()
 
 function resetDateRange() {
 	dateRange.value = { start: sub(new Date(), { days: 14 }), end: new Date() }
 }
+resetDateRange()
 
 // 搜索框聚焦状态
 const {
@@ -188,10 +189,7 @@ const { onComplete } = useUploadAction()
 // 图片选择状态
 const imagesStore = useImagesStore()
 const { resetSelectedImages } = imagesStore
-const {
-	selectedImages,
-	hasSelectedImages,
-} = storeToRefs(imagesStore)
+const { selectedImages, hasSelectedImages } = storeToRefs(imagesStore)
 // 图片操作函数
 const { deleteSelectedImages, downloadSelectedImages } = useImagesAction()
 
@@ -262,7 +260,7 @@ function useUploadAction() {
 	}
 
 	return {
-		onComplete,
+		onComplete
 	}
 }
 

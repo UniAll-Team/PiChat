@@ -149,6 +149,8 @@ function useImageGroups() {
 	const error = ref(false)
 	const hasMore = ref(true)
 
+	const format = useDateFormat()
+
 	// 使用 Intersection Observer 替代 InfiniteLoading
 	onMounted(async () => {
 		const observer = new IntersectionObserver(async ([entry]) => {
@@ -279,7 +281,7 @@ function useImageGroups() {
 					console.debug('image', image)
 
 					const lastModified = image.user_metadata?.lastModified
-					const lastModifiedDate = formatUnixDate(lastModified, localeMap[locale.value])
+					const lastModifiedDate = format(lastModified)
 
 					console.debug('lastModifiedDate', lastModifiedDate)
 
