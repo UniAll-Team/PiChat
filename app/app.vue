@@ -13,10 +13,22 @@
 	</div>
 </template>
 
+<i18n lang="yaml">
+en:
+  ogTitle: "PiCHat, an intelligent album surpassing traditional online albums!"
+  description: "PiCHat is an AI-based intelligent album that allows you to search your photos in your native language. PiCHat automatically recognizes objects, scenes, and people in your photos, making it easier for you to find them."
+zh-Hans:
+  ogTitle: "PiCHat，一个超越传统在线相册的智能相册！"
+  description: "PiCHat 是一个基于AI的智能相册，您可以用您的母语搜索您的照片，PiCHat 会自动识别您的照片中的物体、场景、人物等信息，让您可以更方便地找到您的照片。"
+ar:
+  ogTitle: "PiCHat، ألبوم ذكي يتفوق على الألبومات التقليدية عبر الإنترنت!"
+  description: "PiCHat هو ألبوم ذكي يعتمد على الذكاء الاصطناعي يسمح لك بالبحث في صورك بلغتك الأم. يقوم PiCHat بالتعرف تلقائيًا على الأشياء والمشاهد والأشخاص في صورك، مما يسهل عليك العثور عليها."
+</i18n>
+
 <script setup lang="ts">
 import * as Sentry from '@sentry/nuxt'
 
-
+const { t } = useI18n()
 const config = useRuntimeConfig()
 const colorMode = useColorMode()
 
@@ -40,17 +52,8 @@ useHead(() => ({
 }))
 
 useSeoMeta({
-	titleTemplate: '%s %seperator PiCHat',
-	ogType: 'website',
-	ogImage: {
-		url: `${config.public.i18n.baseUrl}/icon-og.png`,
-		width: 1024,
-		height: 730,
-		type: 'image/png',
-		alt: 'PiCHat Logo'
-	},
-	ogTitle: 'PiCHat，一个超越传统在线相册的新型智慧相册。',
-	description: 'PiCHat是一个AI赋能的智慧相册，具有安全的相片存储和便捷的使用体验，允许你用自然语言检索保存的图片。'
+	ogTitle: t('ogTitle'),
+	description: t('description'),
 })
 
 watchEffect(() =>

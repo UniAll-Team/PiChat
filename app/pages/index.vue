@@ -180,6 +180,9 @@ en:
   links:
     start: 'Get Started'
     demo: 'View Demo'
+  seo:
+    title: 'Intelligent Photo Management Assistant'
+    description: 'PiChat is an intelligent photo management tool that supports natural language search, allowing you to easily find any desired photo instantly.'
 
 zh-Hans:
   hero:
@@ -268,6 +271,9 @@ zh-Hans:
   links:
     start: '立即开始'
     demo: '查看演示'
+  seo:
+    title: '智能照片管理助手'
+    description: 'PiChat是一款智能照片管理工具，支持自然语言搜索，让您轻松找到任何想要的照片瞬间。'
 
 ar:
   hero:
@@ -356,9 +362,29 @@ ar:
   links:
     start: 'ابدأ الآن'
     demo: 'شاهد العرض التوضيحي'
+  seo:
+    title: 'مساعد إدارة الصور الذكي'
+    description: 'PiChat هو أداة إدارة صور ذكية تدعم البحث باللغة الطبيعية، مما يتيح لك العثور بسهولة على أي صورة ترغب فيها على الفور.'
+
 </i18n>
 
 <script setup lang="ts">
+definePageMeta({
+	middleware: [
+		() => {
+			/*
+			必须在内部使用 `useSupabaseUser`，
+			因为 `definePageMeta` 是个编译时宏
+			 */
+			const user = useSupabaseUser()
+			if (user.value) {
+				// 如果用户已登录，则跳转到首页
+				return navigateTo('/home')
+			}
+		}
+	]
+})
+
 const { t } = useI18n()
 
 const heroLinks = [
@@ -495,12 +521,6 @@ const testimonials = [
 		},
 	},
 ]
-
-// SEO Meta tags
-useSeoMeta({
-	titleTemplate: '%s - 智能照片管理助手',
-	description: 'PiChat是一款智能照片管理工具，支持自然语言搜索，让您轻松找到任何想要的照片瞬间。',
-})
 </script>
 
 <style scoped lang="scss">

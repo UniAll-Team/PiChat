@@ -6,7 +6,6 @@ ni \
     pretty-bytes \
     type-fest \
     pinia-plugin-persistedstate \
-    v3-infinite-loading \
     nanoid \
     nanoid-dictionary@beta \
     @uppy/core \

@@ -51,21 +51,36 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
-			title: process.env.NUXT_SITE_NAME,
-			// seoMeta: {
-			// 	description: process.env.NUXT_SITE_DESCRIPTION,
-			// 	ogImage: `${process.env.NUXT_PUBLIC_SITE_URL}/icon-og.png`,
-			// 	ogSiteName: process.env.NUXT_SITE_NAME,
-			// },
+			// @ts-expect-error
+			seoMeta: {
+				titleTemplate: `%s %separator ${process.env.NUXT_SITE_NAME}`,
+				description: process.env.NUXT_SITE_DESCRIPTION,
+				author: process.env.NUXT_SITE_AUTHOR,
+				applicationName: process.env.NUXT_SITE_NAME,
+				appleMobileWebAppTitle: process.env.NUXT_SITE_NAME,
+				mobileWebAppCapable: 'yes',
+				appleMobileWebAppCapable: 'yes',
+
+				ogType: 'website',
+				ogImage: {
+					url: `${process.env.NUXT_PUBLIC_SITE_URL}/icon-og.png`,
+					width: 1024,
+					height: 730,
+					type: 'image/png',
+					alt: 'Logo'
+				},
+				ogSiteName: process.env.NUXT_SITE_NAME,
+				ogAuthor: process.env.NUXT_SITE_AUTHOR,
+				ogTitle: process.env.NUXT_SITE_OG_TITLE,
+			},
 			meta: [
 				{ charset: 'utf-8' },
-				{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-				{ hid: 'description', name: 'description', content: process.env.NUXT_SITE_DESCRIPTION },
 			],
 			link: [
 				{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
 				{ rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16.png' },
 				{ rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' },
+				{ rel: 'icon', type: 'image/png', href: '/favicon-180.png' },
 				{ rel: 'icon', type: 'image/png', sizes: '180x180', href: '/favicon-180.png' },
 				{ rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon-180.png' },
 			],
@@ -230,11 +245,6 @@ export default defineNuxtConfig({
 		sourceMapsUploadOptions: {
 			authToken: process.env.SENTRY_AUTH_TOKEN,
 		}
-	},
-
-	site: {
-		name: process.env.NUXT_SITE_NAME,
-		description: process.env.NUXT_SITE_DESCRIPTION,
 	},
 
 	linkChecker: {
