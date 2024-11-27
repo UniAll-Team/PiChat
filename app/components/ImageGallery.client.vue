@@ -29,9 +29,9 @@
 
 			<!-- 加载状态指示器 -->
 			<div ref="sentinel" class="loading-sentinel">
-				<p v-if="loading">{{ t('loading') }}</p>
-				<p v-else-if="error">{{ t('error.title') }}</p>
-				<p v-else-if="!hasMore">{{ t('complete') }}</p>
+				<p v-show="loading">{{ t('loading') }}</p>
+				<p v-show="error">{{ t('error.title') }}</p>
+				<p v-show="!hasMore">{{ t('complete') }}</p>
 			</div>
 		</div>
 

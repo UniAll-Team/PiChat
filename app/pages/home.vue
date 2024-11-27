@@ -160,6 +160,8 @@ definePageMeta({
 	layout: 'dashboard',
 })
 
+const now = new Date()
+
 const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
 
@@ -168,7 +170,7 @@ const { toastError, toastSuccess } = useAppToast()
 const dateRange = ref<DateRange>()
 
 function resetDateRange() {
-	dateRange.value = { start: sub(new Date(), { days: 14 }), end: new Date() }
+	dateRange.value = { start: sub(now, { months: 1 }), end: now }
 }
 resetDateRange()
 
