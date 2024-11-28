@@ -1,4 +1,5 @@
-import OpenAI from 'openai'
+import type { OpenAI } from 'openai'
+
 import { imageDocumentPrompt } from '../constants/prompts'
 
 export async function createDocument(openai: OpenAI, imageURL: string) {

@@ -72,7 +72,8 @@
 
 			<UDashboardPanelContent>
 				<ImageGallery :dateRange
-					:description="imageDescription" />
+					:description="imageDescription"
+					:refreshID="refreshID" />
 			</UDashboardPanelContent>
 		</UDashboardPanel>
 	</UDashboardPage>
@@ -153,6 +154,7 @@ import type { Database } from '~/types/database'
 
 import { downloadZip } from 'client-zip'
 import { sub } from 'date-fns'
+import { nanoid } from 'nanoid'
 
 const { t } = useI18n()
 
@@ -167,12 +169,8 @@ const user = useSupabaseUser()
 
 const { toastError, toastSuccess } = useAppToast()
 
-const dateRange = ref<DateRange>()
-
-function resetDateRange() {
-	dateRange.value = { start: sub(now, { months: 1 }), end: now }
-}
-resetDateRange()
+const dateRange = ref<DateRange>({ start: sub(now, { months: 1 }), end: now })
+const refreshID = ref(nanoid(5))
 
 // 搜索框聚焦状态
 const {
@@ -258,7 +256,7 @@ function useUploadAction() {
 	function onComplete(result: UploadResult<Meta, Record<string, never>>) {
 		console.debug('Upload complete:', result)
 		// 刷新图片列表
-		resetDateRange()
+		refreshID.value = nanoid(5)
 	}
 
 	return {
@@ -288,7 +286,7 @@ function useImagesAction() {
 		resetSelectedImages()
 
 		// 刷新图片列表
-		resetDateRange()
+		refreshID.value = nanoid(5)
 	}
 
 	async function downloadSelectedImages() {

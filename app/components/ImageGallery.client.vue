@@ -35,7 +35,6 @@
 			</div>
 		</div>
 
-
 		<UModal v-model="showPreview" :ui="{
 			container: 'items-center justify-center',
 			width: 'max-w-[90vw]',
@@ -104,9 +103,10 @@ const localeMap = {
 }
 
 // 定义组件的 props
-const { description, dateRange } = defineProps<{
+const { description, dateRange, refreshID } = defineProps<{
 	dateRange: DateRange,
 	description: string,
+	refreshID: string,
 }>()
 
 const supabase = useSupabaseClient<Database>()
@@ -161,8 +161,6 @@ function useImageGroups() {
 			if (entry.isIntersecting && hasMore.value && !loading.value) {
 				await loadMore()
 			}
-		}, {
-			rootMargin: '100px'
 		})
 
 		// 使用 nextTick 确保 DOM 已完全渲染
@@ -183,7 +181,7 @@ function useImageGroups() {
 
 	// 监听搜索条件变化
 	watch(
-		[() => description, dateRangeKey],
+		[() => description, () => refreshID, dateRangeKey],
 		_debounce(async () => {
 			try {
 				// 重置状态
@@ -245,7 +243,7 @@ function useImageGroups() {
 		try {
 			if (loading.value || !hasMore.value) return
 
-			console.debug('load', 'description', description)
+			console.debug('loadMore, description:', description)
 
 			loading.value = true
 			error.value = false

@@ -88,13 +88,13 @@ const items = computed(() => {
 				disabled: true,
 			},
 		],
-		[
+		/* [
 			{
 				label: t('menuItems.documentation'),
 				icon: 'i-heroicons-book-open',
 				to: '/docs'
 			},
-		],
+		], */
 		[
 			{
 				label: t('menuItems.signOut'),

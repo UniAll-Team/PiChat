@@ -23,7 +23,7 @@
 		"@nuxtjs/supabase": "^1.4.3",
 		"@pinia/nuxt": "^0.6.1",
 		"@samk-dev/nuxt-vcalendar": "^1.0.4",
-		"@sentry/nuxt": "^8.40.0",
+		"@sentry/nuxt": "^8.41.0",
 		"@unlok-co/nuxt-stripe": "^4.0.1",
 		"@uppy/core": "^4.2.3",
 		"@uppy/dashboard": "^4.1.2",

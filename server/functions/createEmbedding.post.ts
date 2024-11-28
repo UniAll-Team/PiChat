@@ -1,4 +1,5 @@
 import type { H3Event } from 'h3'
+
 import OpenAI from 'openai'
 
 export async function createImageEmbedding(this: H3Event, signedUrl: string) {

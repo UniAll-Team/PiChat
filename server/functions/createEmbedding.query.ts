@@ -1,4 +1,5 @@
 import type { H3Event } from 'h3'
+
 import OpenAI from 'openai'
 
 export async function text2embedding(this: H3Event, text: string) {

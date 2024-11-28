@@ -41,6 +41,7 @@ en:
   general: General
   notifications: Notifications
   upgradeToPro: Upgrade to Pro
+  documentation: 'Documentation'
   invitePeople: Invite people
   helpSupport: Help & Support
   customerService: Customer Service
@@ -56,6 +57,7 @@ zh-Hans:
   general: 常规
   notifications: 通知
   upgradeToPro: 升级到专业版
+  documentation: '文档'
   invitePeople: 邀请他人
   helpSupport: 帮助与支持
   customerService: 联系客服
@@ -71,6 +73,7 @@ ar:
   general: عام
   notifications: الإشعارات
   upgradeToPro: الترقية إلى النسخة المحترفة
+  documentation: 'التوثيق'
   invitePeople: دعوة الأشخاص
   helpSupport: المساعدة والدعم
   customerService: خدمة العملاء
@@ -121,6 +124,11 @@ const footerLinks = [
 		label: t('upgradeToPro'),
 		icon: 'i-heroicons-credit-card',
 		to: '/pricing'
+	},
+	{
+		label: t('documentation'),
+		icon: 'i-heroicons-book-open',
+		to: '/docs'
 	},
 	{
 		label: t('invitePeople'),
