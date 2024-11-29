@@ -51,7 +51,6 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
-			// @ts-expect-error
 			seoMeta: {
 				titleTemplate: `%s %separator ${process.env.NUXT_SITE_NAME}`,
 				description: process.env.NUXT_SITE_DESCRIPTION,

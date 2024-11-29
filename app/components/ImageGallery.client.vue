@@ -1,13 +1,15 @@
 <template>
 	<div>
-		<div class="images-groups-container" ref="containerRef">
-			<div v-for="imageGroupEntry in imageGroups"
-				:key="imageGroupEntry[0]"
+		<div class="images-groups-container">
+			<div v-for="imageGroup in imageGroups"
+				:key="imageGroup.lastModifiedDate"
 				class="images-group-container">
-				<h3>{{ imageGroupEntry[0] }}</h3>
+				<h3>{{ imageGroup.lastModifiedDate }}</h3>
 				<div class="images-container">
-					<div v-for="image in imageGroupEntry[1]"
-						:key="image.id" class="image-wrapper">
+					<div v-for="image in imageGroup.images"
+						:key="image.id" :ref="observerLastImage"
+						:data-id="String(image.id)"
+						class="image-wrapper">
 						<button class="select-btn"
 							:class="{ 'selected': isSelectedImage(image) }"
 							@click.stop="toggleSelect(image)">
@@ -25,13 +27,6 @@
 							loading="lazy" /> <!-- 添加懒加载 -->
 					</div>
 				</div>
-			</div>
-
-			<!-- 加载状态指示器 -->
-			<div ref="sentinel" class="loading-sentinel">
-				<p v-show="loading">{{ t('loading') }}</p>
-				<p v-show="error">{{ t('error.title') }}</p>
-				<p v-show="!hasMore">{{ t('complete') }}</p>
 			</div>
 		</div>
 
@@ -95,12 +90,7 @@ import type { Image, Images } from '~/types/image'
 
 import _ from 'lodash'
 
-const { t, locale } = useI18n()
-const localeMap = {
-	en: 'enUS',
-	'zh-Hans': 'zhCN',
-	ar: 'arSA',
-}
+const { t } = useI18n()
 
 // 定义组件的 props
 const { description, dateRange, refreshID } = defineProps<{
@@ -121,7 +111,7 @@ const dateRangeKey = computed(() =>
 const { text2embedding } = useServerFunctions()
 
 // 获取图片列表
-const { containerRef, imageGroups, loading, error, hasMore, sentinel } = useImageGroups()
+const { imageGroups, observerLastImage, loading, error, hasMore } = useImageGroups()
 
 // 图片选择相关
 const { selectedImages, hasSelectedImages } = storeToRefs(useImagesStore())
@@ -136,63 +126,66 @@ const {
 } = useImagePicker()
 
 function useImageGroups() {
-	type ImageGroup = [string, Image[]]
+	type ImageGroup = {
+		lastModifiedDate: string
+		images: Images
+	}
 	type ImageGroups = ImageGroup[]
 
 	let page = 1
-	const pageSize = 10
+	const pageSize = 30
 
 	const imageGroups = ref<ImageGroups>([])
-	const containerRef = ref<HTMLElement | null>(null)
-	const sentinel = ref<HTMLElement | null>(null)
 	const loading = ref(false)
 	const error = ref(false)
 	const hasMore = ref(true)
 
+	let lastImageID: number
+	let observer: IntersectionObserver
+
 	const format = useDateFormat()
 
-	// 使用 Intersection Observer 替代 InfiniteLoading
-	onMounted(async () => {
-		const observer = new IntersectionObserver(async ([entry]) => {
+	onMounted(() => {
+		observer = new IntersectionObserver(async ([entry]) => {
 			console.debug('Intersection entry:', entry)
 			console.debug('hasMore:', hasMore.value)
 			console.debug('loading:', loading.value)
 
-			if (entry.isIntersecting && hasMore.value && !loading.value) {
+			if (entry.isIntersecting) {
 				await loadMore()
+				// 已经不是最后一张图片，取消观察
+				observer.unobserve(entry.target)
 			}
 		})
-
-		// 使用 nextTick 确保 DOM 已完全渲染
-		await nextTick()
-
-		const sentinelElement = sentinel.value
-		if (sentinelElement) {
-			observer.observe(sentinelElement)
-			console.debug('Observer started')
-		} else {
-			console.error('Sentinel not found')
-			// 可以添加降级处理逻辑
-			loadMore() // 直接调用加载更多
-		}
-
-		return () => observer.disconnect()
 	})
 
+	onUnmounted(() => {
+		observer.disconnect()
+	})
+
+
 	// 监听搜索条件变化
-	watch(
+	watchDebounced(
 		[() => description, () => refreshID, dateRangeKey],
-		_debounce(async () => {
+		async () => {
 			try {
 				// 重置状态
 				reset()
+				// 加载数据
 				await loadMore()
 			} catch (err) {
 				error.value = true
 				toastError(t('error.title'), err.message)
 			}
-		}, 1000)
+		},
+		{ immediate: true, debounce: 1000 },
 	)
+
+	function observerLastImage(el: HTMLDivElement) {
+		if (el && lastImageID === Number(el.dataset.id) && hasMore.value) {
+			observer.observe(el)
+		}
+	}
 
 	async function getImages() {
 		const { data, error } = await supabase
@@ -252,36 +245,35 @@ function useImageGroups() {
 
 			console.debug('data', data)
 
-			// 如果没有数据或数据不足一页，设置没有更多数据
-			if (_isEmpty(data) || data.length < pageSize) {
+			if (data.length < pageSize) {
+				// 如果数据不足一页，设置没有更多数据
 				hasMore.value = false
+
+				if (_isEmpty(data)) {
+					// 如果没有数据，直接返回
+					return
+				}
 			}
 
-			const publicUrls = data.map((item) => {
-				const { data } = supabase
-					.storage
-					.from('images')
-					.getPublicUrl(item.name, {
-						// 缩略图
-						// transform: {
-						// 	width: 200,
-						// 	height: 200,
-						// }
-					})
-				return data.publicUrl
-			})
+			// 记录最后一张图片
+			lastImageID = data[data.length - 1].id
 
-			console.debug('publicUrls', publicUrls)
-
-			const newItemGroups = _(data)
-				.zip(publicUrls)
-				.map(([image, url]) => {
-					console.debug('image', image)
+			// 处理数据
+			const newImageGroups = _(data)
+				.map(image => {
+					// console.debug('image', image)
 
 					const lastModified = image.user_metadata?.lastModified
 					const lastModifiedDate = format(lastModified)
 
-					console.debug('lastModifiedDate', lastModifiedDate)
+					// console.debug('lastModifiedDate', lastModifiedDate)
+
+					const url = supabase
+						.storage
+						.from('images')
+						.getPublicUrl(image.name)
+						.data
+						.publicUrl
 
 					return {
 						...image,
@@ -292,12 +284,15 @@ function useImageGroups() {
 				})
 				.groupBy('lastModifiedDate')
 				.entries()
-				.orderBy('[1][0].lastModified', 'desc')
+				.map(([lastModifiedDate, images]) => ({ lastModifiedDate, images }))
+				.orderBy('images.lastModified', 'desc')
 				.value()
 
-			console.debug('newItemGroups', newItemGroups)
+			console.debug('newImageGroups', newImageGroups)
 
-			imageGroups.value.push(...newItemGroups)
+			// 添加到列表
+			imageGroups.value.push(...newImageGroups)
+			// 页面加一
 			page++
 		} catch (error) {
 			error.value = true
@@ -308,9 +303,8 @@ function useImageGroups() {
 	}
 
 	return {
-		containerRef,
-		sentinel,
 		imageGroups,
+		observerLastImage,
 		loading,
 		hasMore,
 		error,
@@ -368,28 +362,28 @@ function useImagePicker() {
 	grid-template-rows: repeat(auto-fill, auto);
 	gap: 1.5rem;
 	/* 添加 contain 优化 */
-	contain: content;
-	content-visibility: auto;
-	contain-intrinsic-size: 100% auto;
-	/* 预估高度 */
+	contain: layout;
 }
 
 .images-group-container {
 	display: grid;
 	grid-template-rows: auto 1fr;
 	/* 添加 contain 优化 */
-	contain: layout;
 	content-visibility: auto;
-	contain-intrinsic-size: 100% auto;
+	contain-intrinsic-size: auto 200px;
+
+	@media (width<=640px) {
+		contain-intrinsic-size: auto 150px;
+	}
 }
 
 .images-container {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
 	gap: 10px;
 
-	@media (width>=640px) {
-		grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+	@media (width<=640px) {
+		grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
 	}
 }
 
@@ -398,8 +392,6 @@ function useImagePicker() {
 	aspect-ratio: 1;
 	overflow: hidden;
 	border-radius: 0.5rem;
-	/* 添加 contain 优化 */
-	contain: layout paint;
 }
 
 .gallery-image {
@@ -442,12 +434,5 @@ function useImagePicker() {
 	&.selected {
 		@apply bg-primary border-primary;
 	}
-}
-
-.loading-sentinel {
-	height: 50px;
-	display: grid;
-	place-items: center;
-	contain: size layout;
 }
 </style>

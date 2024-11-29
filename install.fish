@@ -1,3 +1,22 @@
+set modules \
+    i18n \
+    pinia \
+    vueuse \
+    @vite-pwa/nuxt \
+    @nuxtjs/seo \
+    nuxt-zod-i18n \
+    supabase \
+    sentry \
+    stripe-next \
+    @samk-dev/nuxt-vcalendar \
+    nuxt-viewport \
+    nuxt-swiper
+
+for module in $modules
+    # 必须使用npm源不能使用镜像源，否则会出现找不到模块的情况
+    http_proxy pnpx nuxi module add $module
+end
+
 ni \
     date-fns \
     zod \
@@ -5,6 +24,7 @@ ni \
     mathjs \
     pretty-bytes \
     type-fest \
+    @vueuse/components \
     pinia-plugin-persistedstate \
     nanoid \
     nanoid-dictionary@beta \
@@ -28,21 +48,3 @@ ni -D \
     # nuxt-chatgpt \
     nuxt-lodash \
     nuxt-server-fn
-
-set modules \
-    i18n \
-    pinia \
-    @vite-pwa/nuxt \
-    @nuxtjs/seo \
-    nuxt-zod-i18n \
-    supabase \
-    sentry \
-    stripe-next \
-    @samk-dev/nuxt-vcalendar \
-    nuxt-viewport \
-    nuxt-swiper
-
-for module in $modules
-    # 必须使用npm源不能使用镜像源，否则会出现找不到模块的情况
-    http_proxy pnpx nuxi module add $module
-end
