@@ -12,6 +12,22 @@
 				color="gray" @click="logout" />
 		</template>
 		<template #right v-else>
+			<UPopover>
+				<!-- 弹出式语言切换 -->
+				<UButton color="black" variant="ghost"
+					icon="i-heroicons-language" />
+
+				<template #panel>
+					<ul>
+						<li v-for="locale in locales">
+							<UButton v-if="locale.code != currentLocale"
+								:label="locale.name"
+								@click="switchLocale(locale.code)"
+								color="gray" variant="ghost" />
+						</li>
+					</ul>
+				</template>
+			</UPopover>
 			<UButton :label="t('signin')" color="gray"
 				to="/login" />
 			<UButton :label="t('signup')"
@@ -65,13 +81,18 @@ ar:
 <script setup lang="ts">
 import type { NavItem } from '@nuxt/content'
 
-const { t } = useI18n()
+const { t, locale: currentLocale, locales, setLocale } = useI18n()
 
 const navigation = inject<Ref<NavItem[]>>('navigation', ref([]))
 const supabse = useSupabaseClient()
 const user = useSupabaseUser()
 
 const { logout } = useUserLogout()
+
+function switchLocale(code: string) {
+	setLocale(code)
+	location.reload()
+}
 
 const links = [{
 	label: t('nav.docs'),
