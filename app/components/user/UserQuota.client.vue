@@ -4,7 +4,11 @@
 			<UProgress :value="userQuota.storageUsed"
 				:max="userQuota.storageQuota" indicator />
 			<p>
-				{{ t('quota.storage', storageValues) }}
+				{{ t('quota.storage', {
+					used: format(userQuota.storageUsed),
+					remaining: format(userQuota.storageRemaining),
+					total: format(userQuota.storageQuota)
+				}) }}
 			</p>
 		</div>
 
@@ -13,9 +17,9 @@
 				:max="userQuota.cycleIndexingQuota" indicator />
 			<p>
 				{{ t('quota.indexing', {
-					count: userQuota.cycleIndexedCount,
-					remaining: userQuota.cycleIndexingRemaining,
-					total: userQuota.cycleIndexingQuota
+					count: n(userQuota.cycleIndexedCount, 'decimal'),
+					remaining: n(userQuota.cycleIndexingRemaining, 'decimal'),
+					total: n(userQuota.cycleIndexingQuota, 'decimal')
 				}) }}
 			</p>
 		</div>
@@ -46,8 +50,16 @@ ar:
 </i18n>
 
 <script lang="ts" setup>
-const { t, localeProperties } = useI18n()
-import prettyBytes from 'pretty-bytes'
+const { t, n } = useI18n({
+	numberFormats: {
+		ar: {
+			decimal: {
+				style: 'decimal',
+				numberingSystem: 'arab',
+			},
+		}
+	}
+})
 
 const { error, userQuota } = await useUserQuota()
 console.debug(
@@ -55,15 +67,7 @@ console.debug(
 	userQuota.value
 )
 
-const storageValues = computed(() => {
-	const language = localeProperties.value.language
-	return {
-		used: prettyBytes(userQuota.value.storageUsed, { locale: language }),
-		remaining: prettyBytes(userQuota.value.storageRemaining, { locale: language }),
-		total: prettyBytes(userQuota.value.storageQuota, { locale: language })
-	}
-})
-console.debug('localeProperties', localeProperties.value, 'storageValues', storageValues)
+const format = useLocaleBytes()
 
 const { toastError } = useAppToast()
 

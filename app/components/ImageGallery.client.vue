@@ -42,7 +42,7 @@
 		}">
 			<div class="fixed top-12 right-12 z-10">
 				<UButton icon="i-heroicons-x-mark" color="white"
-					variant="ghost" @click="closePreview" />
+					@click="closePreview" />
 			</div>
 			<div
 				class="flex items-center justify-center w-full h-full">
@@ -143,7 +143,7 @@ function useImageGroups() {
 	let lastImageID: number
 	let observer: IntersectionObserver
 
-	const format = useDateFormat()
+	const format = useLocaleDate()
 
 	onMounted(() => {
 		observer = new IntersectionObserver(async ([entry]) => {

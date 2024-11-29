@@ -1,7 +1,7 @@
 import { formatWithOptions, parseISO } from 'date-fns/fp'
 import { arSA, enUS, zhCN } from 'date-fns/locale'
 
-export function useDateFormat(formatString: string = 'PPPP') {
+export function useLocaleDate(formatString: string = 'PPPP') {
 	const { locale } = useI18n()
 	const localeMap = {
 		en: enUS,

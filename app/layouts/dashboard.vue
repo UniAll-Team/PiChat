@@ -41,6 +41,7 @@ en:
   general: General
   notifications: Notifications
   upgradeToPro: Upgrade to Pro
+  expandQuota: Expand Quota
   documentation: 'Documentation'
   invitePeople: Invite people
   helpSupport: Help & Support
@@ -57,6 +58,7 @@ zh-Hans:
   general: 常规
   notifications: 通知
   upgradeToPro: 升级到专业版
+  expandQuota: 扩容
   documentation: '文档'
   invitePeople: 邀请他人
   helpSupport: 帮助与支持
@@ -73,6 +75,7 @@ ar:
   general: عام
   notifications: الإشعارات
   upgradeToPro: الترقية إلى النسخة المحترفة
+  expandQuota: توسيع الحصة
   documentation: 'التوثيق'
   invitePeople: دعوة الأشخاص
   helpSupport: المساعدة والدعم
@@ -87,6 +90,8 @@ ar:
 const { toastSuccess, toastError } = useAppToast()
 
 const { t } = useI18n()
+
+const userPlan = useUserPlan()
 
 const links = [
 	{
@@ -120,11 +125,7 @@ const links = [
 ]
 
 const footerLinks = [
-	{
-		label: t('upgradeToPro'),
-		icon: 'i-heroicons-credit-card',
-		to: '/pricing'
-	},
+
 	{
 		label: t('documentation'),
 		icon: 'i-heroicons-book-open',
@@ -149,4 +150,21 @@ const footerLinks = [
 		to: '/docs/contact-us',
 	}
 ]
+
+switch (userPlan.value.name) {
+	case 'free':
+		footerLinks.unshift({
+			label: t('upgradeToPro'),
+			icon: 'i-heroicons-credit-card',
+			to: '/pricing'
+		})
+		break
+	case 'pro':
+		footerLinks.unshift({
+			label: t('expandQuota'),
+			icon: 'i-heroicons-credit-card',
+			to: '/pricing'
+		})
+		break
+}
 </script>

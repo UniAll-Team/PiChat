@@ -1,5 +1,5 @@
 <template>
-	<UDropdown :items="items"
+	<UDropdown :items="links"
 		:popper="{ gpuAcceleration: true, adaptive: true }"
 		class="w-full">
 		<template #default="{ open }">
@@ -79,40 +79,36 @@ const userPlan = useUserPlan()
 
 const hasAvatar = computed(() => !!user.value.user_metadata.avatar_url)
 
-const items = computed(() => {
-	const links = [
-		[
-			{
-				slot: 'account',
-				label: '',
-				disabled: true,
-			},
-		],
-		/* [
-			{
-				label: t('menuItems.documentation'),
-				icon: 'i-heroicons-book-open',
-				to: '/docs'
-			},
-		], */
-		[
-			{
-				label: t('menuItems.signOut'),
-				icon: 'i-heroicons-arrow-left-on-rectangle',
-				click: logout
-			},
-		],
-	]
 
-	if (userPlan.value.name === 'free') {
+const links = [
+	[
+		{
+			slot: 'account',
+			label: '',
+			disabled: true,
+		},
+	],
+	/* [
+		{
+			label: t('menuItems.documentation'),
+			icon: 'i-heroicons-book-open',
+			to: '/docs'
+		},
+	], */
+	[
+		{
+			label: t('menuItems.signOut'),
+			icon: 'i-heroicons-arrow-left-on-rectangle',
+			click: logout
+		},
+	],
+]
 
-		links[1].push({
-			label: t('menuItems.upgradeToPro'),
-			icon: 'i-heroicons-credit-card',
-			to: '/pricing'
-		})
-
-	}
-	return links
-})
+if (userPlan.value.name === 'free') {
+	links[1].push({
+		label: t('menuItems.upgradeToPro'),
+		icon: 'i-heroicons-credit-card',
+		to: '/pricing'
+	})
+}
 </script>

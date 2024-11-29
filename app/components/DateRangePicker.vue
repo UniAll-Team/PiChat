@@ -39,7 +39,8 @@
 				</div>
 
 				<ClientOnly>
-					<VDatePicker is-required v-model.range="dateRange"
+					<VDatePicker is-required :locale
+						v-model.range="dateRange"
 						:columns="smallerThanSm ? 1 : 2"
 						:rows="smallerThanSm ? 2 : 1"
 						:min-date="new Date(1999, 0, 1)" :max-date="now"
@@ -50,6 +51,32 @@
 	</UPopover>
 </template>
 
+<i18n lang="yaml">
+en:
+  lastWeek: Last 1 week
+  lastTwoWeeks: Last 2 weeks
+  lastMonth: Last 1 month
+  lastThreeMonths: Last 3 months
+  lastSixMonths: Last 6 months
+  lastYear: Last year
+
+zh-Hans:
+  lastWeek: 近1周
+  lastTwoWeeks: 近2周
+  lastMonth: 近1个月
+  lastThreeMonths: 近3个月
+  lastSixMonths: 近6个月
+  lastYear: 近1年
+
+ar:
+  lastWeek: آخر أسبوع
+  lastTwoWeeks: آخر أسبوعين
+  lastMonth: آخر شهر
+  lastThreeMonths: آخر ٣ أشهر
+  lastSixMonths: آخر ٦ أشهر
+  lastYear: آخر سنة
+</i18n>
+
 <script setup lang="ts">
 import type { Duration } from 'date-fns'
 import type { DateRange } from '~/types/dashboard'
@@ -58,6 +85,8 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { isSameDay, sub } from 'date-fns'
 
 const dateRange = defineModel<DateRange>()
+
+const { t, locale } = useI18n()
 
 const { smallerThanSm, calendarAttrs } = useStyles()
 const {
@@ -74,15 +103,15 @@ function useDateRange() {
 		label: string
 		duration: Duration
 	}[] = [
-			{ label: 'Last 1 weeks', duration: { weeks: 1 } },
-			{ label: 'Last 2 weeks', duration: { weeks: 2 } },
-			{ label: 'Last 1 months', duration: { months: 1 } },
-			{ label: 'Last 3 months', duration: { months: 3 } },
-			{ label: 'Last 6 months', duration: { months: 6 } },
-			{ label: 'Last year', duration: { years: 1 } },
+			{ label: t('lastWeek'), duration: { weeks: 1 } },
+			{ label: t('lastTwoWeeks'), duration: { weeks: 2 } },
+			{ label: t('lastMonth'), duration: { months: 1 } },
+			{ label: t('lastThreeMonths'), duration: { months: 3 } },
+			{ label: t('lastSixMonths'), duration: { months: 6 } },
+			{ label: t('lastYear'), duration: { years: 1 } },
 		]
 
-	const format = useDateFormat('P')
+	const format = useLocaleDate('P')
 
 	function isSelectedDateRange(duration: Duration) {
 		if (!dateRange.value || typeof dateRange.value === 'string' || dateRange.value instanceof Date) {
