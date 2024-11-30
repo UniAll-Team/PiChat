@@ -2,6 +2,14 @@ free: Free
 pro: Pro
 getStarted: Get Started
 
+login_provider:
+  continue_with: Continue with {provider}
+  loading: Logging in, please do not close this page...
+  success: Successfully logged in with {provider}!
+  error:
+    one_tap: 'Error with One Tap Login: {message}'
+    oauth: 'Error with Login: {message}'
+
 zodI18n:
   errors:
     invalid_type: Expected {expected}, received {received}

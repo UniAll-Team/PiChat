@@ -28,11 +28,11 @@
 					</ul>
 				</template>
 			</UPopover>
-			<UButton :label="t('signin')" color="gray"
-				to="/login" />
-			<UButton :label="t('signup')"
+			<UButton :label="t('signin')" color="gray" to="/login"
+				trailing-icon="i-heroicons-arrow-right-20-solid" />
+			<!-- <UButton :label="t('signup')"
 				icon="i-heroicons-arrow-right-20-solid" trailing
-				color="black" to="/signup" />
+				color="black" to="/signup" /> -->
 		</template>
 
 		<template #panel>
@@ -89,8 +89,8 @@ const user = useSupabaseUser()
 
 const { logout } = useUserLogout()
 
-function switchLocale(code: string) {
-	setLocale(code)
+async function switchLocale(code: string) {
+	await setLocale(code)
 	location.reload()
 }
 

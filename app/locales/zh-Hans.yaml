@@ -2,6 +2,14 @@ free: 免费版
 pro: 专业版
 getStarted: 开始使用
 
+login_provider:
+  continue_with: '使用{provider}继续'
+  loading: '正在登录验证，请不要关闭页面...'
+  success: '已通过{provider}成功登录！'
+  error:
+    one_tap: 'One Tap登录出错：{message}'
+    oauth: '登录出错：{message}'
+
 zodI18n:
   errors:
     invalid_type: 预期输入为{expected}，而输入为{received}

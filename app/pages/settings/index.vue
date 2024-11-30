@@ -205,9 +205,9 @@ const user = useSupabaseUser()
 const { locale, locales, setLocale } = useI18n()
 const { t } = useI18n()
 
-watch(locale, () => {
+watch(locale, async () => {
 	console.debug('Switching locale to', locale.value)
-	setLocale(locale.value)
+	await setLocale(locale.value)
 	// 需要强制刷新页面，因为 Nuxt 无法动态切换语言
 	location.reload()
 })

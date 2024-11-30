@@ -16,7 +16,7 @@ export async function useUserQuota() {
 			...userPlan.value,
 			storageRemaining,
 			cycleIndexingRemaining,
-			uploadRemaining: Math.round(Math.max(storageRemaining / userPlan.value.fileSizeLimit, cycleIndexingRemaining))
+			uploadRemaining: Math.round(Math.max(storageRemaining / (userPlan.value.fileSizeLimit ?? Number.POSITIVE_INFINITY), cycleIndexingRemaining))
 		}
 	})
 

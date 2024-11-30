@@ -174,6 +174,7 @@ export default defineNuxtConfig({
 				language: 'zh-Hans',
 				name: '简体中文',
 				file: 'zh-Hans.yaml',
+				isCatchallLocale: true,
 			},
 		],
 		experimental: {

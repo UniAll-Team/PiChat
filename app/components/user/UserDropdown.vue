@@ -4,7 +4,7 @@
 		class="w-full">
 		<template #default="{ open }">
 			<UButton color="gray" variant="ghost" class="w-full"
-				:label="user.user_metadata.full_name"
+				:label="displayName"
 				:class="[open && 'bg-gray-50 dark:bg-gray-800']">
 				<template #leading v-if="hasAvatar">
 					<UAvatar :src="user.user_metadata.avatar_url"
@@ -73,12 +73,16 @@ const { t } = useI18n()
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 
+const displayName = computed(
+	() => user.value?.user_metadata.full_name
+		?? user.value.email.split('@')[0]
+)
+
 const { logout } = useUserLogout()
 
 const userPlan = useUserPlan()
 
 const hasAvatar = computed(() => !!user.value.user_metadata.avatar_url)
-
 
 const links = [
 	[
