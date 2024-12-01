@@ -60,6 +60,72 @@ zh-Hans:
     success:
       title: 登录成功
       message: 您已成功登录
+
+# English (en) Translation
+en:
+  title: Welcome
+  description: If you don't have an account, one will be automatically created for you.
+  footer: By logging in, you agree to our {terms}.
+  terms_of_service: Terms of Service
+  fields:
+    email:
+      label: Email
+      placeholder: Please enter your email
+    otp:
+      label: Verification Code
+      placeholder: Please enter your verification code
+      resend: Resend Verification Code
+  validation:
+    email: Invalid email address
+    otp: Invalid verification code
+  submit:
+    send_email: Send Email
+    login_with_otp: Log In
+  send_email:
+    error:
+      title: Email Sending Failed
+    success:
+      title: Verification Code Sent
+      message: A verification code has been sent to {email}, please enter it in the verification code input field.
+  login_with_otp:
+    error:
+      title: Login Failed
+    success:
+      title: Login Successful
+      message: You have successfully logged in
+
+# Arabic (ar) Translation
+ar:
+  title: أهلاً بك
+  description: إذا لم يكن لديك حساب، سيتم إنشاء حساب تلقائيًا.
+  footer: بتسجيل الدخول، فإنك توافق على {terms} الخاصة بنا.
+  terms_of_service: شروط الخدمة
+  fields:
+    email:
+      label: البريد الإلكتروني
+      placeholder: يرجى إدخال بريدك الإلكتروني
+    otp:
+      label: رمز التحقق
+      placeholder: يرجى إدخال رمز التحقق الخاص بك
+      resend: إعادة إرسال رمز التحقق
+  validation:
+    email: عنوان بريد إلكتروني غير صالح
+    otp: رمز التحقق غير صالح
+  submit:
+    send_email: إرسال البريد الإلكتروني
+    login_with_otp: تسجيل الدخول
+  send_email:
+    error:
+      title: فشل إرسال البريد الإلكتروني
+    success:
+      title: تم إرسال رمز التحقق
+      message: تم إرسال رمز التحقق إلى {email}، يرجى إدخاله في حقل إدخال رمز التحقق.
+  login_with_otp:
+    error:
+      title: فشل تسجيل الدخول
+    success:
+      title: تم تسجيل الدخول بنجاح
+      message: لقد قمت بتسجيل الدخول بنجاح
 </i18n>
 
 <script setup lang="ts">

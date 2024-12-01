@@ -57,20 +57,6 @@
 						autoresize size="md" />
 				</UFormGroup>
 
-				<UFormGroup name="password"
-					:label="t('profile.password.label')"
-					:description="t('profile.password.description')"
-					class="grid grid-cols-2 gap-2"
-					:ui="{ container: '' }">
-					<UInput id="password" v-model="state.password"
-						type="password"
-						:placeholder="t('profile.password.new')"
-						size="md" />
-					<UInput id="repeatPassword"
-						v-model="state.repeatPassword" type="password"
-						:placeholder="t('profile.password.repeat')"
-						size="md" class="mt-2" />
-				</UFormGroup>
 			</UDashboardSection>
 		</UForm>
 
@@ -223,29 +209,19 @@ function useUserProfile() {
 		full_name: user.value.user_metadata?.full_name,
 		email: user.value.email,
 		bio: user.value.user_metadata?.bio,
-		password: '',
-		repeatPassword: '',
 	})
 
 	const schema = z.object({
 		full_name: z.string().min(2).optional(),
 		email: z.string().email(),
 		bio: z.string().max(255).optional(),
-		password: z.string().min(8).optional().or(z.literal('')),
-		repeatPassword: z.string().min(8).optional().or(z.literal('')),
-	}).refine(({ password, repeatPassword }) => password === repeatPassword,
-		{
-			message: t('profile.password.mismatch'),
-			path: ['password'],
-		}
-	)
+	})
 
 	async function updateProfile() {
 		const { error } = await supabase
 			.auth
 			.updateUser({
 				email: state.value.email,
-				password: state.value.password || undefined,
 				data: {
 					full_name: state.value.full_name || undefined,
 					bio: state.value.bio || undefined,
