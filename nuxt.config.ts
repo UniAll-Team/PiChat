@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 		'nuxt-viewport',
 		'@nuxtjs/i18n',
 		'@nuxtjs/supabase',
+		'@nuxt/scripts',
 		'@nuxt/content',
 		// '@nuxt/fonts',
 		'@nuxt/image',
@@ -177,9 +178,6 @@ export default defineNuxtConfig({
 				isCatchallLocale: true,
 			},
 		],
-		experimental: {
-			switchLocalePathLinkSSR: true,
-		}
 	},
 
 	content: {

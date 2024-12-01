@@ -88,7 +88,7 @@ const emit = defineEmits<{
 	complete: [result: UploadResult<Meta, Record<string, never>>]
 }>()
 
-const nanoid = newSafeNanoid()
+const safeNanoid = newSafeNanoid()
 
 const uppy = new Uppy({
 	restrictions: {
@@ -98,6 +98,12 @@ const uppy = new Uppy({
 		allowedFileTypes: ['image/*'],
 	},
 	locale: localeMap[locale.value],
+	onBeforeFileAdded(file) {
+		return {
+			...file,
+			id: `${file.id}-${safeNanoid()}`, // <--- the important part
+		}
+	},
 }).use(Tus, {
 	endpoint: `${supabaseConfig.url}/storage/v1/upload/resumable`,
 	headers: () => {
@@ -131,7 +137,7 @@ uppy.on('file-added', (file) => {
 		file.meta = {
 			...file.meta,
 			bucketName: 'images',
-			objectName: `${user.value.id}/${nanoid()}.${fileExtension}`,
+			objectName: `${user.value.id}/${safeNanoid()}.${fileExtension}`,
 			contentType,
 			metadata: JSON.stringify({
 				// 上传文件的原始名称
@@ -161,11 +167,7 @@ uppy.on('file-added', (file) => {
 
 uppy.on('upload-error', (file, error) => {
 	console.error('upload-error', file, error)
-	if (error.message.includes(t('uploadErrorLarge'))) {
-		toastError(t('uploadErrorLarge'))
-	} else {
-		toastError(t('uploadErrorRetry', { error: error.message }))
-	}
+	toastError(t('uploadErrorRetry', { error: error.message }))
 })
 
 uppy.addPostProcessor(async (fileIDs: string[]) => {

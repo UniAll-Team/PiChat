@@ -1,6 +1,8 @@
 import type { H3Event } from 'h3'
 
 import OpenAI from 'openai'
+import { createDocument } from '../utils/createDocument'
+import { createEmbedding } from '../utils/createEmbedding'
 
 export async function createImageEmbedding(this: H3Event, signedUrl: string) {
 	const config = useRuntimeConfig(this)

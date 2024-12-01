@@ -57,7 +57,19 @@ const { t, n } = useI18n({
 				style: 'decimal',
 				numberingSystem: 'arab',
 			},
-		}
+		},
+		en: {
+			decimal: {
+				style: 'decimal',
+				numberingSystem: 'latn',
+			},
+		},
+		'zh-Hans': {
+			decimal: {
+				style: 'decimal',
+				numberingSystem: 'hans',
+			},
+		},
 	}
 })
 

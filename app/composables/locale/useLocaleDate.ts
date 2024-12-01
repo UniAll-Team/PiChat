@@ -1,4 +1,4 @@
-import { formatWithOptions, parseISO } from 'date-fns/fp'
+import { format, parseISO } from 'date-fns'
 import { arSA, enUS, zhCN } from 'date-fns/locale'
 
 export function useLocaleDate(formatString: string = 'PPPP') {
@@ -8,9 +8,8 @@ export function useLocaleDate(formatString: string = 'PPPP') {
 		'zh-Hans': zhCN,
 		ar: arSA,
 	}
-	const format = formatWithOptions({ locale: localeMap[locale.value] }, formatString)
 
-	return (date: any) => {
+	return (date: any, fmtString = formatString) => {
 		// 根据不同类型的日期数据，使用不同的解析方式
 		switch (typeof date) {
 			case 'string':
@@ -21,6 +20,6 @@ export function useLocaleDate(formatString: string = 'PPPP') {
 				break
 		}
 
-		return format(date)
+		return format(date, fmtString, { locale: localeMap[locale.value] })
 	}
 }

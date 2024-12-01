@@ -75,7 +75,7 @@ const supabase = useSupabaseClient()
 
 const displayName = computed(
 	() => user.value?.user_metadata.full_name
-		?? user.value.email.split('@')[0]
+		?? user.value?.email.split('@')[0]
 )
 
 const { logout } = useUserLogout()

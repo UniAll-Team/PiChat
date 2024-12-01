@@ -50,12 +50,6 @@ with check (
 	(select auth.uid()) = user_id
 );
 
-CREATE POLICY "Enable read access for all users"
-ON storage.buckets
-AS PERMISSIVE FOR SELECT
-TO authenticated
-USING (true);
-
 -- 获取文件夹大小
 CREATE OR REPLACE FUNCTION storage.get_folder_size(folder_path TEXT)
 RETURNS BIGINT AS $$
@@ -91,9 +85,35 @@ CREATE VIEW used_storage
 WITH (security_invoker) AS
 SELECT storage.get_folder_size(auth.uid()::TEXT) AS used_storage;
 
-CREATE POLICY "根据用户订阅的计划限制上传"
+-- images 桶的策略
+CREATE POLICY "用户只能查看自己的图片"
 ON storage.objects
-FOR INSERT TO authenticated
+FOR SELECT
+TO authenticated
+USING (
+	bucket_id = 'images'
+	AND auth.uid()::text = (storage.foldername(name))[1]
+);
+
+CREATE POLICY "用户只能删除自己的图片"
+ON storage.objects
+FOR DELETE
+TO authenticated
+USING (
+	bucket_id = 'images'
+	AND auth.uid()::text = (storage.foldername(name))[1]
+);
+
+CREATE POLICY "用户不能修改图片的信息，只能上传新图片"
+ON storage.objects
+FOR UPDATE
+TO authenticated
+USING (bucket_id != 'images');
+
+CREATE POLICY "根据用户的订阅计划限制上传"
+ON storage.objects
+FOR INSERT
+TO authenticated
 WITH CHECK (
 	bucket_id = 'images'
 	AND ((auth.uid())::text = (storage.foldername(name))[1])
@@ -102,16 +122,47 @@ WITH CHECK (
 		CASE (auth.jwt()->>'plan')::text
 			WHEN 'pro/mouth' THEN
 				(auth.jwt()->>'cycle_indexed_count')::int < 1777
-					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024	-- 177GB for pro plan
+					AND storage.get_folder_size(auth.uid()::text) < 177<<30	-- 177GB for pro plan
 			WHEN 'pro/year' THEN
 				(auth.jwt()->>'cycle_indexed_count')::int < 17777
-					AND storage.get_folder_size(auth.uid()::text) < 177 * 1024 * 1024 * 1024	-- 177GB for pro plan
+					AND storage.get_folder_size(auth.uid()::text) < 177<<30	-- 177GB for pro plan
+			WHEN 'pro-plus/mouth' THEN
+				(auth.jwt()->>'cycle_indexed_count')::int < 3777
+					AND storage.get_folder_size(auth.uid()::text) < 377<<30	-- 377GB for pro plus plan
+			WHEN 'pro-plus/year' THEN
+				(auth.jwt()->>'cycle_indexed_count')::int < 37777
+					AND storage.get_folder_size(auth.uid()::text) < 377<<30	-- 377GB for pro plus plan
 			ELSE
 				(auth.jwt()->>'cycle_indexed_count')::int < 177
-					AND storage.get_folder_size(auth.uid()::text) < 5 * 1024 * 1024 * 1024	-- 5GB for free plan
+					AND storage.get_folder_size(auth.uid()::text) < 5<<30	-- 5GB for free plan
 		END
 	)
 );
+
+-- assets 桶的策略
+CREATE POLICY '允许所有人获取公共资产'
+ON storage.objects
+FOR SELECT
+TO public
+USING (bucket_id = 'assets');
+
+CREATE POLICY '禁止所有人删除公共资产'
+ON storage.objects
+FOR DELETE
+TO public
+USING (bucket_id != 'assets');
+
+CREATE POLICY '禁止所有人修改公共资产'
+ON storage.objects
+FOR UPDATE
+TO public
+USING (bucket_id != 'assets');
+
+CREATE POLICY '禁止所有人上传公共资产'
+ON storage.objects
+FOR INSERT
+TO public
+WITH CHECK (bucket_id != 'assets');
 
 -- 上传图片时，将图片信息插入到 images 表中
 CREATE OR REPLACE FUNCTION public.insert_new_image()

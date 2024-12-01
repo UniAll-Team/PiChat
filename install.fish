@@ -2,6 +2,7 @@ set modules \
     i18n \
     pinia \
     vueuse \
+    scripts \
     @vite-pwa/nuxt \
     @nuxtjs/seo \
     nuxt-zod-i18n \

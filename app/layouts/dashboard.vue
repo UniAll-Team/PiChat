@@ -11,11 +11,10 @@
 
 			<UDashboardSidebar>
 				<!-- 这里要使用client-only，不然会水合失败，不知道为什么 -->
-				<!-- <ClientOnly>
+				<ClientOnly>
 					<UDashboardSidebarLinks :links="links" />
-				</ClientOnly> -->
-				<!-- 虽然水合会失败，但是为了渲染更快还是要开启 -->
-				<UDashboardSidebarLinks :links="links" />
+				</ClientOnly>
+				<!-- <UDashboardSidebarLinks :links="links" /> -->
 
 				<div class="flex-1" />
 
