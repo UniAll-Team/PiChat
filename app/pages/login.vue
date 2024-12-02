@@ -249,7 +249,7 @@ async function login(data: any) {
 			t('login_with_otp.success.message')
 		)
 
-		navigateTo('/home')
+		await navigateTo('/home')
 
 		loginStatus.value = 'success'
 	}

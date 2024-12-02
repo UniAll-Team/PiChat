@@ -26,7 +26,7 @@ export function useUserLogout() {
 		}
 
 		toastSuccess(t('success'))
-		navigateTo('/')
+		await navigateTo('/')
 	}
 
 	return {

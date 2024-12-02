@@ -1,5 +1,5 @@
 {
-	"name": "nuxt-ui-pro-template-saas",
+	"name": "pichat",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -62,6 +62,7 @@
 		"nuxt-lodash": "^2.5.3",
 		"nuxt-server-fn": "^0.4.1",
 		"sass-embedded": "^1.81.0",
+		"vite-plugin-remove-console": "^2.2.0",
 		"vue-tsc": "^2.1.10"
 	},
 	"overrides": {

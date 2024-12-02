@@ -82,7 +82,7 @@ const { logout } = useUserLogout()
 
 const userPlan = useUserPlan()
 
-const hasAvatar = computed(() => !!user.value.user_metadata.avatar_url)
+const hasAvatar = computed(() => Boolean(user.value?.user_metadata?.avatar_url))
 
 const links = [
 	[

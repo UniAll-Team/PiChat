@@ -48,4 +48,5 @@ ni -D \
     sass-embedded \
     # nuxt-chatgpt \
     nuxt-lodash \
-    nuxt-server-fn
+    nuxt-server-fn \
+    vite-plugin-remove-console

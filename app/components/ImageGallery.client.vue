@@ -104,10 +104,6 @@ const { toastError } = useAppToast()
 
 const isSearching = computed(() => Boolean(description))
 
-const dateRangeKey = computed(() =>
-	`${dateRange.start.toISOString()}_${dateRange.end.toISOString()}`
-)
-
 const { text2embedding } = useServerFunctions()
 
 // 获取图片列表
@@ -166,7 +162,12 @@ function useImageGroups() {
 
 	// 监听搜索条件变化
 	watchDebounced(
-		[() => description, () => refreshID, dateRangeKey],
+		[
+			() => description,
+			() => refreshID,
+			() =>
+				`${dateRange.start.toISOString()}_${dateRange.end.toISOString()}`
+		],
 		async () => {
 			try {
 				// 重置状态

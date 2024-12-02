@@ -1,4 +1,5 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import removeConsole from "vite-plugin-remove-console"
+
 export default defineNuxtConfig({
 	extends: ['@nuxt/ui-pro'],
 
@@ -24,6 +25,14 @@ export default defineNuxtConfig({
 		'@samk-dev/nuxt-vcalendar',
 		'@vite-pwa/nuxt',
 	],
+
+	vite: {
+		plugins: [
+			removeConsole({
+				includes: ['debug', 'dir'],
+			})
+		]
+	},
 
 	// debug: true,
 
@@ -117,6 +126,8 @@ export default defineNuxtConfig({
 				},
 			]
 		},
+		// 必须使用 `autoUpdate`，否则有可能产生缓存问题，打开网页是白板
+		registerType: 'autoUpdate',
 		registerWebManifestInRouteRules: true,
 		devOptions: {
 			enabled: true,
@@ -269,5 +280,5 @@ export default defineNuxtConfig({
 		blockNonSeoBots: true,
 	},
 
-	compatibilityDate: '2024-07-11',
+	compatibilityDate: '2024-12-01',
 })
