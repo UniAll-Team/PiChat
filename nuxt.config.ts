@@ -52,6 +52,7 @@ export default defineNuxtConfig({
 
 	app: {
 		head: {
+			// @ts-ignore
 			seoMeta: {
 				titleTemplate: `%s %separator ${process.env.NUXT_SITE_NAME}`,
 				description: process.env.NUXT_SITE_DESCRIPTION,
@@ -208,6 +209,8 @@ export default defineNuxtConfig({
 
 	typescript: {
 		strict: false,
+		// 不能开启，因为大量外部组件没有类型定义
+		//typeCheck: true,
 	},
 
 	future: {
@@ -241,6 +244,8 @@ export default defineNuxtConfig({
 	sourcemap: { client: true },
 	sentry: {
 		sourceMapsUploadOptions: {
+			org: process.env.SENTRY_ORG,
+			project: process.env.SENTRY_PROJECT,
 			authToken: process.env.SENTRY_AUTH_TOKEN,
 		}
 	},
