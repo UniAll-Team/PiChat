@@ -3,6 +3,7 @@ set modules \
     i18n \
     pinia \
     vueuse \
+    ui-pro \
     scripts \
     @nuxtjs/seo \
     @vite-pwa/nuxt \
@@ -51,4 +52,5 @@ ni -D \
     # nuxt-chatgpt \
     nuxt-lodash \
     nuxt-server-fn \
-    vite-plugin-remove-console
+    vite-plugin-remove-console \
+    @iconify/json

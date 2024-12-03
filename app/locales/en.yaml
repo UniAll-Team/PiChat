@@ -10,6 +10,10 @@ login_provider:
     one_tap: 'Error with One Tap Login: {message}'
     oauth: 'Error with Login: {message}'
 
+logout:
+  error: 'Logout failed'
+  success: 'Successfully logged out'
+
 zodI18n:
   errors:
     invalid_type: Expected {expected}, received {received}

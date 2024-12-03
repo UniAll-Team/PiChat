@@ -3,12 +3,16 @@ pro: محترف
 getStarted: ابدأ الآن
 
 login_provider:
-  continue_with: 'المتابعة باستخدام {provider}'
-  loading: 'جارٍ تسجيل الدخول، يرجى عدم إغلاق الصفحة...'
-  success: 'تم تسجيل الدخول بنجاح باستخدام {provider}!'
+  continue_with: المتابعة باستخدام {provider}
+  loading: جارٍ تسجيل الدخول، يرجى عدم إغلاق الصفحة...
+  success: تم تسجيل الدخول بنجاح باستخدام {provider}!
   error:
     one_tap: 'خطأ في تسجيل الدخول السريع: {message}'
     oauth: 'خطأ في تسجيل الدخول: {message}'
+
+logout:
+  error: فشل تسجيل الخروج
+  success: تم تسجيل الخروج بنجاح
 
 zodI18n:
   errors:
@@ -18,8 +22,10 @@ zodI18n:
     invalid_literal: قيمة حرفية غير صالحة، المتوقع {expected}
     unrecognized_keys: 'عنصر (عناصر) غير معروف في الكائن: {keys}'
     invalid_union: مدخل غير صالح
-    invalid_union_discriminator: قيمة مميزة غير صالحة. المتوقع {options}
-    invalid_enum_value: قيمة تعداد غير صالحة. المتوقع {options}، المستلم '{received}'
+    invalid_union_discriminator: قيمة مميزة غير صالحة. المتوقع
+      {options}
+    invalid_enum_value: قيمة تعداد غير صالحة. المتوقع {options}،
+      المستلم '{received}'
     invalid_arguments: معاملات الدالة غير صالحة
     invalid_return_type: نوع إرجاع دالة غير صالح
     invalid_date: تاريخ غير صالح
@@ -39,12 +45,16 @@ zodI18n:
     too_small:
       array:
         exact: يجب أن تحتوي المصفوفة على {minimum} عنصر (عناصر)
-        inclusive: يجب أن تحتوي المصفوفة على {minimum} عنصر (عناصر) على الأقل
-        not_inclusive: يجب أن تحتوي المصفوفة على أكثر من {minimum} عنصر (عناصر)
+        inclusive: يجب أن تحتوي المصفوفة على {minimum} عنصر (عناصر)
+          على الأقل
+        not_inclusive: يجب أن تحتوي المصفوفة على أكثر من {minimum}
+          عنصر (عناصر)
       string:
         exact: يجب أن تحتوي السلسلة على {minimum} حرف (أحرف)
-        inclusive: يجب أن تحتوي السلسلة على {minimum} حرف (أحرف) على الأقل
-        not_inclusive: يجب أن تحتوي السلسلة على أكثر من {minimum} حرف (أحرف)
+        inclusive: يجب أن تحتوي السلسلة على {minimum} حرف (أحرف)
+          على الأقل
+        not_inclusive: يجب أن تحتوي السلسلة على أكثر من {minimum}
+          حرف (أحرف)
       number:
         exact: يجب أن يكون الرقم {minimum}
         inclusive: يجب أن يكون الرقم أكبر من أو يساوي {minimum}
@@ -60,12 +70,16 @@ zodI18n:
     too_big:
       array:
         exact: يجب أن تحتوي المصفوفة على {maximum} عنصر (عناصر)
-        inclusive: يجب أن تحتوي المصفوفة على {maximum} عنصر (عناصر) كحد أقصى
-        not_inclusive: يجب أن تحتوي المصفوفة على أقل من {maximum} عنصر (عناصر)
+        inclusive: يجب أن تحتوي المصفوفة على {maximum} عنصر (عناصر)
+          كحد أقصى
+        not_inclusive: يجب أن تحتوي المصفوفة على أقل من {maximum}
+          عنصر (عناصر)
       string:
         exact: يجب أن تحتوي السلسلة على {maximum} حرف (أحرف)
-        inclusive: يجب أن تحتوي السلسلة على {maximum} حرف (أحرف) كحد أقصى
-        not_inclusive: يجب أن تحتوي السلسلة على أقل من {maximum} حرف (أحرف)
+        inclusive: يجب أن تحتوي السلسلة على {maximum} حرف (أحرف)
+          كحد أقصى
+        not_inclusive: يجب أن تحتوي السلسلة على أقل من {maximum}
+          حرف (أحرف)
       number:
         exact: يجب أن يكون الرقم {maximum}
         inclusive: يجب أن يكون الرقم أقل من أو يساوي {maximum}

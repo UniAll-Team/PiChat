@@ -107,7 +107,7 @@ export default defineNuxtConfig({
 			name: process.env.NUXT_SITE_NAME,
 			description: process.env.NUXT_SITE_DESCRIPTION,
 			theme_color: '#000000',
-			lang: 'zh-Hans',
+			lang: process.env.NUXT_DEFAULT_LOCALE || 'en',
 			icons: [
 				{
 					src: '/icon-64.png',
@@ -156,7 +156,9 @@ export default defineNuxtConfig({
 		},
 		imports: {
 			dirs: ['./constants'],
-		}
+		},
+		// 用于 nuxthub debug
+		minify: false,
 	},
 
 	i18n: {
@@ -231,6 +233,17 @@ export default defineNuxtConfig({
 
 	future: {
 		compatibilityVersion: 4,
+	},
+
+	icon: {
+		serverBundle: {
+			collections: [
+				'heroicons',
+				'simple-icons',
+				'logos',
+				'mdi',
+			]
+		}
 	},
 
 	lodash: {
