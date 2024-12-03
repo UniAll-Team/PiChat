@@ -1,10 +1,11 @@
 set modules \
+    hub \
     i18n \
     pinia \
     vueuse \
     scripts \
-    @vite-pwa/nuxt \
     @nuxtjs/seo \
+    @vite-pwa/nuxt \
     nuxt-zod-i18n \
     supabase \
     sentry \
@@ -15,7 +16,7 @@ set modules \
 
 for module in $modules
     # 必须使用npm源不能使用镜像源，否则会出现找不到模块的情况
-    http_proxy pnpx nuxi module add $module
+    http_proxy nlx nuxi module add $module
 end
 
 ni \
@@ -45,6 +46,7 @@ ni \
 
 ni -D \
     nuxi \
+    wrangler \
     sass-embedded \
     # nuxt-chatgpt \
     nuxt-lodash \

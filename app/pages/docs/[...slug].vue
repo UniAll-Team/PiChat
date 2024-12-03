@@ -37,7 +37,7 @@ if (!page.value) {
 }
 
 const { data: surround } = await useAsyncData(`${route.path}-surround`,
-	() => queryContent('/docs')
+	() => queryContent('docs')
 		.locale(locale.value)
 		.where({ _extension: 'md', navigation: { $ne: false } })
 		.only(['title', 'description', '_path'])
@@ -46,7 +46,6 @@ const { data: surround } = await useAsyncData(`${route.path}-surround`,
 )
 
 useSeoMeta({
-	titleTemplate: '%s ' + page.value.title,
 	description: page.value.description,
 })
 

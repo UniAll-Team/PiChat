@@ -15,12 +15,12 @@ export function useLoginProviders() {
 	type UIProviders = UIProvider[]
 
 	let providers = ref<UIProviders>([
-		/* {
+		{
 			provider: 'github',
 			label: t('login_provider.continue_with', { provider: 'GitHub' }),
 			icon: 'i-simple-icons-github',
 			color: 'black' as const,
-		}, */
+		},
 		{
 			provider: 'google',
 			label: t('login_provider.continue_with', { provider: 'Google' }),
@@ -41,7 +41,7 @@ export function useLoginProviders() {
 		}, */
 		{
 			provider: 'twitter',
-			label: t('login_provider.continue_with', { provider: 'Twitter' }),
+			label: t('login_provider.continue_with', { provider: 'X' }),
 			icon: 'i-simple-icons-x',
 			color: 'black' as const,
 		},
@@ -77,9 +77,10 @@ export function useLoginProviders() {
 				throw error
 			}
 
+			console.debug('登录成功', data)
 			toastSuccess(t('login_provider.success', { provider: 'Google' }))
-			await navigateTo('/home')
 
+			await navigateTo('/home')
 		} catch (error) {
 			console.error('登录出错', error)
 			toastError(t('login_provider.error.one_tap', { message: error.message }))
@@ -100,9 +101,8 @@ export function useLoginProviders() {
 				throw error
 			}
 
-			toastSuccess(`Logged in with ${provider}`)
-
-			await navigateTo('/home')
+			console.debug('登录成功', data)
+			toastSuccess(t('login_provider.success', { provider }))
 		} catch (error) {
 			console.error('登录出错', error)
 			toastError(t('login_provider.error.oauth', { message: error.message }))

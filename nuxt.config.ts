@@ -9,6 +9,7 @@ export default defineNuxtConfig({
 		'nuxt-lodash',
 		'nuxt-swiper',
 		'nuxt-viewport',
+		'@nuxthub/core',
 		'@nuxtjs/i18n',
 		'@nuxtjs/supabase',
 		'@nuxt/scripts',
@@ -32,6 +33,10 @@ export default defineNuxtConfig({
 				includes: ['debug', 'dir'],
 			})
 		]
+	},
+
+	hub: {
+		analytics: true,
 	},
 
 	// debug: true,
