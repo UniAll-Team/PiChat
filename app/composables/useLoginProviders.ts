@@ -15,12 +15,13 @@ export function useLoginProviders() {
 	type UIProviders = UIProvider[]
 
 	let providers = ref<UIProviders>([
-		{
+		// github 有bug，不知道怎么修复
+		/* {
 			provider: 'github',
 			label: t('login_provider.continue_with', { provider: 'GitHub' }),
 			icon: 'i-simple-icons-github',
 			color: 'black' as const,
-		},
+		}, */
 		{
 			provider: 'google',
 			label: t('login_provider.continue_with', { provider: 'Google' }),
@@ -93,6 +94,8 @@ export function useLoginProviders() {
 		try {
 			setLoading(provider, true)
 
+			console.debug('登录中', provider)
+
 			const { data, error } = await supabase.auth.signInWithOAuth({
 				provider,
 				options: { redirectTo: config.public.i18n.baseUrl }
@@ -102,7 +105,7 @@ export function useLoginProviders() {
 			}
 
 			console.debug('登录成功', data)
-			toastSuccess(t('login_provider.success', { provider }))
+			toastSuccess(t('login_provider.loading'))
 		} catch (error) {
 			console.error('登录出错', error)
 			toastError(t('login_provider.error.oauth', { message: error.message }))

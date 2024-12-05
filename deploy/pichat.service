@@ -1,0 +1,17 @@
+[Unit]
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/node --env-file=%h/Documents/PiCHat/.env %h/Documents/PiCHat/.output/server/index.mjs
+# 工作目录
+WorkingDirectory=%h/Documents/PiCHat
+# node 崩溃后重启
+RestartSec=10
+Restart=always
+# 输出日志
+StandardOutput=file:%L/%N.log
+StandardError=file:%L/%N.log
+
+[Install]
+WantedBy=default.target

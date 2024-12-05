@@ -9,7 +9,6 @@ export default defineNuxtConfig({
 		'nuxt-lodash',
 		'nuxt-swiper',
 		'nuxt-viewport',
-		'@nuxthub/core',
 		'@nuxtjs/i18n',
 		'@nuxtjs/supabase',
 		'@nuxt/scripts',
@@ -33,10 +32,6 @@ export default defineNuxtConfig({
 				includes: ['debug', 'dir'],
 			})
 		]
-	},
-
-	hub: {
-		analytics: true,
 	},
 
 	// debug: true,
@@ -157,8 +152,6 @@ export default defineNuxtConfig({
 		imports: {
 			dirs: ['./constants'],
 		},
-		// 用于 nuxthub debug
-		minify: false,
 	},
 
 	i18n: {
@@ -257,7 +250,7 @@ export default defineNuxtConfig({
 		redirectOptions: {
 			login: '/login',
 			callback: '/',
-			exclude: ['/', '/signup', '/docs', '/pricing'],
+			exclude: ['/', '/docs', '/pricing'],
 		},
 	},
 
