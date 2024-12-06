@@ -207,6 +207,8 @@ function useImageGroups() {
 	async function searchImages() {
 		const embedding = await text2embedding(description)
 
+		console.debug('searchImages, embedding:', embedding)
+
 		const { data, error } = await supabase
 			.rpc('search_images', {
 				query_embedding: embedding

@@ -1,16 +1,7 @@
 import type { H3Event } from 'h3'
 
-import OpenAI from 'openai'
-import { createDocument } from '../utils/createDocument'
-import { createEmbedding } from '../utils/createEmbedding'
-
 export async function createImageEmbedding(this: H3Event, signedUrl: string) {
-	const config = useRuntimeConfig(this)
-
-	const openai = new OpenAI({
-		apiKey: config.openai.apiKey,
-		baseURL: config.openai.baseURL
-	})
+	const openai = useOpenAI(this)
 
 	const document = await createDocument(openai, signedUrl)
 

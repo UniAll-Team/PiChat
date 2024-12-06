@@ -6,7 +6,6 @@ import { googleOneTap } from 'vue3-google-login'
 export function useLoginProviders() {
 	const { t } = useI18n()
 
-	const config = useRuntimeConfig()
 	const supabase = useSupabaseClient()
 
 	const { toastError, toastSuccess } = useAppToast()
@@ -98,7 +97,7 @@ export function useLoginProviders() {
 
 			const { data, error } = await supabase.auth.signInWithOAuth({
 				provider,
-				options: { redirectTo: config.public.i18n.baseUrl }
+				options: { redirectTo: location.origin }
 			})
 			if (error) {
 				throw error

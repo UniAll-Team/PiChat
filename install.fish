@@ -43,6 +43,7 @@ ni \
     @uppy/file-input \
     vue3-google-login \
     openai \
+    yn \
     client-zip
 
 ni -D \

@@ -122,19 +122,19 @@ WITH CHECK (
 		CASE (auth.jwt()->>'plan')::text
 			WHEN 'pro/mouth' THEN
 				(auth.jwt()->>'cycle_indexed_count')::int < 1777
-					AND storage.get_folder_size(auth.uid()::text) < 177<<30	-- 177GB for pro plan
+					AND storage.get_folder_size(auth.uid()::text) < (177<<30)	-- 177GB for pro plan
 			WHEN 'pro/year' THEN
 				(auth.jwt()->>'cycle_indexed_count')::int < 17777
-					AND storage.get_folder_size(auth.uid()::text) < 177<<30	-- 177GB for pro plan
+					AND storage.get_folder_size(auth.uid()::text) < (177<<30)	-- 177GB for pro plan
 			WHEN 'pro-plus/mouth' THEN
 				(auth.jwt()->>'cycle_indexed_count')::int < 3777
-					AND storage.get_folder_size(auth.uid()::text) < 377<<30	-- 377GB for pro plus plan
+					AND storage.get_folder_size(auth.uid()::text) < (377<<30)	-- 377GB for pro plus plan
 			WHEN 'pro-plus/year' THEN
 				(auth.jwt()->>'cycle_indexed_count')::int < 37777
-					AND storage.get_folder_size(auth.uid()::text) < 377<<30	-- 377GB for pro plus plan
+					AND storage.get_folder_size(auth.uid()::text) < (377<<30)	-- 377GB for pro plus plan
 			ELSE
 				(auth.jwt()->>'cycle_indexed_count')::int < 177
-					AND storage.get_folder_size(auth.uid()::text) < 5<<30	-- 5GB for free plan
+					AND storage.get_folder_size(auth.uid()::text) < (5<<30)	-- 5GB for free plan
 		END
 	)
 );

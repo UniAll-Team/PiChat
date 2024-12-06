@@ -1,13 +1,21 @@
-{$NUXT_SITE_DOMAIN}
-reverse_proxy :3000
-
-log {
-	output file /var/log/caddy/{$NUXT_SITE_NAME}.jsonl {
-		roll_size 10M
-		roll_keep 5
-		roll_keep_for 7d
+{
+	storage file_system {
+		root /var/lib/caddy
 	}
-	# 即使是用 console 格式输出，内容也是 json 格式，所以还不如直接输出 json
-	format json
-	level DEBUG
+}
+
+# {$NUXT_SITE_DOMAIN}
+localhost:8088 {
+	reverse_proxy :3000
+
+	log {
+		output file /var/log/caddy/{$NUXT_SITE_NAME}.jsonl {
+			roll_size 10M
+			roll_keep 5
+			roll_keep_for 7d
+		}
+		# 即使是用 console 格式输出，内容也是 json 格式，所以还不如直接输出 json
+		format json
+		level DEBUG
+	}
 }

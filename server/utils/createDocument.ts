@@ -29,5 +29,12 @@ export async function createDocument(openai: OpenAI, imageURL: string) {
 
 	console.debug(completion)
 
-	return completion.choices[0].message.content
+	const content = completion?.choices?.[0].message.content
+
+	if (content) {
+		return content
+	} else {
+		console.error('createDocument failed', completion)
+		return null
+	}
 }

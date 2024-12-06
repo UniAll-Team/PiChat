@@ -1,4 +1,5 @@
 import removeConsole from "vite-plugin-remove-console"
+import yn from 'yn'
 
 export default defineNuxtConfig({
 	extends: ['@nuxt/ui-pro'],
@@ -46,17 +47,120 @@ export default defineNuxtConfig({
 		devLogs: true,
 	},
 
+	devServer: {
+		// 防止与生产环境端口冲突
+		port: 4000,
+	},
+
 	runtimeConfig: {
 		openai: {
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+			useProxy: yn(process.env.OPENAI_USE_PROXY, { default: false }),
+		},
+		proxy: {
+			// 代理配置，不能在 .env 中配置，因为会干扰很多程序
+			http: 'http://localhost:8800',
+			socks5: 'socks5://localhost:1080',
+			socks5h: 'socks5h://localhost:1080',
 		},
 		public: {
 			sentry: {
 				dsn: process.env.SENTRY_DSN,
 				environment: process.env.SENTRY_ENVIRONMENT,
 			}
-		}
+		},
+	},
+
+	imports: {
+		dirs: [
+			'./stores',
+			'./constants',
+		],
+	},
+
+	nitro: {
+		prerender: {
+			routes: ['/', '/docs'],
+			crawlLinks: true,
+		},
+		imports: {
+			dirs: ['./constants'],
+		},
+	},
+
+	i18n: {
+		// debug: true,
+		// must use `no_prefix`, otherwise user will be redirected to default language when clicking other paths
+		strategy: 'no_prefix',
+		detectBrowserLanguage: {
+			redirectOn: 'root',
+			alwaysRedirect: true,
+			useCookie: true,
+			cookieCrossOrigin: true,
+			fallbackLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
+		},
+		lazy: true,
+		langDir: 'locales/',
+		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
+		baseUrl: process.env.NUXT_SITE_URL || 'http://localhost:3000',
+		locales: [
+			{
+				code: 'en',
+				language: 'en',
+				name: 'English',
+				file: 'en.yaml',
+			},
+			{
+				code: 'ar',
+				language: 'ar',
+				name: 'العربية',
+				file: 'ar.yaml',
+			},
+			{
+				code: 'zh-Hans',
+				language: 'zh-Hans',
+				name: '简体中文',
+				file: 'zh-Hans.yaml',
+				isCatchallLocale: true,
+			},
+		],
+	},
+
+	content: {
+		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
+		locales: [
+			'en',
+			'zh-Hans',
+			'ar'
+		]
+	},
+
+	hooks: {
+		// Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
+		'components:extend': (components) => {
+			const globals = components.filter((c) => ['UButton'].includes(c.pascalName))
+
+			globals.forEach((c) => (c.global = true))
+		},
+	},
+
+	colorMode: {
+		disableTransition: true,
+	},
+
+	routeRules: {
+		'/docs': { redirect: '/docs/getting-started/usage' },
+	},
+
+	typescript: {
+		strict: false,
+		// 不能开启，因为大量外部组件没有类型定义
+		//typeCheck: true,
+	},
+
+	future: {
+		compatibilityVersion: 4,
 	},
 
 	app: {
@@ -73,7 +177,7 @@ export default defineNuxtConfig({
 
 				ogType: 'website',
 				ogImage: {
-					url: `${process.env.NUXT_PUBLIC_SITE_URL}/icon-og.png`,
+					url: `${process.env.NUXT_SITE_URL}/icon-og.png`,
 					width: 1024,
 					height: 730,
 					type: 'image/png',
@@ -135,97 +239,6 @@ export default defineNuxtConfig({
 			navigateFallback: '/',
 			navigateFallbackAllowlist: [/^\/$/],
 		},
-	},
-
-	imports: {
-		dirs: [
-			'./stores',
-			'./constants',
-		],
-	},
-
-	nitro: {
-		prerender: {
-			routes: ['/', '/docs'],
-			crawlLinks: true,
-		},
-		imports: {
-			dirs: ['./constants'],
-		},
-	},
-
-	i18n: {
-		// debug: true,
-		// must use `no_prefix`, otherwise user will be redirected to default language when clicking other paths
-		strategy: 'no_prefix',
-		detectBrowserLanguage: {
-			redirectOn: 'root',
-			alwaysRedirect: true,
-			useCookie: true,
-			cookieCrossOrigin: true,
-			fallbackLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
-		},
-		lazy: true,
-		langDir: 'locales/',
-		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
-		baseUrl: process.env.NUXT_PUBLIC_I18N_BASE_URL || 'http://localhost:3000',
-		locales: [
-			{
-				code: 'en',
-				language: 'en',
-				name: 'English',
-				file: 'en.yaml',
-			},
-			{
-				code: 'ar',
-				language: 'ar',
-				name: 'العربية',
-				file: 'ar.yaml',
-			},
-			{
-				code: 'zh-Hans',
-				language: 'zh-Hans',
-				name: '简体中文',
-				file: 'zh-Hans.yaml',
-				isCatchallLocale: true,
-			},
-		],
-	},
-
-	content: {
-		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
-		locales: [
-			'en',
-			'zh-Hans',
-			'ar'
-		]
-	},
-
-	hooks: {
-		// Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
-		'components:extend': (components) => {
-			const globals = components.filter((c) => ['UButton'].includes(c.pascalName))
-
-			globals.forEach((c) => (c.global = true))
-		},
-	},
-
-	colorMode: {
-		disableTransition: true,
-	},
-
-	routeRules: {
-		'/docs': { redirect: '/docs/getting-started/usage' },
-	},
-
-	typescript: {
-		strict: false,
-		// 不能开启，因为大量外部组件没有类型定义
-		//typeCheck: true,
-	},
-
-	future: {
-		compatibilityVersion: 4,
 	},
 
 	icon: {
