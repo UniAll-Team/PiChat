@@ -1,47 +1,28 @@
 <template>
 	<UDashboardPage>
 		<UDashboardPanel grow>
-			<UDashboardNavbar title="Settings" />
-
-			<UDashboardNavbar class="py-0 px-1.5 overflow-x-auto">
-				<UHorizontalNavigation :links="links" />
-			</UDashboardNavbar>
+			<UDashboardNavbar :title="t('settings')" />
 
 			<NuxtPage />
 		</UDashboardPanel>
 	</UDashboardPage>
 </template>
 
+<i18n lang="yaml">
+en:
+  settings: Settings
+
+zh-Hans:
+  settings: 设置
+
+ar:
+  settings: الإعدادات
+</i18n>
+
 <script setup lang="ts">
 definePageMeta({
 	layout: 'dashboard',
 })
 
-const links = [
-	[
-		{
-			label: 'General',
-			icon: 'i-heroicons-user-circle',
-			to: '/settings',
-			exact: true,
-		},
-		{
-			label: 'Notifications',
-			icon: 'i-heroicons-bell',
-			to: '/settings/notifications',
-		},
-	],
-	[
-		{
-			label: 'Documentation',
-			icon: 'i-heroicons-book-open',
-			to: '/docs'
-		},
-		{
-			label: 'Upgrade to Pro',
-			icon: 'i-heroicons-credit-card',
-			to: '/pricing'
-		},
-	],
-]
+const { t } = useI18n()
 </script>

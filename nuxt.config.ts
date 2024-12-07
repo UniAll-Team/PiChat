@@ -203,10 +203,20 @@ export default defineNuxtConfig({
 
 	pwa: {
 		manifest: {
+			id: process.env.NUXT_SITE_NAME,
 			name: process.env.NUXT_SITE_NAME,
 			description: process.env.NUXT_SITE_DESCRIPTION,
 			theme_color: '#000000',
 			lang: process.env.NUXT_DEFAULT_LOCALE || 'en',
+			orientation: 'natural',
+			launch_handler: {
+				client_mode: 'auto',
+			},
+			display_override: [
+				'window-controls-overlay',
+				'standalone',
+				'browser',
+			],
 			icons: [
 				{
 					src: '/icon-64.png',
