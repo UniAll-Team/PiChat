@@ -6,6 +6,7 @@
 .nitro
 .cache
 dist
+*.tzst
 
 # Node dependencies
 node_modules
@@ -13,6 +14,9 @@ node_modules
 # Logs
 logs
 *.log
+
+# Runtime data
+runs/
 
 # Misc
 .DS_Store

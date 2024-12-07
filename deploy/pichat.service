@@ -4,6 +4,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
+Type=simple
 ExecStart=/usr/bin/node --env-file=%h/Documents/PiCHat/.env %h/Documents/PiCHat/.output/server/index.mjs
 # 工作目录
 WorkingDirectory=%h/Documents/PiCHat
@@ -11,8 +12,11 @@ WorkingDirectory=%h/Documents/PiCHat
 RestartSec=10
 Restart=always
 # 输出日志
-StandardOutput=file:%L/%N.log
-StandardError=file:%L/%N.log
+#StandardOutput=file:%L/%N.log
+#StandardError=file:%L/%N.log
+# 不能使用 %L，因为这个特性是在 systemd 新版本才有的
+StandardOutput=file:%h/Documents/PiCHat/logs/pichat.log
+StandardError=file:%h/Documents/PiCHat/logs/pichat.log
 
 [Install]
 WantedBy=default.target
