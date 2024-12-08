@@ -25,95 +25,99 @@
 en:
   notifications:
     channels:
-      title: 'Notification channels'
-      description: 'Where can we notify you?'
+      title: Notification Channels
+      description: How would you like to be notified?
       email:
-        label: 'Email'
-        description: 'Receive notifications via email.'
+        label: Email
+        description: Receive notifications via email.
       app:
-        label: 'App'
-        description: 'Receive notifications in the app.'
-    updates:
-      title: 'Account updates'
-      description: 'Receive updates about Nuxt UI.'
+        label: In-app
+        description: Receive notifications within the app.
+    types:
+      title: Notification Types
+      description: Which types of notifications would you like
+        to receive?
       discounts:
-        label: 'Promotions'
-        description: 'Receive notifications about discounts and promotions.'
+        label: Discounts
+        description: Receive notifications about discounts and
+          promotions.
       product:
-        label: 'Product updates'
-        description: 'Receive a monthly email with all new features and updates.'
+        label: Product Updates
+        description: Receive a monthly email with all the new
+          features and updates.
       important:
-        label: 'Important updates'
-        description: 'Receive emails about important updates like security fixes, maintenance, etc.'
+        label: Important Updates
+        description: Receive emails about important updates such
+          as security fixes and maintenance.
     toast:
       success:
-        title: 'Success'
-        description: 'Notifications updated successfully.'
+        title: Success
+        description: Notification settings updated successfully.
       error:
-        title: 'Error'
-        description: '{message}'
+        title: Error
 
 zh-Hans:
   notifications:
     channels:
-      title: '通知渠道'
-      description: '我们如何通知您？'
+      title: 通知渠道
+      description: 我们如何通知您？
       email:
-        label: '邮件'
-        description: '通过邮件接收通知。'
+        label: 邮件
+        description: 通过邮件接收通知。
       app:
-        label: '应用内'
-        description: '在应用内接收通知。'
-    updates:
-      title: '账户更新'
-      description: '接收 Nuxt UI 的更新。'
+        label: 应用内
+        description: 在应用内接收通知。
+    types:
+      title: 通知类型
+      description: 您想接收哪些类型的通知？
       discounts:
-        label: '优惠活动'
-        description: '接收折扣和促销活动的通知。'
+        label: 优惠活动
+        description: 接收折扣和促销活动的通知。
       product:
-        label: '产品更新'
-        description: '每月接收一次包含所有新功能和更新的邮件。'
+        label: 产品更新
+        description: 每月接收一次包含所有新功能和更新的邮件。
       important:
-        label: '重要更新'
-        description: '接收关于安全修复、维护等重要更新的邮件。'
+        label: 重要更新
+        description: 接收关于安全修复、维护等重要更新的邮件。
     toast:
       success:
-        title: '成功'
-        description: '通知设置更新成功。'
+        title: 成功
+        description: 通知设置更新成功。
       error:
-        title: '错误'
-        description: '{message}'
+        title: 错误
 
 ar:
   notifications:
     channels:
-      title: 'قنوات الإشعارات'
-      description: 'كيف يمكننا إخطارك؟'
+      title: قنوات الإشعارات
+      description: كيف ترغب في تلقي الإشعارات؟
       email:
-        label: 'البريد الإلكتروني'
-        description: 'تلقي الإشعارات عبر البريد الإلكتروني.'
+        label: البريد الإلكتروني
+        description: تلقي الإشعارات عبر البريد الإلكتروني.
       app:
-        label: 'التطبيق'
-        description: 'تلقي الإشعارات في التطبيق.'
-    updates:
-      title: 'تحديثات الحساب'
-      description: 'استلم تحديثات Nuxt UI.'
+        label: داخل التطبيق
+        description: تلقي الإشعارات داخل التطبيق.
+    types:
+      title: أنواع الإشعارات
+      description: ما هي أنواع الإشعارات التي ترغب في تلقيها؟
       discounts:
-        label: 'العروض'
-        description: 'تلقي إشعارات حول الخصومات والعروض الترويجية.'
+        label: الخصومات
+        description: تلقي الإشعارات حول الخصومات والعروض الترويجية.
       product:
-        label: 'تحديثات المنتج'
-        description: 'تلقي بريد إلكتروني شهري يحتوي على جميع الميزات والتحديثات الجديدة.'
+        label: تحديثات المنتج
+        description: تلقي بريد إلكتروني شهري مع جميع الميزات والتحديثات
+          الجديدة.
       important:
-        label: 'تحديثات مهمة'
-        description: 'تلقي رسائل البريد الإلكتروني حول التحديثات المهمة مثل إصلاحات الأمان والصيانة وما إلى ذلك.'
+        label: التحديثات الهامة
+        description: تلقي رسائل بريد إلكتروني حول التحديثات الهامة
+          مثل إصلاحات الأمان والصيانة.
     toast:
       success:
-        title: 'نجاح'
-        description: 'تم تحديث الإشعارات بنجاح.'
+        title: نجاح
+        description: تم تحديث إعدادات الإشعار بنجاح.
       error:
-        title: 'خطأ'
-        description: '{message}'
+        title: خطأ
+
 </i18n>
 
 <script setup lang="ts">
@@ -152,24 +156,24 @@ const sections = [
 		],
 	},
 	{
-		title: t('notifications.updates.title'),
-		description: t('notifications.updates.description'),
+		title: t('notifications.types.title'),
+		description: t('notifications.types.description'),
 		fields: [
 			{
 				name: 'discounts',
-				label: t('notifications.updates.discounts.label'),
-				description: t('notifications.updates.discounts.description'),
+				label: t('notifications.types.discounts.label'),
+				description: t('notifications.types.discounts.description'),
 			},
 			{
 				name: 'product_updates',
-				label: t('notifications.updates.product.label'),
-				description: t('notifications.updates.product.description'),
+				label: t('notifications.types.product.label'),
+				description: t('notifications.types.product.description'),
 			},
 			{
 				name: 'important_updates',
-				label: t('notifications.updates.important.label'),
+				label: t('notifications.types.important.label'),
 				description:
-					t('notifications.updates.important.description'),
+					t('notifications.types.important.description'),
 			},
 		],
 	},
