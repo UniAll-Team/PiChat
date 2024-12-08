@@ -203,7 +203,7 @@ export default defineNuxtConfig({
 
 	pwa: {
 		manifest: {
-			id: process.env.NUXT_SITE_NAME,
+			id: process.env.NUXT_SITE_NAME.toLowerCase(),
 			name: process.env.NUXT_SITE_NAME,
 			description: process.env.NUXT_SITE_DESCRIPTION,
 			theme_color: '#000000',
