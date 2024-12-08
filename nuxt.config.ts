@@ -90,8 +90,9 @@ export default defineNuxtConfig({
 	},
 
 	i18n: {
-		// debug: true,
-		// must use `no_prefix`, otherwise user will be redirected to default language when clicking other paths
+		//debug: true,
+
+		// 必须使用`no_prefix`，否则用户点击其他路径时将被重定向到默认语言
 		strategy: 'no_prefix',
 		detectBrowserLanguage: {
 			redirectOn: 'root',
@@ -137,7 +138,7 @@ export default defineNuxtConfig({
 	},
 
 	hooks: {
-		// Define `@nuxt/ui` components as global to use them in `.md` (feel free to add those you need)
+		// 将 `@nuxt/ui` 组件定义为全局组件，以便在 `.md` 中使用它们（随意添加您需要的组件）
 		'components:extend': (components) => {
 			const globals = components.filter((c) => ['UButton'].includes(c.pascalName))
 
@@ -209,6 +210,7 @@ export default defineNuxtConfig({
 			theme_color: '#000000',
 			lang: process.env.NUXT_DEFAULT_LOCALE || 'en',
 			orientation: 'natural',
+			prefer_related_applications: false,
 			launch_handler: {
 				client_mode: 'auto',
 			},

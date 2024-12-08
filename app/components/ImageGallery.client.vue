@@ -88,6 +88,7 @@ import type { DateRange } from '~/types/dashboard'
 import type { Database } from '~/types/database'
 import type { Image, Images } from '~/types/image'
 
+import { endOfDay, startOfDay } from 'date-fns'
 import _ from 'lodash'
 
 const { t } = useI18n()
@@ -98,6 +99,11 @@ const { description, dateRange, refreshID } = defineProps<{
 	description: string,
 	refreshID: string,
 }>()
+const dateRangeISO = computed(() => ({
+	start: startOfDay(dateRange.start).toISOString(),
+	end: endOfDay(dateRange.end).toISOString(),
+}))
+
 
 const supabase = useSupabaseClient<Database>()
 const { toastError } = useAppToast()
@@ -159,27 +165,30 @@ function useImageGroups() {
 		observer.disconnect()
 	})
 
+	async function reload() {
+		try {
+			// 重置状态
+			reset()
+			// 加载数据
+			await loadMore()
+		} catch (err) {
+			error.value = true
+			toastError(t('error.title'), err.message)
+		}
+	}
+
+	// 监听刷新ID变化
+	watchThrottled(() => refreshID, reload, { immediate: true, throttle: 3000 })
 
 	// 监听搜索条件变化
 	watchDebounced(
 		[
 			() => description,
-			() => refreshID,
 			() =>
-				`${dateRange.start.toISOString()}_${dateRange.end.toISOString()}`
+				`${dateRangeISO.value.start}_${dateRangeISO.value.end}`
 		],
-		async () => {
-			try {
-				// 重置状态
-				reset()
-				// 加载数据
-				await loadMore()
-			} catch (err) {
-				error.value = true
-				toastError(t('error.title'), err.message)
-			}
-		},
-		{ immediate: true, debounce: 1000 },
+		reload,
+		{ debounce: 1000 },
 	)
 
 	function observerLastImage(el: HTMLDivElement) {
@@ -192,8 +201,8 @@ function useImageGroups() {
 		const { data, error } = await supabase
 			.from('image_details')
 			.select(imageColumns)
-			.gte('last_modified_date', dateRange.start.toISOString())
-			.lte('last_modified_date', dateRange.end.toISOString())
+			.gte('last_modified_date', dateRangeISO.value.start)
+			.lte('last_modified_date', dateRangeISO.value.end)
 			.order('last_modified_date', { ascending: false })
 			.range((page - 1) * pageSize, page * pageSize - 1)
 
@@ -214,8 +223,8 @@ function useImageGroups() {
 				query_embedding: embedding
 			})
 			.gte('similarity', 0.3)
-			.gte('last_modified_date', dateRange.start.toISOString())
-			.lte('last_modified_date', dateRange.end.toISOString())
+			.gte('last_modified_date', dateRangeISO.value.start)
+			.lte('last_modified_date', dateRangeISO.value.end)
 			.order('similarity', { ascending: false })
 			.limit(pageSize)
 

@@ -7,38 +7,51 @@
 
 <i18n lang="yaml">
 en:
-  fileAdded: 'File added: {file}'
-  uploadErrorLarge: 'File is too large, please select another one.'
-  uploadErrorRetry: 'Upload failed, please try again: {error}'
-  creatingIndex: 'Creating image index...'
-  indexCreated: 'Image index creation completed.'
-  getUserQuotaFailed: 'Failed to get user quota, please click on the left to contact support: {error}'
-  fileExists: 'File already exists, no need to upload again.'
-  createSignedURLError: 'Failed to create signed URL, please contact support: {error}'
-  imageIndexFailed: 'Failed to create image index, please contact support.'
-  updateIndexFailed: 'Failed to update image index, please contact support: {error}'
+  fileAdded: File added successfully.
+  uploadErrorLarge: The file is too large, please select again.
+  uploadErrorRetry: Upload failed, please try again.
+  creatingIndex: Creating image index...
+  indexCreated: Image index created successfully.
+  getUserQuotaFailed: Failed to get user quota, please contact
+    customer service on the left.
+  fileExists: The file already exists, no need to upload again.
+  createSignedURLError: Failed to create a signed URL, please
+    contact customer service on the left.
+  imageIndexFailed: Failed to create image index, please contact
+    customer service on the left.
+  updateIndexFailed: Failed to update image index, please contact
+    customer service on the left.
+  uploadComplete: Upload complete.
+
 zh-Hans:
-  fileAdded: '文件添加：{file}'
-  uploadErrorLarge: '文件过大，请重新选择。'
-  uploadErrorRetry: '上传失败，请重试：{error}'
-  creatingIndex: '正在建立图片索引...'
-  indexCreated: '图片索引建立完成。'
-  getUserQuotaFailed: '获取用户配额失败，请点击左侧联系客服：{error}'
-  fileExists: '文件已存在，无需重复上传。'
-  createSignedURLError: '创建签名URL失败，请联系客服：{error}'
-  imageIndexFailed: '创建图片索引失败，请联系客服。'
-  updateIndexFailed: '更新图片索引失败，请联系客服：{error}'
+  fileAdded: 文件添加成功。
+  uploadErrorLarge: 文件过大，请重新选择。
+  uploadErrorRetry: 上传失败，请重试。
+  creatingIndex: 正在建立图片索引...
+  indexCreated: 图片索引建立完成。
+  getUserQuotaFailed: 获取用户配额失败，请点击左侧联系客服。
+  fileExists: 文件已存在，无需重复上传。
+  createSignedURLError: 创建签名URL失败，请点击左侧联系客服。
+  imageIndexFailed: 创建图片索引失败，请点击左侧联系客服。
+  updateIndexFailed: 更新图片索引失败，请点击左侧联系客服。
+  uploadComplete: 上传完成。
+
 ar:
-  fileAdded: 'تمت إضافة الملف: {file}'
-  uploadErrorLarge: 'الملف كبير جدًا، يرجى اختيار ملف آخر.'
-  uploadErrorRetry: 'فشل التحميل، يرجى المحاولة مرة أخرى: {error}'
-  creatingIndex: 'جارٍ إنشاء فهرس الصورة...'
-  indexCreated: 'تم إنشاء فهرس الصورة بنجاح.'
-  getUserQuotaFailed: 'فشل في الحصول على حصة المستخدم، يرجى النقر على اليسار للاتصال بالدعم: {error}'
-  fileExists: 'الملف موجود بالفعل، لا حاجة لتحميله مرة أخرى.'
-  createSignedURLError: 'فشل في إنشاء رابط موقع موقّع، يرجى الاتصال بالدعم: {error}'
-  imageIndexFailed: 'فشل إنشاء فهرس الصورة، يرجى الاتصال بالدعم.'
-  updateIndexFailed: 'فشل تحديث فهرس الصورة، يرجى الاتصال بالدعم: {error}'
+  fileAdded: تم إضافة الملف بنجاح.
+  uploadErrorLarge: الملف كبير للغاية، يرجى اختيار ملف آخر.
+  uploadErrorRetry: فشل التحميل، يرجى المحاولة مرة أخرى.
+  creatingIndex: جاري إنشاء فهرس الصور...
+  indexCreated: تم إنشاء فهرس الصور بنجاح.
+  getUserQuotaFailed: فشل في الحصول على حصة المستخدم، يرجى الاتصال
+    بخدمة العملاء على اليسار.
+  fileExists: الملف موجود بالفعل، لا حاجة لتحميله مرة أخرى.
+  createSignedURLError: فشل في إنشاء عنوان URL موقّع، يرجى الاتصال
+    بخدمة العملاء على اليسار.
+  imageIndexFailed: فشل في إنشاء فهرس الصور، يرجى الاتصال بخدمة
+    العملاء على اليسار.
+  updateIndexFailed: فشل في تحديث فهرس الصور، يرجى الاتصال بخدمة
+    العملاء على اليسار.
+  uploadComplete: اكتمل التحميل.
 </i18n>
 
 <script lang="ts" setup>
@@ -67,6 +80,7 @@ const localeMap = {
 }
 
 const { toastError, toastSuccess } = useAppToast()
+const newNotification = useAppNotification({ tag: 'upload', renotify: true })
 
 const { createImageEmbedding } = useServerFunctions()
 
@@ -80,7 +94,7 @@ const supabaseConfig = config.public.supabase
 const { error, userQuota } = await useUserQuota()
 
 if (error) {
-	toastError(t('getUserQuotaFailed', { error }))
+	toastError(t('getUserQuotaFailed'), error.message)
 }
 
 const isOpen = defineModel<boolean>()
@@ -167,7 +181,8 @@ uppy.on('file-added', (file) => {
 
 uppy.on('upload-error', (file, error) => {
 	console.error('upload-error', file, error)
-	toastError(t('uploadErrorRetry', { error: error.message }))
+	toastError(t('uploadErrorRetry'), error.message)
+	newNotification(t('uploadErrorRetry'), { body: error.message })
 })
 
 uppy.addPostProcessor(async (fileIDs: string[]) => {
@@ -198,6 +213,8 @@ uppy.addPostProcessor(async (fileIDs: string[]) => {
 uppy.on('complete', (result) => {
 	console.info('complete', result)
 	emit('complete', result)
+	toastSuccess(t('uploadComplete'))
+	newNotification(t('uploadComplete'))
 })
 
 function handleClose() {
@@ -249,7 +266,7 @@ async function createEmbedding(name: string) {
 		if (error.name == 'StorageApiError' && (error as StorageApiError).status == 400) {
 			toastError(t('fileExists'))
 		} else {
-			toastError(t('createSignedURLError', { error }))
+			toastError(t('createSignedURLError'), error.message)
 		}
 
 		return
@@ -268,7 +285,7 @@ async function createEmbedding(name: string) {
 	const updateError = await updateEmbedding(name, embedding, document)
 	if (updateError) {
 		console.error('updateError', updateError)
-		toastError(t('updateIndexFailed', { error: updateError.message }))
+		toastError(t('updateIndexFailed'), updateError.message)
 		return
 	}
 }
