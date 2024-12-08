@@ -53,10 +53,10 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
+		useProxy: yn(process.env.NUXT_USE_PROXY, { default: false }),
 		openai: {
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-			useProxy: yn(process.env.OPENAI_USE_PROXY, { default: false }),
 		},
 		proxy: {
 			// 代理配置，不能在 .env 中配置，因为会干扰很多程序
@@ -67,7 +67,7 @@ export default defineNuxtConfig({
 		public: {
 			sentry: {
 				dsn: process.env.SENTRY_DSN,
-				environment: process.env.SENTRY_ENVIRONMENT,
+				environment: process.env.NODE_ENV,
 			}
 		},
 	},

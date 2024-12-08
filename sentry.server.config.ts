@@ -17,7 +17,7 @@ if (process.env.NODE_ENV != "production") {
 Sentry.init({
 	dsn: process.env.SENTRY_DSN,
 
-	environment: process.env.SENTRY_ENVIRONMENT,
+	environment: process.env.NODE_ENV,
 
 	// We recommend adjusting this value in production, or using tracesSampler
 	// for finer control
