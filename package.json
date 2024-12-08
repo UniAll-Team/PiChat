@@ -9,6 +9,7 @@
 		"preview": "nuxt preview",
 		"deploy": "fish ./deploy/setup.fish",
 		"upload": "fish ./deploy/upload.fish",
+		"update": "fish ./deploy/update.fish",
 		"download": "fish ./deploy/download.fish",
 		"sync": "lsyncd -log Exec .vscode/lsyncd.lua",
 		"postinstall": "nuxt prepare",
