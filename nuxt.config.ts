@@ -1,5 +1,4 @@
 import removeConsole from "vite-plugin-remove-console"
-import yn from 'yn'
 
 export default defineNuxtConfig({
 	extends: ['@nuxt/ui-pro'],
@@ -53,11 +52,12 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
-		useProxy: yn(process.env.NUXT_USE_PROXY, { default: false }),
 		openai: {
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
 		},
+		// 是否使用代理，这里不能使用 `yn`，因为 `yn` 的输出在编译时会被转换为常量
+		useProxy: process.env.NUXT_USE_PROXY,
 		proxy: {
 			// 代理配置，不能在 .env 中配置，因为会干扰很多程序
 			http: 'http://localhost:8800',
