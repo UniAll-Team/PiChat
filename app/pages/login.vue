@@ -16,11 +16,12 @@
 
 			<template #footer>
 				<i18n-t tag="p" keypath="footer">
-					<template #terms>
-						<NuxtLink to="/"
-							class="text-primary font-medium">
-							{{ t('terms_of_service') }}
-						</NuxtLink>
+					<template v-for="term in terms"
+						:key="term.placeholder" #[term.placeholder]>
+						<a target="_blank" :href="term.href"
+							class="text-primary">
+							{{ term.label }}
+						</a>
 					</template>
 				</i18n-t>
 			</template>
@@ -32,8 +33,10 @@
 zh-Hans:
   title: 欢迎
   description: 如果您没有账号，将自动创建您的账号。
-  footer: 登录即表示您同意我们的{terms}。
-  terms_of_service: 服务条款
+  footer: 登录即表示您同意我们的{terms}和{privacy}以及{disclaimer}。
+  terms_and_conditions: 服务条款
+  privacy_policy: 隐私政策
+  disclaimer: 免责声明
   fields:
     email:
       label: 电子邮箱
@@ -59,58 +62,63 @@ zh-Hans:
       title: 登录失败
     success:
       title: 登录成功
-      message: 您已成功登录
+      message: 您已成功登录。
 
-# English (en) Translation
 en:
   title: Welcome
-  description: If you don't have an account, one will be automatically created for you.
-  footer: By logging in, you agree to our {terms}.
-  terms_of_service: Terms of Service
+  description: If you do not have an account, your account will
+    be automatically created.
+  footer: By logging in, you agree to our {terms}, {privacy},
+    and {disclaimer}.
+  terms_and_conditions: Terms and Conditions
+  privacy_policy: Privacy Policy
+  disclaimer: Disclaimer
   fields:
     email:
       label: Email
       placeholder: Please enter your email
     otp:
-      label: Verification Code
-      placeholder: Please enter your verification code
-      resend: Resend Verification Code
+      label: OTP
+      placeholder: Please enter your OTP
+      resend: Resend OTP
   validation:
     email: Invalid email address
-    otp: Invalid verification code
+    otp: Invalid OTP
   submit:
     send_email: Send Email
-    login_with_otp: Log In
+    login_with_otp: Login
   send_email:
     error:
-      title: Email Sending Failed
+      title: Email send failed
     success:
-      title: Verification Code Sent
-      message: A verification code has been sent to {email}, please enter it in the verification code input field.
+      title: OTP Sent
+      message: An OTP has been sent to {email}, please enter it
+        in the OTP input box.
   login_with_otp:
     error:
       title: Login Failed
     success:
       title: Login Successful
-      message: You have successfully logged in
+      message: You have successfully logged in.
 
-# Arabic (ar) Translation
 ar:
-  title: أهلاً بك
-  description: إذا لم يكن لديك حساب، سيتم إنشاء حساب تلقائيًا.
-  footer: بتسجيل الدخول، فإنك توافق على {terms} الخاصة بنا.
-  terms_of_service: شروط الخدمة
+  title: مرحبًا
+  description: إذا لم يكن لديك حساب، سيتم إنشاء حساب لك تلقائيًا.
+  footer: بتسجيل الدخول، فإنك توافق على {terms} و{privacy} و{disclaimer}.
+  terms_and_conditions: الشروط والأحكام
+  privacy_policy: سياسة الخصوصية
+  disclaimer: إخلاء المسؤولية
   fields:
     email:
       label: البريد الإلكتروني
-      placeholder: يرجى إدخال بريدك الإلكتروني
+      placeholder: الرجاء إدخال بريدك الإلكتروني
     otp:
-      label: رمز التحقق
-      placeholder: يرجى إدخال رمز التحقق الخاص بك
-      resend: إعادة إرسال رمز التحقق
+      label: الرمز السري
+      placeholder: الرجاء إدخال الرمز السري
+      resend: إعادة إرسال الرمز السري
   validation:
     email: عنوان بريد إلكتروني غير صالح
-    otp: رمز التحقق غير صالح
+    otp: رمز سري غير صالح
   submit:
     send_email: إرسال البريد الإلكتروني
     login_with_otp: تسجيل الدخول
@@ -118,14 +126,15 @@ ar:
     error:
       title: فشل إرسال البريد الإلكتروني
     success:
-      title: تم إرسال رمز التحقق
-      message: تم إرسال رمز التحقق إلى {email}، يرجى إدخاله في حقل إدخال رمز التحقق.
+      title: تم إرسال الرمز السري
+      message: لقد تم إرسال رمز سري إلى {email}، يرجى إدخاله في
+        خانة إدخال الرمز السري.
   login_with_otp:
     error:
       title: فشل تسجيل الدخول
     success:
       title: تم تسجيل الدخول بنجاح
-      message: لقد قمت بتسجيل الدخول بنجاح
+      message: لقد قمت بتسجيل الدخول بنجاح.
 </i18n>
 
 <script setup lang="ts">
@@ -141,6 +150,24 @@ const config = useRuntimeConfig()
 const supabase = useSupabaseClient()
 
 const { toastError, toastSuccess } = useAppToast()
+
+const terms = [
+	{
+		placeholder: 'terms',
+		label: t('terms_and_conditions'),
+		href: '/terms/term-and-condition.html'
+	},
+	{
+		placeholder: 'privacy',
+		label: t('privacy_policy'),
+		href: '/terms/privacy-policy.html'
+	},
+	{
+		placeholder: 'disclaimer',
+		label: t('disclaimer'),
+		href: '/terms/disclaimer.html'
+	}
+]
 
 const fields = ref([
 	{

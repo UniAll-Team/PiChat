@@ -15,7 +15,8 @@ sudo chmod -R g+rws /etc/{caddy,systemd/{system,user}}
 
 ln -sfb $PWD/{deploy/Caddyfile,.env} /etc/caddy/
 ln -sfb $PWD/deploy/caddy.service /etc/systemd/system/
-ln -sfb $PWD/deploy/pichat.service /etc/systemd/user/
+
+ln -s $PWD/deploy/pichat.service /etc/systemd/user/
 
 # 重载服务
 sudo systemctl daemon-reload
