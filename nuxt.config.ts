@@ -275,7 +275,7 @@ export default defineNuxtConfig({
 		redirectOptions: {
 			login: '/login',
 			callback: '/',
-			exclude: ['/', '/docs', '/pricing'],
+			exclude: ['/', '/docs/**', '/pricing'],
 		},
 	},
 

@@ -106,7 +106,7 @@ const safeNanoid = newSafeNanoid()
 
 const uppy = new Uppy({
 	restrictions: {
-		maxNumberOfFiles: userQuota.value.uploadRemaining,
+		maxNumberOfFiles: userQuota.value.cycleIndexedCount,
 		maxTotalFileSize: userQuota.value.storageRemaining,
 		// maxFileSize: userQuota.value.fileSizeLimit,
 		allowedFileTypes: ['image/*'],

@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 
-import HttpsProxyAgent from 'https-proxy-agent'
+import { HttpsProxyAgent } from 'https-proxy-agent'
 import OpenAI from 'openai'
 import yn from 'yn'
 

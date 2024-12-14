@@ -8,13 +8,13 @@
 		</UPageHero>
 
 		<UContainer>
-			<UPricingGrid class="lg:grid-cols">
-				<UPricingCard v-for="(plan, index) in plans"
-					:key="index" v-bind="plan"
-					:price="isYearly ? plan.price.year : plan.price.month"
-					:cycle="isYearly ? t('pricing.cycle.year') : t('pricing.cycle.month')"
-					:features="isYearly ? plan.features.year : plan.features.month" />
+			<UPricingGrid
+				:class="isYearly ? 'lg:grid-cols' : 'lg:grid-cols-4'">
+				<UPricingCard v-for="plan in plans" v-bind="plan" />
 			</UPricingGrid>
+			<UAlert icon="heroicons-exclamation-triangle"
+				color="red" variant="outline" class="mt-8"
+				:description="t('note')" />
 		</UContainer>
 
 		<!-- <ULandingSection>
@@ -36,115 +36,104 @@
 en:
   hero:
     title: Choose a Plan, Preserve Precious Memories
-    description: All accounts have a free option, but we recommend
-      investing in your beautiful memories and cherished images.
+    description: All accounts come with a free plan, but we recommend
+      paying for your beautiful memories and treasured images.
+  button:
+    getStarted: Get Started
+    currentPlan: Current Plan
+  note: The index count refers to the number of images you can
+    upload within a billing cycle. If you do not use up all your
+    index counts in the current cycle, they will not carry over
+    to the next cycle. For example, if you pay monthly and have
+    100 index counts per month, this means you can upload up to
+    100 images within that month. If you only upload 50 images,
+    the remaining 50 index counts will not roll over to the next
+    month. In the next month, you will still be able to upload
+    100 images. If you choose to pay annually, the index counts
+    apply to the entire year. This rule applies to all users to
+    ensure transparency and predictability of the terms.
   pricing:
     cycle:
       month: /month
       year: /year
+    features:
+      storage: '{0} Storage'
+      indexing: '{0} Image Indexing Times'
     free:
-      title: Free Tier
       description: Free to use, no credit card required.
-      features:
-        month:
-          - 5 GB Storage
-          - 177 Uploads/Month
-        year:
-          - 5 GB Storage
-          - 177 Uploads/Month
     pro:
-      title: Professional
-      description: Professional features with advanced capabilities
-        and more storage space.
-      features:
-        month:
-          - 97 GB Storage
-          - 1,777 Uploads/Month
-        year:
-          - 97 GB Storage
-          - 17,777 Uploads/Year
-    pro-plus:
-      title: Pro Plus
-      description: For users with more images, offering more storage
-        space and additional features.
-      features:
-        month:
-          - 297 GB Storage
-          - 3,777 Uploads/Month
-        year:
-          - 297 GB Storage
-          - 37,777 Uploads/Year
+      description: Plan suitable for individual users with more
+        storage and image indexing times.
+    max:
+      description: Plan suitable for most users with plenty of
+        storage and image indexing times, to preserve your wonderful
+        memories permanently.
+    ultra:
+      description: Plan suitable for photography enthusiasts or
+        the whole family, with plenty of storage and image indexing
+        times, to preserve every precious moment permanently.
   faqs:
     title: Frequently Asked Questions
     differentFromOthers:
-      label: Why choose us in a market with many online album
-        apps?
-      content: Most online albums only allow searching by image
-        themes, but PiCHat enables natural language image search,
-        helping you find exactly what you want.
+      label: Why choose your product when there are already many
+        online photo album applications on the market?
+      content: Typical online photo albums do not allow you to
+        search images using natural language but only based on
+        image themes. PiCHat is different; it allows you to search
+        images using natural language so that you can find the
+        pictures you want.
     purchaseMethod:
-      label: Why can't I purchase through the web?
-      content: We are currently applying for Stripe payment functionality,
-        so web purchases are temporarily unavailable. If you want
-        to purchase now, please click the "Customer Service" button
-        at the top of the page to contact us.
+      label: Why can't I purchase via the website?
+      content: We are currently applying for stripe payment functionality,
+        so it is temporarily unavailable for web purchase. If
+        you want to buy now, please click the "Customer Service"
+        button at the top of the page to contact us.
     planLimitations:
       label: Only 3 plans? I want more storage and features.
-      content: We are in an early stage and will add more plans
-        based on user needs and feedback. If our current plans
-        do not meet your requirements, please contact us.
+      content: We are currently in the early stages, and we will
+        add more plans based on user needs and feedback. If you
+        find that our plans do not meet your needs, please contact
+        us.
     contactMethod:
       label: How can I contact you?
-      content: Click the "Customer Service" button above to reach
-        us through various channels.
+      content: Click the "Customer Service" button above to contact
+        us in different ways.
     planSwitching:
       label: Can I switch to another plan?
-      content: Absolutely! You can switch plans anytime by simply
-        operating in your account page.
+      content: Certainly, you can switch to another plan at any
+        time. Just do it in your account page.
     freeUsage:
       label: Can I use it for free?
-      content: Yes, we offer a free plan for your use. However,
-        we recommend investing in your beautiful memories and
-        precious images, because memories and happiness are priceless.
+      content: Yes, we have a free plan for you to use. However,
+        we recommend paying for your beautiful memories and treasured
+        images because memories and joy are priceless.
+  toast:
+    error: Payment failed, if you have any questions, please click
+      the customer service on the left.
 
 zh-Hans:
   hero:
     title: 选择一个方案，留住珍贵回忆
     description: 所有账户都有免费方案，但是我们推荐您为自己的美好回忆和珍贵图像付费。
+  button:
+    getStarted: 开始使用
+    currentPlan: 当前计划
+  note: 索引次数是指在一个结算周期内，您可以上传图片的数量。如果您在当前周期内未用完所有的索引次数，该次数不会结转到下一个周期。例如，若您按月付费，每月有100次索引次数，这意味着您在本月内可以上传最多100张图片。如果您仅上传了50张，剩余的50次索引次数不会累积到下一个月。在下一个月，您仍然可以上传100张图片。若您选择按年付费，索引次数则适用于整个年度。这一规则适用于所有用户，旨在确保条款的透明性和可预测性。
   pricing:
     cycle:
       month: /月
       year: /年
+    features:
+      storage: '{0}存储空间'
+      indexing: '{0}次图片索引次数'
     free:
-      title: 免费版
       description: 免费使用，无需信用卡。
-      features:
-        month:
-          - 5 GB存储
-          - 177 次上传/月
-        year:
-          - 5 GB存储
-          - 177 次上传/月
     pro:
-      title: 专业版
-      description: 专业版本的功能，具有高级功能和更多存储空间。
-      features:
-        month:
-          - 97 GB存储
-          - 1777 次上传/月
-        year:
-          - 97 GB存储
-          - 17777 次上传/年
-    pro-plus:
-      title: 专业增强版
-      description: 适用于较多图片的用户，具有更多的存储空间和更多的功能。
-      features:
-        month:
-          - 297 GB存储
-          - 3777 次上传/月
-        year:
-          - 297 GB存储
-          - 37777 次上传/年
+      description: 适合个人用户的方案，具有更多的存储空间和图片索引次数。
+    max:
+      description: 适合绝大多数用户的方案，具有大量的存储空间和图片索引次数，可以将您的美好回忆永久保存。
+    ultra:
+      description: 适合爱好摄影的用户或者全家人使用的方案，具有大量的存储空间和图片索引次数，可以将每一个珍贵的瞬间保存到永久。
   faqs:
     title: 常见问题
     differentFromOthers:
@@ -165,84 +154,101 @@ zh-Hans:
     freeUsage:
       label: 我能免费使用吗？
       content: 是的，我们有免费的方案供您使用。但是我们推荐您为自己的美好回忆和珍贵图像付费，因为回忆和快乐是无价的。
+  toast:
+    error: 支付失败，如果您有任何疑问，请点击左侧客服。
 
 ar:
   hero:
-    title: اختر خطة، واحتفظ بالذكريات الثمينة
-    description: جميع الحسابات لديها خيار مجاني، لكننا نوصي باستثمار
-      ذكرياتك الجميلة وصورك الثمينة.
+    title: اختر خطة، حافظ على الذكريات الثمينة
+    description: جميع الحسابات تأتي بخطة مجانية، ولكن نوصي بالدفع
+      من أجل ذكرياتك الجميلة وصورك الثمينة.
+  button:
+    getStarted: ابدأ
+    currentPlan: الخطة الحالية
+  note: عدد المرات التي يتم فيها الفهرسة يشير إلى عدد الصور التي
+    يمكنك تحميلها في دورة تسوية واحدة. إذا لم تستهلك جميع مرات
+    الفهرسة في الدورة الحالية, فلن يتم ترحيلها إلى الدورة القادمة.
+    على سبيل المثال, إذا كنت تدفع شهريًا ولديك ١٠٠ مرة فهرسة شهريًا,
+    فهذا يعني أنه يمكنك تحميل ما يصل إلى ١٠٠ صورة في هذا الشهر.
+    إذا قمت بتحميل ٥٠ صورة فقط, فإن الـ ٥٠ مرة فهرسة المتبقية
+    لن تتراكم إلى الشهر المقبل. في الشهر القادم, يمكنك تحميل ١٠٠
+    صورة مرة أخرى. إذا اخترت الدفع سنويًا, فإن عدد مرات الفهرسة
+    ينطبق على السنة كاملة. هذه القاعدة تنطبق على جميع المستخدمين
+    وهي تهدف إلى ضمان شفافية الشروط وقابليتها للتنبؤ.
   pricing:
     cycle:
       month: /شهر
       year: /سنة
+    features:
+      storage: مساحة تخزين {0}
+      indexing: '{0} عدد مرات فهرسة الصور'
     free:
-      title: الخطة المجانية
-      description: مجاني للاستخدام، لا يتطلب بطاقة ائتمان.
-      features:
-        month:
-          - ٥ جيجابايت تخزين
-          - ١٧٧ رفع/شهر
-        year:
-          - ٥ جيجابايت تخزين
-          - ١٧٧ رفع/سنة
+      description: استخدام مجاني، لا حاجة لبطاقة ائتمان.
     pro:
-      title: النسخة الاحترافية
-      description: مميزات احترافية مع قدرات متقدمة ومساحة تخزين
-        أكبر.
-      features:
-        month:
-          - ٩٧ جيجابايت تخزين
-          - ١٬٧٧٧ رفع/شهر
-        year:
-          - ٩٧ جيجابايت تخزين
-          - ١٧٬٧٧٧ رفع/سنة
-    pro-plus:
-      title: المحترف بلس
-      description: للمستخدمين بالمزيد من الصور، توفر مساحة تخزين
-        أكبر وميزات إضافية.
-      features:
-        month:
-          - ٢٩٧ جيجابايت تخزين
-          - ٣٬٧٧٧ رفع/شهر
-        year:
-          - ٢٩٧ جيجابايت تخزين
-          - ٣٧٬٧٧٧ رفع/سنة
+      description: خطة مناسبة للمستخدمين الأفراد مع مساحة تخزين
+        أكبر وعدد مرات فهرسة الصور.
+    max:
+      description: خطة مناسبة لمعظم المستخدمين مع الكثير من التخزين
+        وعدد مرات فهرسة الصور، للاحتفاظ بذكرياتك الجميلة إلى الأبد.
+    ultra:
+      description: خطة مناسبة لمحبي التصوير أو لجميع أفراد العائلة،
+        مع الكثير من التخزين وعدد مرات فهرسة الصور، للاحتفاظ بكل
+        لحظة ثمينة إلى الأبد.
   faqs:
     title: الأسئلة الشائعة
     differentFromOthers:
-      label: لماذا تختارنا في سوق مليء بتطبيقات الألبومات عبر
-        الإنترنت؟
-      content: معظم الألبومات عبر الإنترنت تسمح فقط بالبحث حسب
-        مواضيع الصور، لكن PiCHat يمكنك من البحث عن الصور باللغة
-        الطبيعية، مما يساعدك على العثور على ما تريده بالضبط.
+      label: لماذا تختار منتجكم عندما يكون هناك العديد من تطبيقات
+        ألبومات الصور عبر الإنترنت بالفعل في السوق؟
+      content: لا تسمح ألبومات الصور عبر الإنترنت النموذجية بالبحث
+        عن الصور باستخدام اللغة الطبيعية بل فقط بناءً على موضوعات
+        الصور. بي آي كات مختلف؛ فهو يتيح لك البحث عن الصور باستخدام
+        اللغة الطبيعية حتى تتمكن من العثور على الصور التي تريدها.
     purchaseMethod:
-      label: لماذا لا يمكنني الشراء عبر الويب؟
-      content: نحن حاليًا نتقدم بطلب وظيفة الدفع عبر Stripe، لذلك
-        المشتريات عبر الويب غير متاحة مؤقتًا. إذا كنت تريد الشراء
-        الآن، يرجى النقر فوق زر "خدمة العملاء" في أعلى الصفحة
-        للتواصل معنا.
+      label: لماذا لا أستطيع الشراء عبر الموقع؟
+      content: نحن حالياً بصدد طلب وظيفة الدفع عبر stripe، لذلك
+        فهي غير متاحة مؤقتاً للشراء عبر الإنترنت. إذا كنت تريد
+        الشراء الآن، يرجى النقر على زر "خدمة العملاء" في أعلى
+        الصفحة للتواصل معنا.
     planLimitations:
-      label: فقط 3 خطط؟ أريد المزيد من مساحة التخزين والميزات.
-      content: نحن في مرحلة مبكرة وسنضيف المزيد من الخطط بناءً
-        على احتياجات المستخدمين وردودهم. إذا لم تلبِ خططنا الحالية
-        متطلباتك، فالرجاء التواصل معنا.
+      label: ثلاث خطط فقط؟ أريد المزيد من التخزين والميزات.
+      content: نحن حالياً في المراحل الأولى، وسنضيف المزيد من
+        الخطط بناءً على احتياجات وتغذية المستخدمين الراجعة. إذا
+        وجدت أن خططنا لا تفي باحتياجاتك، يرجى الاتصال بنا.
     contactMethod:
-      label: كيف يمكنني التواصل معكم؟
-      content: انقر فوق زر "خدمة العملاء" أعلاه للتواصل معنا من
-        خلال قنوات مختلفة.
+      label: كيف يمكنني الاتصال بكم؟
+      content: انقر على زر "خدمة العملاء" أعلاه للاتصال بنا بطرق
+        مختلفة.
     planSwitching:
       label: هل يمكنني التبديل إلى خطة أخرى؟
-      content: بالتأكيد! يمكنك التبديل بين الخطط في أي وقت من
-        خلال التشغيل ببساطة في صفحة حسابك.
+      content: بالتأكيد، يمكنك التبديل إلى خطة أخرى في أي وقت.
+        فقط قم بذلك من خلال صفحة حسابك.
     freeUsage:
-      label: هل يمكنني استخدامه مجانًا؟
-      content: نعم، نقدم خطة مجانية للاستخدام. ومع ذلك، نوصي باستثمار
-        ذكرياتك الجميلة وصورك الثمينة، لأن الذكريات والسعادة لا
-        تقدر بثمن.
+      label: هل يمكنني استخدامه مجاناً؟
+      content: نعم، لدينا خطة مجانية لاستخدامك. مع ذلك، نوصي بالدفع
+        من أجل ذكرياتك الجميلة وصورك الثمينة لأن الذكريات والفرح
+        لا تقدر بثمن.
+  toast:
+    error: فشل الدفع، إذا كان لديك أي أسئلة، يرجى النقر على خدمة
+      العملاء على اليسار.
 </i18n>
 
 <script setup lang="ts">
-const { t } = useI18n()
+import type { ClickableButton } from '~/types'
+
+const { t, n } = useI18n({ numberFormats })
+const format = useLocaleBytes()
+
+const user = useSupabaseUser()
+
+const { createPaymentIntent } = useServerFunctions()
+
+const { toastError } = useAppToast()
+const userPlan = useUserPlan()
+
+const isYearly = ref(false)
+const displayedCycle = computed(() => isYearly.value ? 'year' : 'month')
+
+console.debug('userPlan', userPlan.value)
 
 const logos = {
 	title: "Trusted by the world's best",
@@ -255,78 +261,59 @@ const logos = {
 	],
 }
 
-const plans = [
-	{
-		title: t('pricing.free.title'),
-		description: t('pricing.free.description'),
-		price: {
-			month: '$0',
-			year: '$0',
-		},
-		align: 'top',
-		button: {
-			label: t('getStarted'),
-			color: 'white',
-		},
-		features:
-		{
-			month: [
-				t('pricing.free.features.month[0]'),
-				t('pricing.free.features.month[1]'),
+const plans = computed(() => userPlans
+	.filter(plan => !(isYearly.value && plan.name === 'free'))
+	.map(plan => {
+		const isCurrentPlan = userPlan.value.lookupKey === plan.lookupKeys[displayedCycle.value]
+
+		return {
+			...plan,
+			ui: {
+				features: {
+					item: {
+						label: '',
+					},
+				},
+			},
+			key: plan.name,
+			title: _capitalize(plan.name),
+			description: t(`pricing.${plan.name}.description`),
+			align: 'top',
+			price: plan.pricesStr[displayedCycle.value],
+			cycle: isYearly.value ? t('pricing.cycle.year') : t('pricing.cycle.month'),
+			features: [
+				t('pricing.features.storage', [format(plan.storageQuota)]),
+				t('pricing.features.indexing', [n(plan.indexingQuotas[displayedCycle.value], 'decimal')]),
 			],
-			year: [
-				t('pricing.free.features.year[0]'),
-				t('pricing.free.features.year[1]'),
-			],
+			button: {
+				label: isCurrentPlan ? t('button.currentPlan') : t('button.getStarted'),
+				variant: isCurrentPlan ? 'solid' : 'outline',
+				disabled: isCurrentPlan,
+				color: isCurrentPlan ? 'gray' : 'primary',
+				async click() {
+					if (!user.value) {
+						await navigateTo('/login')
+						return
+					}
+
+					const { url, error } = await createPaymentIntent(plan.lookupKeys[displayedCycle.value], location.origin)
+
+					if (error) {
+						console.error(error)
+						toastError(
+							t('toast.error'),
+							error.message
+						)
+						return
+					}
+
+					await navigateTo(url)
+				},
+			} as ClickableButton,
 		}
-	},
-	{
-		title: t('pricing.pro.title'),
-		description: t('pricing.pro.description'),
-		price: {
-			month: '$19.7',
-			year: '$199.7',
-		},
-		align: 'top',
-		button: {
-			label: t('getStarted'),
-			color: 'white',
-		},
-		features: {
-			month: [
-				t('pricing.pro.features.month[0]'),
-				t('pricing.pro.features.month[1]'),
-			],
-			year: [
-				t('pricing.pro.features.year[0]'),
-				t('pricing.pro.features.year[1]'),
-			],
-		}
-	},
-	{
-		title: t('pricing.pro-plus.title'),
-		description: t('pricing.pro-plus.description'),
-		price: {
-			month: '$39.7',
-			year: '$399.7',
-		},
-		align: 'top',
-		button: {
-			label: t('getStarted'),
-			color: 'white',
-		},
-		features: {
-			month: [
-				t('pricing.pro-plus.features.month[0]'),
-				t('pricing.pro-plus.features.month[1]'),
-			],
-			year: [
-				t('pricing.pro-plus.features.year[0]'),
-				t('pricing.pro-plus.features.year[1]'),
-			],
-		}
-	},
-]
+	})
+
+)
 
 const faqs = [
 	{
@@ -354,6 +341,4 @@ const faqs = [
 		content: t('faqs.freeUsage.content'),
 	},
 ]
-
-const isYearly = ref(false)
 </script>

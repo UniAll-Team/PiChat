@@ -12,7 +12,7 @@
 				</template>
 				<template #trailing>
 					<UBadge :label="t(userPlan.name)"
-						:style="{ backgroundColor: userPlan.color }" />
+						:style="{ backgroundColor: userPlan.name != 'free' ? 'gold' : 'gray' }" />
 				</template>
 			</UButton>
 		</template>

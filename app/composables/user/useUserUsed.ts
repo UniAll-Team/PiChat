@@ -4,7 +4,7 @@ export async function useUserUsed() {
 
 	const { data, error } = await supabase
 		.from('used_storage')
-		.select('used_storage')
+		.select('size')
 		.single()
 
 	if (error) {
@@ -13,7 +13,7 @@ export async function useUserUsed() {
 
 	const userUsed = computed(() => {
 		return {
-			storageUsed: data.used_storage ?? 0,
+			storageUsed: data.size ?? 0,
 			cycleIndexedCount: user.value?.app_metadata?.cycle_indexed_count ?? 0
 		}
 	})

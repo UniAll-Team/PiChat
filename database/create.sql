@@ -83,7 +83,7 @@ $$ LANGUAGE plpgsql;
 -- 获取当前用户的文件夹大小
 CREATE VIEW used_storage
 WITH (security_invoker) AS
-SELECT storage.get_folder_size(auth.uid()::TEXT) AS used_storage;
+SELECT storage.get_folder_size(auth.uid()::TEXT) AS size;
 
 -- images 桶的策略
 CREATE POLICY "用户只能查看自己的图片"
@@ -116,25 +116,26 @@ FOR INSERT
 TO authenticated
 WITH CHECK (
 	bucket_id = 'images'
-	AND ((auth.uid())::text = (storage.foldername(name))[1])
+	AND (auth.uid()::text = (storage.foldername(name))[1])
 	AND (
 		SELECT
-		CASE (auth.jwt()->>'plan')::text
-			WHEN 'pro/mouth' THEN
-				(auth.jwt()->>'cycle_indexed_count')::int < 1777
-					AND storage.get_folder_size(auth.uid()::text) < (177<<30)	-- 177GB for pro plan
-			WHEN 'pro/year' THEN
-				(auth.jwt()->>'cycle_indexed_count')::int < 17777
-					AND storage.get_folder_size(auth.uid()::text) < (177<<30)	-- 177GB for pro plan
-			WHEN 'pro-plus/mouth' THEN
-				(auth.jwt()->>'cycle_indexed_count')::int < 3777
-					AND storage.get_folder_size(auth.uid()::text) < (377<<30)	-- 377GB for pro plus plan
-			WHEN 'pro-plus/year' THEN
-				(auth.jwt()->>'cycle_indexed_count')::int < 37777
-					AND storage.get_folder_size(auth.uid()::text) < (377<<30)	-- 377GB for pro plus plan
-			ELSE
-				(auth.jwt()->>'cycle_indexed_count')::int < 177
-					AND storage.get_folder_size(auth.uid()::text) < (5<<30)	-- 5GB for free plan
+		(SELECT size FROM used_storage) <
+		CASE (auth.jwt()->'plan'->>'name')::text
+			WHEN 'pro' THEN (177<<30)  -- 177GB for pro plan
+			WHEN 'max' THEN (377<<30)  -- 377GB for pro plus plan
+			WHEN 'ultra' THEN (777<<30)  -- 777GB for ultra plan
+			ELSE (5<<30)  -- 5GB for free plan
+		END
+		AND
+		COALESCE((auth.jwt()->'plan'->>'cycle_indexed_count')::int, 0) <
+		CASE (auth.jwt()->'plan'->>'name')::text || '/' || (auth.jwt()->'plan'->>'cycle')::text
+			WHEN 'pro/month' THEN 1777  -- 177 images per month
+			WHEN 'pro/year' THEN 17777  -- 1777 images per year
+			WHEN 'max/month' THEN 3777  -- 377 images per month
+			WHEN 'max/year' THEN 37777  -- 3777 images per year
+			WHEN 'ultra/month' THEN 7777  -- 7777 images per month
+			WHEN 'ultra/year' THEN 77777  -- 77777 images per year
+			ELSE 177  -- 177 images per month
 		END
 	)
 );
@@ -228,7 +229,7 @@ BEGIN
 	END IF;
 
 	-- 获取当前计数，不存在则默认为 0
-	SELECT COALESCE((raw_app_meta_data->>'cycle_indexed_count')::int, 0)
+	SELECT COALESCE((raw_app_meta_data->'plan'->>'cycle_indexed_count')::int, 0)
 	INTO current_count
 	FROM auth.users
 	WHERE id = user_id;
@@ -237,8 +238,9 @@ BEGIN
 	UPDATE auth.users
 	SET raw_app_meta_data = jsonb_set(
 		COALESCE(raw_app_meta_data, '{}'::jsonb),
-		'{cycle_indexed_count}',
-		to_jsonb(current_count + 1)
+		'{plan,cycle_indexed_count}',
+		to_jsonb(current_count + 1),
+		TRUE
 	)
 	WHERE id = user_id;
 

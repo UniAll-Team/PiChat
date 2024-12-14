@@ -4,14 +4,7 @@
 			PiCHat
 		</template>
 
-		<template #right v-if="user">
-			<UButton :label="t('dashboard')" color="gray"
-				to="/home" />
-			<UButton :label="t('signout')"
-				icon="i-heroicons-arrow-right-20-solid" trailing
-				color="gray" @click="logout" />
-		</template>
-		<template #right v-else>
+		<template #right>
 			<UPopover>
 				<!-- 弹出式语言切换 -->
 				<UButton color="black" variant="ghost"
@@ -20,7 +13,7 @@
 				<template #panel>
 					<ul>
 						<li v-for="locale in locales">
-							<UButton v-if="locale.code != currentLocale"
+							<UButton v-show="locale.code != currentLocale"
 								:label="locale.name"
 								@click="switchLocale(locale.code)"
 								color="gray" variant="ghost" />
@@ -28,11 +21,20 @@
 					</ul>
 				</template>
 			</UPopover>
-			<UButton :label="t('signin')" color="gray" to="/login"
-				trailing-icon="i-heroicons-arrow-right-20-solid" />
-			<!-- <UButton :label="t('signup')"
-				icon="i-heroicons-arrow-right-20-solid" trailing
-				color="black" to="/signup" /> -->
+
+			<div v-if="user">
+				<UButton :label="t('dashboard')" color="gray"
+					to="/home" />
+				<UButton :label="t('signout')"
+					icon="i-heroicons-arrow-right-20-solid" trailing
+					color="gray" @click="logout" />
+			</div>
+			<div v-else>
+				<UButton :label="t('signin')" color="gray"
+					to="/login"
+					trailing-icon="i-heroicons-arrow-right-20-solid" />
+			</div>
+
 		</template>
 
 		<template #panel>

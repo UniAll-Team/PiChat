@@ -14,12 +14,12 @@
 
 		<div>
 			<UProgress :value="userQuota.cycleIndexedCount"
-				:max="userQuota.cycleIndexingQuota" indicator />
+				:max="userQuota.indexingQuota" indicator />
 			<p>
 				{{ t('quota.indexing', {
 					count: n(userQuota.cycleIndexedCount, 'decimal'),
 					remaining: n(userQuota.cycleIndexingRemaining, 'decimal'),
-					total: n(userQuota.cycleIndexingQuota, 'decimal')
+					total: n(userQuota.indexingQuota, 'decimal')
 				}) }}
 			</p>
 		</div>
@@ -50,28 +50,7 @@ ar:
 </i18n>
 
 <script lang="ts" setup>
-const { t, n } = useI18n({
-	numberFormats: {
-		ar: {
-			decimal: {
-				style: 'decimal',
-				numberingSystem: 'arab',
-			},
-		},
-		en: {
-			decimal: {
-				style: 'decimal',
-				numberingSystem: 'latn',
-			},
-		},
-		'zh-Hans': {
-			decimal: {
-				style: 'decimal',
-				numberingSystem: 'hans',
-			},
-		},
-	}
-})
+const { t, n } = useI18n({ numberFormats })
 
 const { error, userQuota } = await useUserQuota()
 console.debug(

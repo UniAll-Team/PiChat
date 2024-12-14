@@ -6,6 +6,7 @@ Sentry.init({
 	// If set up, you can use your runtime config here
 	dsn: config.public.sentry.dsn,
 	environment: config.public.sentry.environment,
+	enabled: import.meta.env.PROD,
 	integrations: [
 		Sentry.replayIntegration({
 			maskAllText: false,

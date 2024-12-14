@@ -11,10 +11,10 @@
 
 			<UDashboardSidebar>
 				<!-- 这里要使用client-only，不然会水合失败，不知道为什么 -->
-				<ClientOnly>
+				<!-- <ClientOnly>
 					<UDashboardSidebarLinks :links="links" />
-				</ClientOnly>
-				<!-- <UDashboardSidebarLinks :links="links" /> -->
+				</ClientOnly> -->
+				<UDashboardSidebarLinks :links="links" />
 
 				<div class="flex-1" />
 

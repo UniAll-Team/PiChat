@@ -60,7 +60,7 @@ export type Database = {
       }
       used_storage: {
         Row: {
-          used_storage: number | null
+          size: number | null
         }
         Relationships: []
       }

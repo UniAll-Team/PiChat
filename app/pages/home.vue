@@ -37,7 +37,7 @@
 					</template>
 
 					<!-- 没有被选中的图片时正常布局 -->
-					<template v-else="!hasSelectedImages">
+					<template v-else>
 						<!-- 在移动端搜索框聚焦时隐藏 -->
 						<UButton icon="i-heroicons-arrow-up-tray"
 							color="gray" variant="outline"

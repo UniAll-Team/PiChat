@@ -9,14 +9,14 @@ export async function useUserQuota() {
 
 	const userQuota = computed(() => {
 		const storageRemaining = userPlan.value.storageQuota - userUsed.value.storageUsed
-		const cycleIndexingRemaining = userPlan.value.cycleIndexingQuota - userUsed.value.cycleIndexedCount
+		const cycleIndexingRemaining = <number>userPlan.value.indexingQuota - userUsed.value.cycleIndexedCount
 
 		return {
 			...userUsed.value,
 			...userPlan.value,
 			storageRemaining,
 			cycleIndexingRemaining,
-			uploadRemaining: Math.round(Math.max(storageRemaining / (userPlan.value.fileSizeLimit ?? Number.POSITIVE_INFINITY), cycleIndexingRemaining))
+			// uploadRemaining: Math.round(Math.max(storageRemaining / (userPlan.value.fileSizeLimit ?? Number.POSITIVE_INFINITY), cycleIndexingRemaining))
 		}
 	})
 

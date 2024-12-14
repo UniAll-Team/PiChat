@@ -1,57 +1,59 @@
 <template>
-	<div>
-		<div class="images-groups-container">
-			<div v-for="imageGroup in imageGroups"
-				:key="imageGroup.lastModifiedDate"
-				class="images-group-container">
-				<h3>{{ imageGroup.lastModifiedDate }}</h3>
-				<div class="images-container">
-					<div v-for="image in imageGroup.images"
-						:key="image.id" :ref="observerLastImage"
-						:data-id="String(image.id)"
-						class="image-wrapper">
-						<button class="select-btn"
-							:class="{ 'selected': isSelectedImage(image) }"
-							@click.stop="toggleSelect(image)">
-							<UIcon v-if="isSelectedImage(image)"
-								name="i-heroicons-check"
-								class="text-white" />
-							<UIcon v-else name="i-heroicons-plus"
-								class="text-gray-700" />
-						</button>
+	<div class="images-groups-container">
+		<div v-for="imageGroup in imageGroups"
+			:key="imageGroup.lastModifiedDate"
+			class="images-group-container">
+			<h3>{{ imageGroup.lastModifiedDate }}</h3>
+			<div class="images-container">
+				<div v-for="image in imageGroup.images"
+					:key="image.id" :ref="observerLastImage"
+					:data-id="String(image.id)" class="image-wrapper">
+					<button class="select-btn"
+						:class="{ 'selected': isSelectedImage(image) }"
+						@click.stop="toggleSelect(image)">
+						<UIcon v-if="isSelectedImage(image)"
+							name="i-heroicons-check" class="text-white" />
+						<UIcon v-else name="i-heroicons-plus"
+							class="text-gray-700" />
+					</button>
 
-						<img :src="image.url" :alt="image.alt ?? ''"
-							@click="handleImageClick(image)"
-							class="gallery-image"
-							:class="{ 'selectable': hasSelectedImages }"
-							loading="lazy" /> <!-- 添加懒加载 -->
-					</div>
+					<img :src="image.url" :alt="image.alt ?? ''"
+						@click="handleImageClick(image)"
+						class="gallery-image"
+						:class="{ 'selectable': hasSelectedImages }"
+						loading="lazy" /> <!-- 添加懒加载 -->
 				</div>
 			</div>
 		</div>
-
-		<UModal v-model="showPreview" :ui="{
-			container: 'items-center justify-center',
-			width: 'max-w-[90vw]',
-			height: 'max-h-[90vh]',
-			background: 'bg-black bg-opacity-90',
-			padding: 'p-0',
-			overlay: {
-				background: 'bg-black/80'
-			}
-		}">
-			<div class="fixed top-12 right-12 z-10">
-				<UButton icon="i-heroicons-x-mark" color="white"
-					@click="closePreview" />
-			</div>
-			<div
-				class="flex items-center justify-center w-full h-full">
-				<img :src="previewImage?.url"
-					:alt="previewImage?.alt || ''"
-					class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain" />
-			</div>
-		</UModal>
 	</div>
+
+	<!-- 加载中 -->
+	<div class="h-full grid place-content-center">
+		<UIcon v-show="loading" name="i-line-md-loading-loop"
+			class="sm:w-14 sm:h-14 md:w-32 md:h-32 text-primary" />
+	</div>
+
+	<UModal v-model="showPreview" :ui="{
+		container: 'items-center justify-center',
+		width: 'max-w-[90vw]',
+		height: 'max-h-[90vh]',
+		background: 'bg-black bg-opacity-90',
+		padding: 'p-0',
+		overlay: {
+			background: 'bg-black/80'
+		}
+	}">
+		<div class="fixed top-12 right-12 z-10">
+			<UButton icon="i-heroicons-x-mark" color="white"
+				@click="closePreview" />
+		</div>
+		<div
+			class="flex items-center justify-center w-full h-full">
+			<img :src="previewImage?.url"
+				:alt="previewImage?.alt || ''"
+				class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain" />
+		</div>
+	</UModal>
 </template>
 
 <i18n lang="yaml">

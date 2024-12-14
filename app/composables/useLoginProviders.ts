@@ -1,5 +1,5 @@
-import type { Button } from '#ui/types/button'
 import type { Provider } from '@supabase/supabase-js'
+import type { ProviderButton } from '~/types'
 
 import { googleOneTap } from 'vue3-google-login'
 
@@ -10,8 +10,7 @@ export function useLoginProviders() {
 
 	const { toastError, toastSuccess } = useAppToast()
 
-	type UIProvider = Button & { click?: Function, provider: Provider }
-	type UIProviders = UIProvider[]
+	type UIProviders = ProviderButton[]
 
 	let providers = ref<UIProviders>([
 		// github 有bug，不知道怎么修复
