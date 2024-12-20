@@ -64,6 +64,9 @@ export default defineNuxtConfig({
 			socks5: 'socks5://localhost:1080',
 			socks5h: 'socks5h://localhost:1080',
 		},
+		stripe: {
+			webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+		},
 		public: {
 			sentry: {
 				dsn: process.env.SENTRY_DSN,
@@ -102,7 +105,6 @@ export default defineNuxtConfig({
 			fallbackLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
 		},
 		lazy: true,
-		langDir: 'locales/',
 		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
 		baseUrl: process.env.NUXT_SITE_URL || 'http://localhost:3000',
 		locales: [
@@ -204,7 +206,7 @@ export default defineNuxtConfig({
 
 	pwa: {
 		manifest: {
-			id: process.env.NUXT_SITE_NAME.toLowerCase(),
+			id: process.env.NUXT_SITE_NAME?.toLowerCase(),
 			name: process.env.NUXT_SITE_NAME,
 			description: process.env.NUXT_SITE_DESCRIPTION,
 			theme_color: '#000000',

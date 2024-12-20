@@ -268,6 +268,10 @@ const plans = computed(() => userPlans
 
 		return {
 			...plan,
+			key: plan.name,
+			title: _capitalize(plan.name),
+			description: t(`pricing.${plan.name}.description`),
+			align: 'top',
 			ui: {
 				features: {
 					item: {
@@ -275,10 +279,6 @@ const plans = computed(() => userPlans
 					},
 				},
 			},
-			key: plan.name,
-			title: _capitalize(plan.name),
-			description: t(`pricing.${plan.name}.description`),
-			align: 'top',
 			price: plan.pricesStr[displayedCycle.value],
 			cycle: isYearly.value ? t('pricing.cycle.year') : t('pricing.cycle.month'),
 			features: [
@@ -307,12 +307,11 @@ const plans = computed(() => userPlans
 						return
 					}
 
-					await navigateTo(url)
+					await navigateTo(url, { external: true })
 				},
 			} as ClickableButton,
 		}
 	})
-
 )
 
 const faqs = [

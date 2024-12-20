@@ -87,9 +87,18 @@ ar:
 </i18n>
 
 <script lang="ts" setup>
+
+const supabase = useSupabaseClient()
+
 const { toastSuccess, toastError } = useAppToast()
 
 const { t } = useI18n()
+
+// 载入框架之前刷新jwt，防止过期
+const { error } = await supabase.auth.refreshSession()
+if (error) {
+	console.error('刷新jwt失败', error)
+}
 
 const userPlan = useUserPlan()
 

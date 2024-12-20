@@ -1,5 +1,4 @@
 set modules \
-    hub \
     i18n \
     pinia \
     vueuse \

@@ -17,11 +17,14 @@ export async function createPaymentIntent(this: H3Event, lookup_key: string, ori
 			})
 		}
 
-		let customer_id = user.app_metadata?.stripe?.customer_id
+		let customer_id: string = user.app_metadata?.stripe?.customer_id
 		if (!customer_id) {
 			const customer = await stripe.customers.create({
 				email: user.email,
 				name: user.user_metadata?.full_name,
+				metadata: {
+					user_id: user.id,
+				}
 			})
 
 			customer_id = customer.id
@@ -40,13 +43,14 @@ export async function createPaymentIntent(this: H3Event, lookup_key: string, ori
 			}
 		}
 
-		if (user.user_metadata.plan != "free") {
+		const plan = user.app_metadata?.plan
+		if (plan && plan.name && plan.name != "free") {
+			// 存在付费计划，且不是免费计划，不允许再次购买
 			throw createError({
 				statusCode: 400,
 				message: "User already has a paid plan",
 			})
 		}
-
 
 		const prices = await stripe.prices.list({
 			lookup_keys: [lookup_key],
@@ -63,6 +67,9 @@ export async function createPaymentIntent(this: H3Event, lookup_key: string, ori
 				},
 			],
 			mode: 'subscription',
+			metadata: {
+				user_id: user.id,
+			},
 			success_url: origin ? `${origin}/success` : undefined,
 		})
 
