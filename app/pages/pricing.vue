@@ -240,7 +240,7 @@ const format = useLocaleBytes()
 
 const user = useSupabaseUser()
 
-const { createPaymentIntent } = useServerFunctions()
+const { createCheckoutSession, createPortalSession } = useServerFunctions()
 
 const { toastError } = useAppToast()
 const userPlan = useUserPlan()
@@ -296,7 +296,11 @@ const plans = computed(() => userPlans
 						return
 					}
 
-					const { url, error } = await createPaymentIntent(plan.lookupKeys[displayedCycle.value], location.origin)
+					if (userPlan.value.name == 'free') {
+						var { url, error } = await createCheckoutSession(plan.lookupKeys[displayedCycle.value], location.origin)
+					} else {
+						var { url, error } = await createPortalSession(location.origin)
+					}
 
 					if (error) {
 						console.error(error)

@@ -107,7 +107,7 @@ export default eventHandler(async event => {
 		// 根据事件类型更新用户信息
 		switch (stripeEvent.type) {
 			case 'customer.subscription.deleted':
-				await updateUserPlan(userID, { name: 'free' })
+				await updateUserPlan(userID, { name: 'free', cycle: 'month' })
 				break
 			case 'customer.subscription.updated':
 				const lookup_key = stripeEvent.data.object.items.data[0].price.lookup_key

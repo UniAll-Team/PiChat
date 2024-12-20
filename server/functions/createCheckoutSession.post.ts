@@ -3,8 +3,7 @@ import type { H3Event } from "h3"
 import { useServerStripe } from "#stripe/server"
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 
-
-export async function createPaymentIntent(this: H3Event, lookup_key: string, origin?: string) {
+export async function createCheckoutSession(this: H3Event, lookup_key: string, origin?: string) {
 	try {
 		const stripe = await useServerStripe(this)
 		const supabase = serverSupabaseServiceRole(this)
@@ -17,7 +16,7 @@ export async function createPaymentIntent(this: H3Event, lookup_key: string, ori
 			})
 		}
 
-		let customer_id: string = user.app_metadata?.stripe?.customer_id
+		let customer_id: string = user.app_metadata.stripe?.customer_id
 		if (!customer_id) {
 			const customer = await stripe.customers.create({
 				email: user.email,

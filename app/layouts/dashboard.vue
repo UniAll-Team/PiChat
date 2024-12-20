@@ -41,15 +41,16 @@ en:
   general: General
   notifications: Notifications
   upgradeToPro: Upgrade to Pro
-  expandQuota: Expand Quota
-  documentation: 'Documentation'
+  updateSubscription: Update Subscription
+  documentation: Documentation
   invitePeople: Invite people
   helpSupport: Help & Support
   customerService: Customer Service
   linkCopiedToClipboard: Link copied to clipboard
   youCanNowShareThisLink: You can now share this link with others
   failedToCopyLink: Failed to copy link
-  pleaseEnableClipboardPermission: Failed to copy, please enable clipboard permission
+  pleaseEnableClipboardPermission: Failed to copy, please enable
+    clipboard permission
 
 zh-Hans:
   home: 首页
@@ -58,8 +59,8 @@ zh-Hans:
   general: 常规
   notifications: 通知
   upgradeToPro: 升级到专业版
-  expandQuota: 扩容
-  documentation: '文档'
+  updateSubscription: 更新订阅
+  documentation: 文档
   invitePeople: 邀请他人
   helpSupport: 帮助与支持
   customerService: 联系客服
@@ -75,15 +76,16 @@ ar:
   general: عام
   notifications: الإشعارات
   upgradeToPro: الترقية إلى النسخة المحترفة
-  expandQuota: توسيع الحصة
-  documentation: 'التوثيق'
+  updateSubscription: تحديث الاشتراك
+  documentation: التوثيق
   invitePeople: دعوة الأشخاص
   helpSupport: المساعدة والدعم
   customerService: خدمة العملاء
   linkCopiedToClipboard: تم نسخ الرابط إلى الحافظة
   youCanNowShareThisLink: يمكنك الآن مشاركة هذا الرابط مع الآخرين
   failedToCopyLink: فشل في نسخ الرابط
-  pleaseEnableClipboardPermission: فشل النسخ ، يرجى تمكين إذن الحافظة
+  pleaseEnableClipboardPermission: فشل النسخ ، يرجى تمكين إذن
+    الحافظة
 </i18n>
 
 <script lang="ts" setup>
@@ -134,7 +136,6 @@ const links = [
 ]
 
 const footerLinks = [
-
 	{
 		label: t('documentation'),
 		icon: 'i-heroicons-book-open',
@@ -170,7 +171,7 @@ switch (userPlan.value.name) {
 		break
 	case 'pro':
 		footerLinks.unshift({
-			label: t('expandQuota'),
+			label: t('updateSubscription'),
 			icon: 'i-heroicons-credit-card',
 			to: '/pricing'
 		})
