@@ -1,6 +1,7 @@
 free: 免费版
 pro: 专业版
 getStarted: 开始使用
+goToHome: 返回首页
 
 login_provider:
   continue_with: 使用{provider}继续

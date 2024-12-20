@@ -69,7 +69,7 @@ export async function createCheckoutSession(this: H3Event, lookup_key: string, o
 			metadata: {
 				user_id: user.id,
 			},
-			success_url: origin ? `${origin}/success` : undefined,
+			success_url: origin ? `${origin}/checkout-success` : undefined,
 		})
 
 		if (session.url) {

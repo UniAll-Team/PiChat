@@ -1,6 +1,7 @@
 free: مجاني
 pro: محترف
 getStarted: ابدأ الآن
+goToHome: الذهاب إلى الصفحة الرئيسية
 
 login_provider:
   continue_with: المتابعة باستخدام {provider}

@@ -1,6 +1,7 @@
 free: Free
 pro: Pro
 getStarted: Get Started
+goToHome: Go to Home
 
 login_provider:
   continue_with: Continue with {provider}
@@ -11,8 +12,8 @@ login_provider:
     oauth: 'Error with Login: {message}'
 
 logout:
-  error: 'Logout failed'
-  success: 'Successfully logged out'
+  error: Logout failed
+  success: Successfully logged out
 
 zodI18n:
   errors:
@@ -22,13 +23,16 @@ zodI18n:
     invalid_literal: Invalid literal value, expected {expected}
     unrecognized_keys: 'Unrecognized key(s) in object: {keys}'
     invalid_union: Invalid input
-    invalid_union_discriminator: Invalid discriminator value. Expected {options}
-    invalid_enum_value: Invalid enum value. Expected {options}, received '{received}'
+    invalid_union_discriminator: Invalid discriminator value.
+      Expected {options}
+    invalid_enum_value: Invalid enum value. Expected {options},
+      received '{received}'
     invalid_arguments: Invalid function arguments
     invalid_return_type: Invalid function return type
     invalid_date: Invalid date
     custom: Invalid input
-    invalid_intersection_types: Intersection results could not be merged
+    invalid_intersection_types: Intersection results could not
+      be merged
     not_multiple_of: Number must be a multiple of {multipleOf}
     not_finite: Number must be finite
     invalid_string:
@@ -44,7 +48,8 @@ zodI18n:
       array:
         exact: Array must contain exactly {minimum} element(s)
         inclusive: Array must contain at least {minimum} element(s)
-        not_inclusive: Array must contain more than {minimum} element(s)
+        not_inclusive: Array must contain more than {minimum}
+          element(s)
       string:
         exact: String must contain exactly {minimum} character(s)
         inclusive: String must contain at least {minimum} character(s)
@@ -65,7 +70,8 @@ zodI18n:
       array:
         exact: Array must contain exactly {maximum} element(s)
         inclusive: Array must contain at most {maximum} element(s)
-        not_inclusive: Array must contain less than {maximum} element(s)
+        not_inclusive: Array must contain less than {maximum}
+          element(s)
       string:
         exact: String must contain exactly {maximum} character(s)
         inclusive: String must contain at most {maximum} character(s)

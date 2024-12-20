@@ -26,7 +26,7 @@ export async function createPortalSession(this: H3Event, origin?: string) {
 
 		const portalSession = await stripe.billingPortal.sessions.create({
 			customer: customerID,
-			return_url: origin,
+			return_url: `${origin}/update-success`,
 		})
 
 		return { url: portalSession.url }

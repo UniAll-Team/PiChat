@@ -1,7 +1,7 @@
 {
 	"i18n-ally.displayLanguage": "zh-Hans",
 	"i18n-ally.localesPaths": [
-		"app/locales",
+		"i18n/locales",
 	],
 	"nuxtr.vueFiles.pages.defaultTemplate": "i18n.vue",
 	"nuxtr.vueFiles.layouts.defaultTemplate": "i18n.vue",
