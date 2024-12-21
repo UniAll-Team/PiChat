@@ -2,6 +2,8 @@ import type Stripe from 'stripe'
 
 import { useServerStripe } from "#stripe/server"
 import { serverSupabaseServiceRole } from '#supabase/server'
+import { H3Error } from 'h3'
+import { StatusCodes } from 'http-status-codes'
 
 export default eventHandler(async event => {
 	try {
@@ -15,15 +17,15 @@ export default eventHandler(async event => {
 
 		if (!body) {
 			throw createError({
-				statusCode: 400,
-				message: "Invalid request body",
+				statusCode: StatusCodes.BAD_REQUEST,
+				statusMessage: "Invalid request body",
 			})
 		}
 
 		if (!signature) {
 			throw createError({
-				statusCode: 400,
-				message: "Invalid stripe-signature",
+				statusCode: StatusCodes.BAD_REQUEST,
+				statusMessage: "Invalid stripe-signature",
 			})
 		}
 
@@ -31,14 +33,11 @@ export default eventHandler(async event => {
 			const { data: { user }, error } = await supabase.auth.admin.getUserById(userID)
 
 			if (error) {
-				throw createError({
-					statusCode: 400,
-					message: error.message,
-				})
+				throw error
 			}
 			if (!user) {
 				throw createError({
-					statusCode: 400,
+					statusCode: StatusCodes.NOT_FOUND,
 					message: "User not found",
 				})
 			}
@@ -49,7 +48,7 @@ export default eventHandler(async event => {
 		async function updateUserPlan(userID: string, { name, cycle }: { name?: string, cycle?: string }) {
 			if (!(name || cycle)) {
 				throw createError({
-					statusCode: 400,
+					statusCode: StatusCodes.BAD_REQUEST,
 					message: "Invalid plan",
 				})
 			}
@@ -63,7 +62,7 @@ export default eventHandler(async event => {
 				cycle = app_metadata?.plan?.cycle || 'month'
 			}
 
-			var { error } = await supabase.auth.admin.updateUserById(userID, {
+			var { data: { user }, error } = await supabase.auth.admin.updateUserById(userID, {
 				app_metadata: {
 					...app_metadata,
 					plan: {
@@ -75,11 +74,10 @@ export default eventHandler(async event => {
 			})
 
 			if (error) {
-				throw createError({
-					statusCode: 400,
-					message: error.message,
-				})
+				throw error
 			}
+
+			return user
 		}
 
 		const stripeEvent = stripe.webhooks.constructEvent(
@@ -107,15 +105,15 @@ export default eventHandler(async event => {
 		// 根据事件类型更新用户信息
 		switch (stripeEvent.type) {
 			case 'customer.subscription.deleted':
-				await updateUserPlan(userID, { name: 'free', cycle: 'month' })
+				var user = await updateUserPlan(userID, { name: 'free', cycle: 'month' })
 				break
 			case 'customer.subscription.updated':
 				const lookup_key = stripeEvent.data.object.items.data[0].price.lookup_key
-				await updateUserPlan(userID, lookupKey2Plan(lookup_key))
+				var user = await updateUserPlan(userID, lookupKey2Plan(lookup_key))
 				break
 			case 'customer.deleted':
 				const appMetadata = await getUserAppMetadata(userID)
-				const { error } = await supabase.auth.admin.updateUserById(userID, {
+				var { data: { user }, error } = await supabase.auth.admin.updateUserById(userID, {
 					app_metadata: {
 						...appMetadata,
 						stripe: {
@@ -125,16 +123,24 @@ export default eventHandler(async event => {
 					},
 				})
 				if (error) {
-					throw createError({
-						statusCode: 400,
-						message: error.message,
-					})
+					throw error
 				}
 				break
 		}
-		return { received: true }
+		return user
 	} catch (error) {
+		// 打印出错误
 		console.error(error)
-		return sendError(event, error as Error)
+
+		// 如果不是 H3Error 类型的错误，转换为 H3Error
+		if (!(error instanceof H3Error)) {
+			error = createError({
+				statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+				data: error,
+			})
+		}
+
+		// 抛出 H3Error 类型的错误
+		throw error
 	}
 })

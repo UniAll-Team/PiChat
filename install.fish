@@ -25,6 +25,7 @@ ni \
     yaml \
     mathjs \
     pretty-bytes \
+    http-status-codes \
     type-fest \
     @vueuse/components \
     pinia-plugin-persistedstate \

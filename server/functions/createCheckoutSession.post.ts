@@ -2,6 +2,7 @@ import type { H3Event } from "h3"
 
 import { useServerStripe } from "#stripe/server"
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
+import { StatusCodes, getReasonPhrase } from 'http-status-codes'
 
 export async function createCheckoutSession(this: H3Event, lookup_key: string, origin?: string) {
 	try {
@@ -11,8 +12,8 @@ export async function createCheckoutSession(this: H3Event, lookup_key: string, o
 
 		if (!user) {
 			throw createError({
-				statusCode: 401,
-				message: "Unauthorized",
+				statusCode: StatusCodes.UNAUTHORIZED,
+				statusMessage: getReasonPhrase(StatusCodes.UNAUTHORIZED),
 			})
 		}
 
@@ -46,7 +47,7 @@ export async function createCheckoutSession(this: H3Event, lookup_key: string, o
 		if (plan && plan.name && plan.name != "free") {
 			// 存在付费计划，且不是免费计划，不允许再次购买
 			throw createError({
-				statusCode: 400,
+				statusCode: StatusCodes.BAD_REQUEST,
 				message: "User already has a paid plan",
 			})
 		}

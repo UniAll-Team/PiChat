@@ -8,11 +8,11 @@
 		"build": "nuxt build",
 		"preview": "nuxt preview",
 		"deploy": "fish ./deploy/setup.fish",
-		"upload-output": "fish ./deploy/upload.fish",
-		"update-output": "fish ./deploy/update.fish",
-		"restart-services": "fish ./deploy/restart.fish",
-		"download-logs": "fish ./deploy/download.fish",
-		"sync-sources": "lsyncd -log Exec .vscode/lsyncd.lua",
+		"upload:output": "fish ./deploy/upload.fish",
+		"update:output": "fish ./deploy/update.fish",
+		"restart:services": "fish ./deploy/restart.fish",
+		"download:logs": "fish ./deploy/download.fish",
+		"sync:sources": "lsyncd -log Exec .vscode/lsyncd.lua",
 		"postinstall": "nuxt prepare",
 		"lint": "biome lint",
 		"typecheck": "nuxt typecheck"
@@ -45,6 +45,7 @@
 		"@vueuse/nuxt": "^12.0.0",
 		"client-zip": "^2.4.6",
 		"date-fns": "^4.1.0",
+		"http-status-codes": "^2.3.0",
 		"mathjs": "^14.0.1",
 		"nanoid": "^5.0.9",
 		"nanoid-dictionary": "5.0.0-beta.1",
@@ -62,7 +63,7 @@
 		"zod": "^3.24.1"
 	},
 	"devDependencies": {
-		"@iconify/json": "^2.2.286",
+		"@iconify/json": "^2.2.287",
 		"@nuxthq/studio": "^2.2.1",
 		"nuxi": "^3.17.1",
 		"nuxt-lodash": "^2.5.3",

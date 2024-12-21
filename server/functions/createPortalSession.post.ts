@@ -2,6 +2,7 @@ import type { H3Event } from "h3"
 
 import { useServerStripe } from "#stripe/server"
 import { serverSupabaseUser } from '#supabase/server'
+import { StatusCodes, getReasonPhrase } from 'http-status-codes'
 
 export async function createPortalSession(this: H3Event, origin?: string) {
 	try {
@@ -10,8 +11,8 @@ export async function createPortalSession(this: H3Event, origin?: string) {
 
 		if (!user) {
 			throw createError({
-				statusCode: 401,
-				message: "Unauthorized",
+				statusCode: StatusCodes.UNAUTHORIZED,
+				statusMessage: getReasonPhrase(StatusCodes.UNAUTHORIZED),
 			})
 		}
 
@@ -19,8 +20,8 @@ export async function createPortalSession(this: H3Event, origin?: string) {
 
 		if (!customerID) {
 			throw createError({
-				statusCode: 400,
-				message: "User has no customer_id",
+				statusCode: StatusCodes.BAD_REQUEST,
+				statusMessage: "User has no customer_id",
 			})
 		}
 

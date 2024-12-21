@@ -65,13 +65,17 @@ export default defineNuxtConfig({
 			socks5h: 'socks5h://localhost:1080',
 		},
 		stripe: {
+			key: process.env.STRIPE_SECRET_KEY,
 			webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
 		},
 		public: {
 			sentry: {
 				dsn: process.env.SENTRY_DSN,
 				environment: process.env.NODE_ENV,
-			}
+			},
+			stripe: {
+				key: process.env.STRIPE_PUBLIC_KEY,
+			},
 		},
 	},
 
@@ -278,15 +282,6 @@ export default defineNuxtConfig({
 			login: '/login',
 			callback: '/',
 			exclude: ['/', '/docs/**', '/pricing'],
-		},
-	},
-
-	stripe: {
-		server: {
-			key: process.env.STRIPE_SECRET_KEY,
-		},
-		client: {
-			key: process.env.STRIPE_PUBLIC_KEY,
 		},
 	},
 
