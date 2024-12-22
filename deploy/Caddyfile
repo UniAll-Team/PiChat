@@ -18,8 +18,7 @@
 	}
 }
 
-# {$NUXT_SITE_DOMAIN}
-localhost {
+{$CADDY_DOMAIN} {
 	reverse_proxy :3000
 
 	log {

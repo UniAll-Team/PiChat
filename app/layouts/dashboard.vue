@@ -161,20 +161,17 @@ const footerLinks = [
 	}
 ]
 
-switch (userPlan.value.name) {
-	case 'free':
-		footerLinks.unshift({
-			label: t('upgradeToPro'),
-			icon: 'i-heroicons-credit-card',
-			to: '/pricing'
-		})
-		break
-	case 'pro':
-		footerLinks.unshift({
-			label: t('updateSubscription'),
-			icon: 'i-heroicons-credit-card',
-			to: '/pricing'
-		})
-		break
+if (userPlan.value.name === 'free') {
+	footerLinks.unshift({
+		label: t('upgradeToPro'),
+		icon: 'i-heroicons-credit-card',
+		to: '/pricing'
+	})
+} else {
+	footerLinks.unshift({
+		label: t('updateSubscription'),
+		icon: 'i-heroicons-credit-card',
+		to: '/pricing'
+	})
 }
 </script>
