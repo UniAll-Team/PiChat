@@ -48,7 +48,7 @@ export async function createCheckoutSession(this: H3Event, lookup_key: string, o
 			// 存在付费计划，且不是免费计划，不允许再次购买
 			throw createError({
 				statusCode: StatusCodes.BAD_REQUEST,
-				message: "User already has a paid plan",
+				statusMessage: "User already has a paid plan",
 			})
 		}
 
@@ -70,7 +70,9 @@ export async function createCheckoutSession(this: H3Event, lookup_key: string, o
 			metadata: {
 				user_id: user.id,
 			},
+			allow_promotion_codes: true,
 			success_url: origin ? `${origin}/checkout-success` : undefined,
+			cancel_url: origin,
 		})
 
 		if (session.url) {
