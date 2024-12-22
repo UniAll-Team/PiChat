@@ -99,9 +99,16 @@ en:
       content: Click the "Customer Service" button above to contact
         us in different ways.
     planSwitching:
-      label: Can I switch to another plan?
-      content: Certainly, you can switch to another plan at any
-        time. Just do it in your account page.
+      label: How do I switch to another plan?
+      content: You can click the "Update Plan" button on the left
+        of the panel, click on the plan you want on the pricing
+        page, and it will take you to the page to update your
+        plan.
+    cancelSubscription:
+      label: How do I cancel the subscription?
+      content: You can click the "Update Plan" button on the left
+        of the panel, click on the Free plan on the pricing page,
+        and it will take you to the page to update your plan.
     freeUsage:
       label: Can I use it for free?
       content: Yes, we have a free plan for you to use. However,
@@ -149,8 +156,11 @@ zh-Hans:
       label: 我如何联系你们？
       content: 点击上方的"客服"按钮，就能使用不同的方式联系我们。
     planSwitching:
-      label: 我能否切换到其他计划？
-      content: 当然，您可以随时切换到其他计划。只需要在您的账户页面中进行操作即可。
+      label: 我如何切换到其他计划？
+      content: 你可以点击面板左侧的“更新计划”按钮，在价格页面上点击您想要的计划，这将带您到更新计划的页面。
+    cancelSubscription:
+      label: 我如何取消订阅？
+      content: 您可以点击面板左侧的“更新计划”按钮，在价格页面上点击Free计划，这将带您到更新计划的页面。
     freeUsage:
       label: 我能免费使用吗？
       content: 是的，我们有免费的方案供您使用。但是我们推荐您为自己的美好回忆和珍贵图像付费，因为回忆和快乐是无价的。
@@ -219,9 +229,15 @@ ar:
       content: انقر على زر "خدمة العملاء" أعلاه للاتصال بنا بطرق
         مختلفة.
     planSwitching:
-      label: هل يمكنني التبديل إلى خطة أخرى؟
-      content: بالتأكيد، يمكنك التبديل إلى خطة أخرى في أي وقت.
-        فقط قم بذلك من خلال صفحة حسابك.
+      label: كيف يمكنني التغيير إلى خطة أخرى؟
+      content: يمكنك النقر على زر "تحديث الخطة" على يسار اللوحة،
+        والنقر على الخطة التي تريدها في صفحة الأسعار، وسيأخذك
+        هذا إلى صفحة تحديث خطتك.
+    cancelSubscription:
+      label: كيف يمكنني إلغاء الاشتراك؟
+      content: يمكنك النقر على زر "تحديث الخطة" على يسار اللوحة،
+        والنقر على الخطة المجانية في صفحة الأسعار، وسيأخذك هذا
+        إلى صفحة تحديث خطتك.
     freeUsage:
       label: هل يمكنني استخدامه مجاناً؟
       content: نعم، لدينا خطة مجانية لاستخدامك. مع ذلك، نوصي بالدفع

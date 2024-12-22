@@ -88,6 +88,7 @@ export default eventHandler(async event => {
 
 		// 根据事件类型获取用户ID
 		switch (stripeEvent.type) {
+			case 'customer.subscription.created':
 			case 'customer.subscription.deleted':
 			case 'customer.subscription.updated':
 				const customerID = stripeEvent.data.object.customer as string
@@ -107,6 +108,7 @@ export default eventHandler(async event => {
 			case 'customer.subscription.deleted':
 				var user = await updateUserPlan(userID, { name: 'free', cycle: 'month' })
 				break
+			case 'customer.subscription.created':
 			case 'customer.subscription.updated':
 				const lookup_key = stripeEvent.data.object.items.data[0].price.lookup_key
 				var user = await updateUserPlan(userID, lookupKey2Plan(lookup_key))
