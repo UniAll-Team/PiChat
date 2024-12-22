@@ -9,4 +9,4 @@ else
     set remote_path $argv[2]
 end
 rsync --log-file=./logs/upload.log -aWvvvP output.tzst $remote_host:$remote_path/
-rsync --log-file=./logs/env.log -azvvvP .env $remote_host:$remote_path/
+# rsync --log-file=./logs/env.log -azvvvP .env $remote_host:$remote_path/

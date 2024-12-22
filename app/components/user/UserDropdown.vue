@@ -11,7 +11,7 @@
 						size="2xs" />
 				</template>
 				<template #trailing>
-					<UBadge :label="t(userPlan.name)"
+					<UBadge :label="_capitalize(userPlan.name)"
 						:style="{ backgroundColor: userPlan.name != 'free' ? 'gold' : 'gray' }" />
 				</template>
 			</UButton>
