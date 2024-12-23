@@ -86,7 +86,6 @@ ar:
 </i18n>
 
 <script lang="ts" setup>
-import type { DateRange } from '~/types/dashboard'
 import type { Database } from '~/types/database'
 import type { Image, Images } from '~/types/image'
 
@@ -96,16 +95,10 @@ import _ from 'lodash'
 const { t } = useI18n()
 
 // 定义组件的 props
-const { description, dateRange, refreshID } = defineProps<{
-	dateRange: DateRange,
+const { description, refreshID } = defineProps<{
 	description: string,
 	refreshID: string,
 }>()
-const dateRangeISO = computed(() => ({
-	start: startOfDay(dateRange.start).toISOString(),
-	end: endOfDay(dateRange.end).toISOString(),
-}))
-
 
 const supabase = useSupabaseClient<Database>()
 const { toastError } = useAppToast()
@@ -115,6 +108,8 @@ const isSearching = computed(() => Boolean(description))
 const { text2embedding } = useServerFunctions()
 
 // 获取图片列表
+const { dateRange } = storeToRefs(useDateRangeStore())
+
 const { imageGroups, observerLastImage, loading, error, hasMore } = useImageGroups()
 
 // 图片选择相关
@@ -143,6 +138,11 @@ function useImageGroups() {
 	const loading = ref(false)
 	const error = ref(false)
 	const hasMore = ref(true)
+
+	const dateRangeISO = computed(() => ({
+		start: startOfDay(dateRange.value.start).toISOString(),
+		end: endOfDay(dateRange.value.end).toISOString(),
+	}))
 
 	let lastImageID: number
 	let observer: IntersectionObserver

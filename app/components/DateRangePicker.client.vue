@@ -38,14 +38,12 @@
 						@click="selectDateRange(presetDateRange.duration)" />
 				</div>
 
-				<ClientOnly>
-					<VDatePicker is-required :locale
-						v-model.range="dateRange"
-						:columns="smallerThanSm ? 1 : 2"
-						:rows="smallerThanSm ? 2 : 1"
-						:min-date="new Date(1999, 0, 1)" :max-date="now"
-						v-bind="calendarAttrs" @input="close" />
-				</ClientOnly>
+				<VDatePicker is-required :locale
+					v-model.range="dateRange"
+					:columns="smallerThanSm ? 1 : 2"
+					:rows="smallerThanSm ? 2 : 1"
+					:min-date="new Date(1999, 0, 1)" :max-date="now"
+					v-bind="calendarAttrs" @input="close" />
 			</div>
 		</template>
 	</UPopover>
@@ -59,6 +57,7 @@ en:
   lastThreeMonths: Last 3 months
   lastSixMonths: Last 6 months
   lastYear: Last year
+  lastFiveYears: Last 5 years
 
 zh-Hans:
   lastWeek: 近1周
@@ -67,6 +66,7 @@ zh-Hans:
   lastThreeMonths: 近3个月
   lastSixMonths: 近6个月
   lastYear: 近1年
+  lastFiveYears: 近5年
 
 ar:
   lastWeek: آخر أسبوع
@@ -75,18 +75,18 @@ ar:
   lastThreeMonths: آخر ٣ أشهر
   lastSixMonths: آخر ٦ أشهر
   lastYear: آخر سنة
+  lastFiveYears: آخر ٥ سنوات
 </i18n>
 
 <script setup lang="ts">
 import type { Duration } from 'date-fns'
-import type { DateRange } from '~/types/dashboard'
 
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { isSameDay, sub } from 'date-fns'
 
-const dateRange = defineModel<DateRange>()
-
 const { t, locale } = useI18n()
+
+const { dateRange } = storeToRefs(useDateRangeStore())
 
 const { smallerThanSm, calendarAttrs } = useStyles()
 const {
@@ -109,6 +109,7 @@ function useDateRange() {
 			{ label: t('lastThreeMonths'), duration: { months: 3 } },
 			{ label: t('lastSixMonths'), duration: { months: 6 } },
 			{ label: t('lastYear'), duration: { years: 1 } },
+			{ label: t('lastFiveYears'), duration: { years: 5 } },
 		]
 
 	const format = useLocaleDate('P')

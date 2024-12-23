@@ -19,6 +19,7 @@ export default defineNuxtConfig({
 		'@nuxthq/studio',
 		'@vueuse/nuxt',
 		'@pinia/nuxt',
+		'pinia-plugin-persistedstate/nuxt',
 		'@nuxtjs/seo',
 		'@unlok-co/nuxt-stripe',
 		'@sentry/nuxt/module',
@@ -94,6 +95,11 @@ export default defineNuxtConfig({
 		imports: {
 			dirs: ['./constants'],
 		},
+	},
+
+	piniaPluginPersistedstate: {
+		// 使用 `localStorage`，使用 `cookies` 很容易导致 cookie 过大，从而导致请求失败
+		storage: 'localStorage',
 	},
 
 	i18n: {

@@ -4,8 +4,7 @@
 			<UDashboardNavbar>
 				<template #left>
 					<!-- 在搜索框聚焦时隐藏 -->
-					<DateRangePicker v-model="dateRange"
-						class="-ml-2.5"
+					<DateRangePicker class="-ml-2.5"
 						:class="{ 'hidden': isSearchFocused }" />
 				</template>
 
@@ -71,8 +70,7 @@
 			</UDashboardNavbar>
 
 			<UDashboardPanelContent>
-				<ImageGallery :dateRange
-					:description="imageDescription"
+				<ImageGallery :description="imageDescription"
 					:refreshID="refreshID" />
 			</UDashboardPanelContent>
 		</UDashboardPanel>
@@ -149,11 +147,9 @@ ar:
 
 <script lang="ts" setup>
 import type { Meta, UploadResult } from '@uppy/core'
-import type { DateRange } from '~/types/dashboard'
 import type { Database } from '~/types/database'
 
 import { downloadZip } from 'client-zip'
-import { sub } from 'date-fns'
 import { nanoid } from 'nanoid'
 
 const { t } = useI18n()
@@ -169,7 +165,6 @@ const user = useSupabaseUser()
 
 const { toastError, toastSuccess } = useAppToast()
 
-const dateRange = ref<DateRange>({ start: sub(now, { months: 1 }), end: now })
 const refreshID = ref(nanoid(5))
 
 // 搜索框聚焦状态
