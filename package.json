@@ -65,12 +65,12 @@
 	"devDependencies": {
 		"@iconify/json": "^2.2.288",
 		"@nuxthq/studio": "^2.2.1",
-		"nuxi": "^3.17.1",
+		"nuxi": "^3.17.2",
 		"nuxt-lodash": "^2.5.3",
 		"nuxt-server-fn": "^0.4.1",
 		"sass-embedded": "^1.83.0",
 		"vite-plugin-remove-console": "^2.2.0",
-		"vue-tsc": "^2.1.10"
+		"vue-tsc": "^2.2.0"
 	},
 	"overrides": {
 		"ajv": "^8.17",

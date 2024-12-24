@@ -224,7 +224,7 @@ function useImageGroups() {
 			.rpc('search_images', {
 				query_embedding: embedding
 			})
-			.gte('similarity', 0.3)
+			.gte('similarity', 0.1)
 			.gte('last_modified_date', dateRangeISO.value.start)
 			.lte('last_modified_date', dateRangeISO.value.end)
 			.order('similarity', { ascending: false })
