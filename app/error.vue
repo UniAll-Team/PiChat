@@ -12,12 +12,18 @@
 
 		<!-- <AppFooter /> -->
 
+		<ClientOnly>
+			<LazyUContentSearch :files="files"
+				:navigation="navigation" />
+		</ClientOnly>
+
 		<UNotifications />
 	</div>
 </template>
 
 <script setup lang="ts">
 import type { NuxtError } from '#app'
+import type { ParsedContent } from '@nuxt/content'
 
 const { locale } = useI18n()
 
@@ -33,6 +39,8 @@ const { data: navigation } = await useAsyncData('navigation',
 	),
 	{ default: () => [] }
 )
+
+const { data: files } = useLazyFetch<ParsedContent[]>('/api/search.json', { default: () => [], server: false })
 
 provide('navigation', navigation)
 </script>

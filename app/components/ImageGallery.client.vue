@@ -224,7 +224,7 @@ function useImageGroups() {
 			.rpc('search_images', {
 				query_embedding: embedding
 			})
-			.gte('similarity', 0.1)
+			.gte('similarity', 0.2)
 			.gte('last_modified_date', dateRangeISO.value.start)
 			.lte('last_modified_date', dateRangeISO.value.end)
 			.order('similarity', { ascending: false })
@@ -259,8 +259,8 @@ function useImageGroups() {
 
 			console.debug('data', data)
 
-			if (data.length < pageSize) {
-				// 如果数据不足一页，设置没有更多数据
+			if (data.length < pageSize || isSearching.value) {
+				// 如果数据不足一页，或者是搜索，没有更多数据
 				hasMore.value = false
 
 				if (_isEmpty(data)) {

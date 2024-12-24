@@ -219,6 +219,19 @@ export default defineNuxtConfig({
 			id: process.env.NUXT_SITE_NAME?.toLowerCase(),
 			name: process.env.NUXT_SITE_NAME,
 			description: process.env.NUXT_SITE_DESCRIPTION,
+			categories: ['productivity'],
+			screenshots: [
+				{
+					src: '/images/home.jpg',
+					sizes: '1660x800',
+					type: 'image/jpg',
+				},
+				{
+					src: '/images/settings.png',
+					sizes: '1460x800',
+					type: 'image/png',
+				},
+			],
 			theme_color: '#000000',
 			lang: process.env.NUXT_DEFAULT_LOCALE || 'en',
 			orientation: 'natural',
