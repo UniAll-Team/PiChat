@@ -13,7 +13,7 @@ export const userPlans: UserPlans = [
 		},
 		indexingQuotas: {
 			// 免费方案只有月度配额
-			month: 1777,
+			month: 177,
 		},
 		pricesCent: {
 			month: 0,
@@ -35,8 +35,8 @@ export const userPlans: UserPlans = [
 			year: 17777,
 		},
 		pricesCent: {
-			month: 1970,
-			year: 19970,
+			month: 19_70,
+			year: 199_70,
 		},
 		pricesStr: {
 			month: '$19.7',
@@ -56,8 +56,8 @@ export const userPlans: UserPlans = [
 			year: 37777,
 		},
 		pricesCent: {
-			month: 3970,
-			year: 39970,
+			month: 39_70,
+			year: 399_70,
 		},
 		pricesStr: {
 			month: '$39.7',
@@ -77,8 +77,8 @@ export const userPlans: UserPlans = [
 			year: 77777,
 		},
 		pricesCent: {
-			month: 7770,
-			year: 77770,
+			month: 77_70,
+			year: 777_70,
 		},
 		pricesStr: {
 			month: '$77.7',

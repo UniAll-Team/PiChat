@@ -40,7 +40,10 @@ const { data: navigation } = await useAsyncData('navigation',
 	{ default: () => [] }
 )
 
-const { data: files } = useLazyFetch<ParsedContent[]>('/api/search.json', { default: () => [], server: false })
+const { data: files } = await useAsyncData('files',
+	() => queryContent().where({ _type: 'markdown', navigation: { $ne: false } }).find(),
+	{ default: () => [] }
+)
 
 provide('navigation', navigation)
 </script>

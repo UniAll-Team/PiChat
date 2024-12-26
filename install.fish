@@ -3,16 +3,16 @@ set modules \
     pinia \
     vueuse \
     ui-pro \
+    @samk-dev/nuxt-vcalendar \
+    nuxt-viewport \
     scripts \
+    # nuxt-swiper \
     @nuxtjs/seo \
     @vite-pwa/nuxt \
     nuxt-zod-i18n \
     supabase \
     sentry \
-    stripe-next \
-    @samk-dev/nuxt-vcalendar \
-    nuxt-viewport \
-    nuxt-swiper
+    stripe-next
 
 for module in $modules
     # 必须使用npm源不能使用镜像源，否则会出现找不到模块的情况
@@ -26,7 +26,7 @@ ni \
     mathjs \
     pretty-bytes \
     http-status-codes \
-    type-fest \
+    # type-fest \
     @vueuse/components \
     pinia-plugin-persistedstate \
     nanoid \
@@ -42,6 +42,7 @@ ni \
     @uppy/webcam \
     @uppy/file-input \
     vue3-google-login \
+    # ua-parser-js \
     openai \
     yn \
     client-zip

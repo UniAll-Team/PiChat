@@ -7,7 +7,7 @@ export default defineNuxtConfig({
 		'nuxt-server-fn',
 		'nuxt-zod-i18n',
 		'nuxt-lodash',
-		'nuxt-swiper',
+		// 'nuxt-swiper',
 		'nuxt-viewport',
 		'@nuxtjs/i18n',
 		'@nuxtjs/supabase',
@@ -16,7 +16,6 @@ export default defineNuxtConfig({
 		// '@nuxt/fonts',
 		'@nuxt/image',
 		'@nuxt/ui',
-		'@nuxthq/studio',
 		'@vueuse/nuxt',
 		'@pinia/nuxt',
 		'pinia-plugin-persistedstate/nuxt',
@@ -332,5 +331,5 @@ export default defineNuxtConfig({
 		blockNonSeoBots: true,
 	},
 
-	compatibilityDate: '2024-12-01',
+	compatibilityDate: '2024-12-26',
 })

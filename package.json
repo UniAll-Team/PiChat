@@ -4,6 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "nuxt dev --host",
+		"debug": "nuxt dev --inspect",
 		"generate": "nuxt generate",
 		"build": "nuxt build",
 		"preview": "nuxt preview",
@@ -50,13 +51,11 @@
 		"nanoid": "^5.0.9",
 		"nanoid-dictionary": "5.0.0-beta.1",
 		"nuxt": "^3.14.1592",
-		"nuxt-swiper": "^2.0.0",
 		"nuxt-viewport": "^2.2.0",
 		"nuxt-zod-i18n": "^1.11.2",
 		"openai": "^4.77.0",
 		"pinia-plugin-persistedstate": "^4.2.0",
 		"pretty-bytes": "^6.1.1",
-		"type-fest": "^4.30.2",
 		"vue3-google-login": "^2.0.33",
 		"yaml": "^2.6.1",
 		"yn": "^5.0.0",
@@ -64,17 +63,10 @@
 	},
 	"devDependencies": {
 		"@iconify/json": "^2.2.288",
-		"@nuxthq/studio": "^2.2.1",
-		"nuxi": "^3.17.2",
 		"nuxt-lodash": "^2.5.3",
 		"nuxt-server-fn": "^0.4.1",
 		"sass-embedded": "^1.83.0",
 		"vite-plugin-remove-console": "^2.2.0",
 		"vue-tsc": "^2.2.0"
-	},
-	"overrides": {
-		"ajv": "^8.17",
-		"whatwg-url": "^14.0"
-	},
-	"packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387"
+	}
 }
