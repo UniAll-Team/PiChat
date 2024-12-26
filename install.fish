@@ -42,7 +42,7 @@ ni \
     @uppy/webcam \
     @uppy/file-input \
     vue3-google-login \
-    # ua-parser-js \
+    ua-parser-js \
     openai \
     yn \
     client-zip

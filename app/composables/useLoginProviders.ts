@@ -1,6 +1,7 @@
 import type { Provider } from '@supabase/supabase-js'
 import type { ProviderButton } from '~/types'
 
+import { UAParser } from 'ua-parser-js'
 import { googleOneTap } from 'vue3-google-login'
 
 export function useLoginProviders() {
@@ -113,13 +114,17 @@ export function useLoginProviders() {
 	}
 
 	providers.value = providers.value.map(
-		(provider) => {
-			switch (provider.provider) {
-				case 'google':
-					var login = loginWithOneTap
-					break
-				default:
-					var login = async () => await loginWithProvider(provider.provider)
+		provider => {
+			const providerName = provider.provider
+
+			const result = UAParser()
+			const browserName = result.browser.name
+			const engineName = result.engine.name
+
+			if (providerName == 'google' && engineName == 'Blink' && browserName != 'Edge') {
+				var login = loginWithOneTap
+			} else {
+				var login = async () => await loginWithProvider(provider.provider)
 			}
 
 			return {

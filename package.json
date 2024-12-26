@@ -56,6 +56,7 @@
 		"openai": "^4.77.0",
 		"pinia-plugin-persistedstate": "^4.2.0",
 		"pretty-bytes": "^6.1.1",
+		"ua-parser-js": "^2.0.0",
 		"vue3-google-login": "^2.0.33",
 		"yaml": "^2.6.1",
 		"yn": "^5.0.0",
