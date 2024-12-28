@@ -1,23 +1,22 @@
 <template>
-  <div>
-    <UPageHero align="center" :title="t('hero.title')"
-      :description="t('hero.description')">
-      <template #links>
-        <UPricingToggle v-model="isYearly" class="w-48" />
-      </template>
-    </UPageHero>
+	<div>
+		<UPageHero align="center" :title="t('hero.title')"
+			:description="t('hero.description')">
+			<template #links>
+				<UPricingToggle v-model="isYearly" class="w-48" />
+			</template>
+		</UPageHero>
 
-    <UContainer>
-      <UPricingGrid
-        :class="isYearly ? 'lg:grid-cols' : 'lg:grid-cols-4'">
-        <UPricingCard v-for="plan in plans" v-bind="plan" />
-      </UPricingGrid>
-      <UAlert icon="heroicons-exclamation-triangle"
-        color="red" variant="outline" class="mt-8"
-        :description="t('note')" />
-    </UContainer>
+		<UContainer>
+			<UPricingGrid class="lg:grid-cols">
+				<UPricingCard v-for="plan in plans" v-bind="plan" />
+			</UPricingGrid>
+			<UAlert icon="heroicons-exclamation-triangle"
+				color="red" variant="outline" class="mt-8"
+				:description="t('note')" />
+		</UContainer>
 
-    <!-- <ULandingSection>
+		<!-- <ULandingSection>
 			<ULandingLogos>
 				<UIcon v-for="icon in logos.icons" :key="icon"
 					:name="icon"
@@ -25,11 +24,11 @@
 			</ULandingLogos>
 		</ULandingSection> -->
 
-    <ULandingSection :title="t('faqs.title')">
-      <ULandingFAQ :items="faqs" multiple
-        class="max-w-4xl mx-auto" />
-    </ULandingSection>
-  </div>
+		<ULandingSection :title="t('faqs.title')">
+			<ULandingFAQ :items="faqs" multiple
+				class="max-w-4xl mx-auto" />
+		</ULandingSection>
+	</div>
 </template>
 
 <i18n lang="yaml">
@@ -267,97 +266,97 @@ const displayedCycle = computed(() => isYearly.value ? 'year' : 'month')
 console.debug('userPlan', userPlan.value)
 
 const logos = {
-  title: "Trusted by the world's best",
-  icons: [
-    'i-simple-icons-amazonaws',
-    'i-simple-icons-heroku',
-    'i-simple-icons-netlify',
-    'i-simple-icons-vercel',
-    'i-simple-icons-cloudflare',
-  ],
+	title: "Trusted by the world's best",
+	icons: [
+		'i-simple-icons-amazonaws',
+		'i-simple-icons-heroku',
+		'i-simple-icons-netlify',
+		'i-simple-icons-vercel',
+		'i-simple-icons-cloudflare',
+	],
 }
 
 const plans = computed(() => userPlans
-  .filter(plan => !(isYearly.value && plan.name === 'free'))
-  .map(plan => {
-    const isCurrentPlan = userPlan.value.lookupKey === plan.lookupKeys[displayedCycle.value]
+	.filter(plan => plan.name != 'free')
+	.map(plan => {
+		const isCurrentPlan = userPlan.value.lookupKey === plan.lookupKeys[displayedCycle.value]
 
-    return {
-      ...plan,
-      key: plan.name,
-      title: _capitalize(plan.name),
-      description: t(`pricing.${plan.name}.description`),
-      align: 'top',
-      ui: {
-        features: {
-          item: {
-            label: '',
-          },
-        },
-      },
-      price: plan.pricesStr[displayedCycle.value],
-      cycle: isYearly.value ? t('pricing.cycle.year') : t('pricing.cycle.month'),
-      features: [
-        t('pricing.features.storage', [format(plan.storageQuota)]),
-        t('pricing.features.indexing', [n(plan.indexingQuotas[displayedCycle.value], 'decimal')]),
-      ],
-      button: {
-        label: isCurrentPlan ? t('button.currentPlan') : t('button.getStarted'),
-        variant: isCurrentPlan ? 'solid' : 'outline',
-        disabled: isCurrentPlan,
-        color: isCurrentPlan ? 'gray' : 'primary',
-        async click() {
-          if (!user.value) {
-            await navigateTo('/login')
-            return
-          }
+		return {
+			...plan,
+			key: plan.name,
+			title: _capitalize(plan.name),
+			description: t(`pricing.${plan.name}.description`),
+			align: 'top',
+			ui: {
+				features: {
+					item: {
+						label: '',
+					},
+				},
+			},
+			price: plan.pricesStr[displayedCycle.value],
+			cycle: isYearly.value ? t('pricing.cycle.year') : t('pricing.cycle.month'),
+			features: [
+				t('pricing.features.storage', [format(plan.storageQuota)]),
+				t('pricing.features.indexing', [n(plan.indexingQuotas[displayedCycle.value], 'decimal')]),
+			],
+			button: {
+				label: isCurrentPlan ? t('button.currentPlan') : t('button.getStarted'),
+				variant: isCurrentPlan ? 'solid' : 'outline',
+				disabled: isCurrentPlan,
+				color: isCurrentPlan ? 'gray' : 'primary',
+				async click() {
+					if (!user.value) {
+						await navigateTo('/login')
+						return
+					}
 
-          if (userPlan.value.name == 'free') {
-            var { url, error } = await createCheckoutSession(plan.lookupKeys[displayedCycle.value], location.origin)
-          } else {
-            var { url, error } = await createPortalSession(location.origin)
-          }
+					if (userPlan.value.name == 'free') {
+						var { url, error } = await createCheckoutSession(plan.lookupKeys[displayedCycle.value], location.origin)
+					} else {
+						var { url, error } = await createPortalSession(location.origin)
+					}
 
-          if (error) {
-            console.error(error)
-            toastError(
-              t('toast.error'),
-              error.message
-            )
-            return
-          }
+					if (error) {
+						console.error(error)
+						toastError(
+							t('toast.error'),
+							error.message
+						)
+						return
+					}
 
-          await navigateTo(url, { external: true })
-        },
-      } as ClickableButton,
-    }
-  })
+					await navigateTo(url, { external: true })
+				},
+			} as ClickableButton,
+		}
+	})
 )
 
 const faqs = [
-  {
-    label: t('faqs.differentFromOthers.label'),
-    content: t('faqs.differentFromOthers.content'),
-  },
-  {
-    label: t('faqs.purchaseMethod.label'),
-    content: t('faqs.purchaseMethod.content'),
-  },
-  {
-    label: t('faqs.planLimitations.label'),
-    content: t('faqs.planLimitations.content'),
-  },
-  {
-    label: t('faqs.contactMethod.label'),
-    content: t('faqs.contactMethod.content'),
-  },
-  {
-    label: t('faqs.planSwitching.label'),
-    content: t('faqs.purchaseMethod.content'),
-  },
-  {
-    label: t('faqs.freeUsage.label'),
-    content: t('faqs.freeUsage.content'),
-  },
+	{
+		label: t('faqs.differentFromOthers.label'),
+		content: t('faqs.differentFromOthers.content'),
+	},
+	{
+		label: t('faqs.purchaseMethod.label'),
+		content: t('faqs.purchaseMethod.content'),
+	},
+	{
+		label: t('faqs.planLimitations.label'),
+		content: t('faqs.planLimitations.content'),
+	},
+	{
+		label: t('faqs.contactMethod.label'),
+		content: t('faqs.contactMethod.content'),
+	},
+	{
+		label: t('faqs.planSwitching.label'),
+		content: t('faqs.purchaseMethod.content'),
+	},
+	{
+		label: t('faqs.freeUsage.label'),
+		content: t('faqs.freeUsage.content'),
+	},
 ]
 </script>
