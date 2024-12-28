@@ -12,4 +12,4 @@ Alternatively, you can install the website as a PWA app to use it as a desktop a
 
 ## Android
 
-We are in the process of publishing on Google Play. If you want to install the preview version of the app, please click [here](https://github.com/UniAll-LLC/PiCHat-releases/releases/latest) to download and install.
+We are in the process of publishing on Google Play. If you want to install the preview version of the app, please click [here](https://github.com/UniAll-LLC/PiChat-releases/releases/latest) to download and install.

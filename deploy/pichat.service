@@ -1,13 +1,13 @@
 [Unit]
-Description=PiCHat
+Description=PiChat
 Wants=network-online.target
 After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node --env-file=%h/Documents/PiCHat/.env %h/Documents/PiCHat/.output/server/index.mjs
+ExecStart=/usr/bin/node --env-file=%h/Documents/PiChat/.env %h/Documents/PiChat/.output/server/index.mjs
 # 工作目录
-WorkingDirectory=%h/Documents/PiCHat
+WorkingDirectory=%h/Documents/PiChat
 # node 崩溃后重启
 RestartSec=10
 Restart=always
@@ -15,8 +15,8 @@ Restart=always
 #StandardOutput=file:%L/%N.log
 #StandardError=file:%L/%N.log
 # 不能使用 %L，因为这个特性是在 systemd 新版本才有的
-StandardOutput=file:%h/Documents/PiCHat/logs/pichat.log
-StandardError=file:%h/Documents/PiCHat/logs/pichat.log
+StandardOutput=file:%h/Documents/PiChat/logs/pichat.log
+StandardError=file:%h/Documents/PiChat/logs/pichat.log
 
 [Install]
 WantedBy=default.target

@@ -12,4 +12,4 @@ description: 在不同的平台安装本软件。
 
 ## 安卓
 
-我们正在上架Google Play，如果您需要安装体验版应用，请点击[这里](https://github.com/UniAll-LLC/PiCHat-releases/releases/latest)进行下载安装。
+我们正在上架Google Play，如果您需要安装体验版应用，请点击[这里](https://github.com/UniAll-LLC/PiChat-releases/releases/latest)进行下载安装。

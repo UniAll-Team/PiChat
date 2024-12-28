@@ -15,14 +15,14 @@
 
 <i18n lang="yaml">
 en:
-  ogTitle: "PiCHat, an intelligent album surpassing traditional online albums!"
-  description: "PiCHat is an AI-based intelligent album that allows you to search your photos in your native language. PiCHat automatically recognizes objects, scenes, and people in your photos, making it easier for you to find them."
+  ogTitle: "PiChat, an intelligent album surpassing traditional online albums!"
+  description: "PiChat is an AI-based intelligent album that allows you to search your photos in your native language. PiChat automatically recognizes objects, scenes, and people in your photos, making it easier for you to find them."
 zh-Hans:
-  ogTitle: "PiCHat，一个超越传统在线相册的智能相册！"
-  description: "PiCHat 是一个基于AI的智能相册，您可以用您的母语搜索您的照片，PiCHat 会自动识别您的照片中的物体、场景、人物等信息，让您可以更方便地找到您的照片。"
+  ogTitle: "PiChat，一个超越传统在线相册的智能相册！"
+  description: "PiChat 是一个基于AI的智能相册，您可以用您的母语搜索您的照片，PiChat 会自动识别您的照片中的物体、场景、人物等信息，让您可以更方便地找到您的照片。"
 ar:
-  ogTitle: "PiCHat، ألبوم ذكي يتفوق على الألبومات التقليدية عبر الإنترنت!"
-  description: "PiCHat هو ألبوم ذكي يعتمد على الذكاء الاصطناعي يسمح لك بالبحث في صورك بلغتك الأم. يقوم PiCHat بالتعرف تلقائيًا على الأشياء والمشاهد والأشخاص في صورك، مما يسهل عليك العثور عليها."
+  ogTitle: "PiChat، ألبوم ذكي يتفوق على الألبومات التقليدية عبر الإنترنت!"
+  description: "PiChat هو ألبوم ذكي يعتمد على الذكاء الاصطناعي يسمح لك بالبحث في صورك بلغتك الأم. يقوم PiChat بالتعرف تلقائيًا على الأشياء والمشاهد والأشخاص في صورك، مما يسهل عليك العثور عليها."
 </i18n>
 
 <script setup lang="ts">

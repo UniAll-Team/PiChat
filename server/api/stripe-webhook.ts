@@ -91,12 +91,13 @@ export default eventHandler(async event => {
 			case 'customer.subscription.created':
 			case 'customer.subscription.deleted':
 			case 'customer.subscription.updated':
+			case 'invoice.payment_succeeded':
 				const customerID = stripeEvent.data.object.customer as string
 				const customer = await stripe.customers.retrieve(customerID) as Stripe.Customer
 				var userID = customer.metadata.user_id
 				break
 			case 'customer.deleted':
-				var userID = stripeEvent.data.object.id
+				var userID = stripeEvent.data.object.metadata.user_id
 				break
 			default:
 				console.warn(`Unhandled event type ${stripeEvent.type}.`)
@@ -114,7 +115,7 @@ export default eventHandler(async event => {
 				var user = await updateUserPlan(userID, lookupKey2Plan(lookup_key))
 				break
 			case 'customer.deleted':
-				const appMetadata = await getUserAppMetadata(userID)
+				var appMetadata = await getUserAppMetadata(userID)
 				var { data: { user }, error } = await supabase.auth.admin.updateUserById(userID, {
 					app_metadata: {
 						...appMetadata,
@@ -127,6 +128,22 @@ export default eventHandler(async event => {
 				if (error) {
 					throw error
 				}
+				break
+			case 'invoice.payment_succeeded':
+				if (stripeEvent.data.object.billing_reason !== 'subscription_cycle') {
+					return { received: true }
+				}
+
+				var appMetadata = await getUserAppMetadata(userID)
+				var { data: { user }, error } = await supabase.auth.admin.updateUserById(userID, {
+					app_metadata: {
+						...appMetadata,
+						plan: {
+							...appMetadata?.plan,
+							cycle_indexed_count: 0,
+						}
+					},
+				})
 				break
 		}
 		return user

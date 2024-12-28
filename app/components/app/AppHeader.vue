@@ -1,7 +1,7 @@
 <template>
 	<UHeader :links="links">
 		<template #logo>
-			PiCHat
+			PiChat
 		</template>
 
 		<template #right>
@@ -47,7 +47,7 @@
 
 <i18n lang="yaml">
 en:
-  logo: PiCHat
+  logo: PiChat
   nav:
     docs: Docs
     pricing: Pricing
@@ -58,7 +58,7 @@ en:
   dashboard: Dashboard
 
 zh-Hans:
-  logo: PiCHat
+  logo: PiChat
   nav:
     docs: 文档
     pricing: 定价
@@ -69,7 +69,7 @@ zh-Hans:
   dashboard: 仪表盘
 
 ar:
-  logo: PiCHat
+  logo: PiChat
   nav:
     docs: الوثائق
     pricing: التسعير

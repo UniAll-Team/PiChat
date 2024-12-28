@@ -328,7 +328,10 @@ export default defineNuxtConfig({
 	},
 
 	robots: {
+		metaTag: false,
 		blockNonSeoBots: true,
+		disallow: '',
+		allow: '/',
 	},
 
 	compatibilityDate: '2024-12-26',
