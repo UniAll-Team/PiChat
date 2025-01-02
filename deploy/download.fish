@@ -6,4 +6,4 @@ else
     set remote_path $argv[2]
 end
 
-rsync --log-file=./logs/download.log -azvvvP $remote_host:{$remote_path/logs,/var/log/caddy}/ ./logs/
+rsync --log-file=./logs/download.log -azvvvP $remote_host:{$remote_path/logs,/var/log/caddy}/ ./logs/$remote_host/

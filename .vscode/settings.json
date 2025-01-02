@@ -5,7 +5,7 @@
 	],
 	"nuxtr.vueFiles.pages.defaultTemplate": "i18n.vue",
 	"nuxtr.vueFiles.layouts.defaultTemplate": "i18n.vue",
-	"editor.lineNumbers": "on",
-	"editor.glyphMargin": true,
+	"editor.lineNumbers": "off",
+	"editor.glyphMargin": false,
 	"aide.openaiKey": "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",
 }

@@ -51,6 +51,7 @@ en:
   nav:
     docs: Docs
     pricing: Pricing
+    install: Installation
     customer-service: Customer Service
   signin: Sign in
   signup: Sign up
@@ -62,6 +63,7 @@ zh-Hans:
   nav:
     docs: 文档
     pricing: 定价
+    install: 安装
     customer-service: 客服
   signin: 登录
   signup: 注册
@@ -73,6 +75,7 @@ ar:
   nav:
     docs: الوثائق
     pricing: التسعير
+    install: التثبيت
     customer-service: خدمة العملاء
   signin: تسجيل الدخول
   signup: اشترك
@@ -86,24 +89,32 @@ import type { NavItem } from '@nuxt/content'
 const { t, locale: currentLocale, locales, setLocale } = useI18n()
 
 const navigation = inject<Ref<NavItem[]>>('navigation', ref([]))
-const supabse = useSupabaseClient()
 const user = useSupabaseUser()
 
 const { logout } = useUserLogout()
 
 async function switchLocale(code: string) {
+	// @ts-ignore
 	await setLocale(code)
 	location.reload()
 }
 
-const links = [{
-	label: t('nav.docs'),
-	to: '/docs'
-}, {
-	label: t('nav.pricing'),
-	to: '/pricing'
-}, {
-	label: t('nav.customer-service'),
-	to: '/docs/contact-us'
-}]
+const links = [
+	{
+		label: t('nav.docs'),
+		to: '/docs'
+	},
+	{
+		label: t('nav.install'),
+		to: '/docs/getting-started/installation'
+	},
+	{
+		label: t('nav.pricing'),
+		to: '/pricing'
+	},
+	{
+		label: t('nav.customer-service'),
+		to: '/docs/contact-us'
+	}
+]
 </script>
