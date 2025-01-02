@@ -282,6 +282,7 @@ export default defineNuxtConfig({
 			collections: [
 				'heroicons',
 				'simple-icons',
+				'hugeicons',
 				'logos',
 				'mdi',
 			]
