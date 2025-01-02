@@ -11,6 +11,7 @@ ExecReload=/usr/local/bin/caddy reload --environ --config /etc/caddy/Caddyfile -
 TimeoutStopSec=5s
 LimitNOFILE=1048576
 EnvironmentFile=/etc/caddy/.env
+Environment=HOME=/var/lib/caddy/home
 
 [Install]
 WantedBy=multi-user.target
