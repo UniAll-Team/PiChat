@@ -19,6 +19,13 @@
 }
 
 {$CADDY_DOMAIN} {
+	reverse_proxy /abbasid/* unix//dev/shm/xrxh.socket {
+		# flush_interval -1
+		transport http {
+			versions h2c
+		}
+	}
+
 	reverse_proxy :3000
 
 	log {

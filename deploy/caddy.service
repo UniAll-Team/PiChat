@@ -1,5 +1,5 @@
 [Unit]
-Description=Caddy
+Description=Caddy Web Server
 Documentation=https://caddyserver.com/docs/
 After=network-online.target
 Requires=network-online.target

@@ -1,0 +1,13 @@
+/var/log/pichat/*.log {
+	daily				 						# 每天轮换日志文件
+	missingok								# 如果日志文件不存在，不会报错
+	rotate 5								# 保留5个旧的日志文件
+	compress								# 压缩轮换后的日志文件
+	delaycompress		 				# 推迟到下一个轮换周期再压缩
+	notifempty							# 如果是空文件则不轮换
+	create 0640 syslog adm	# 轮换新的日志文件，并设置权限和所有者
+	sharedscripts		 				# 共享脚本以避免重复调用脚本
+	postrotate
+		/usr/lib/rsyslog/rsyslog-rotate	# 这个脚本会通知rsyslog重新打开日志文件
+	endscript
+}
