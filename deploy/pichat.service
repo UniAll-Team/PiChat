@@ -9,8 +9,8 @@ ExecStart=/usr/bin/node --env-file=%h/Documents/PiChat/.env %h/Documents/PiChat/
 # 工作目录
 WorkingDirectory=%h/Documents/PiChat
 # node 崩溃后重启
-RestartSec=10
-Restart=always
+RestartSec=5s
+Restart=on-failure
 # 输出日志
 StandardOutput=syslog
 StandardError=syslog

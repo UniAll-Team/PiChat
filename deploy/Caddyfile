@@ -6,9 +6,10 @@
 
 	log {
 		output file /var/log/caddy/caddy.jsonl {
-			roll_size 10M
-			roll_keep 5
-			roll_keep_for 7d
+			mode 640
+			roll_size 10MiB
+			roll_keep 30
+			roll_keep_for 30d
 		}
 		# 即使是用 console 格式输出，内容也是 json 格式，所以还不如直接输出 json
 		format json {
@@ -30,9 +31,10 @@
 
 	log {
 		output file /var/log/caddy/{$NUXT_SITE_NAME}.jsonl {
-			roll_size 10M
-			roll_keep 5
-			roll_keep_for 7d
+			mode 640
+			roll_size 10MiB
+			roll_keep 100
+			roll_keep_for 90d
 		}
 		# 即使是用 console 格式输出，内容也是 json 格式，所以还不如直接输出 json
 		format json {
