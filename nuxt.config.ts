@@ -34,7 +34,8 @@ export default defineNuxtConfig({
 		]
 	},
 
-	// debug: true,
+	// 生产环境下打开，否则后台没有任何输出
+	debug: process.env.NODE_ENV == 'production',
 
 	logLevel: 'verbose',
 
