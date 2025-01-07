@@ -6,4 +6,5 @@ else
     set remote_path $argv[2]
 end
 
-rsync --log-file=./logs/download.log -azvvvP $remote_host:/var/log/{caddy,pichat}/ ./logs/$remote_host/
+ssh $remote_host 'below dump system -O csv -o /var/log/below/dump.csv --begin "30d ago"'
+rsync --log-file=./logs/download.log -azvvvP $remote_host:/var/log/{{caddy,pichat}/,below/dump.csv} ./logs/$remote_host/

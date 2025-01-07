@@ -5,7 +5,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node --max-old-space-size=1843 --env-file=%h/Documents/PiChat/.env %h/Documents/PiChat/.output/server/index.mjs
+ExecStart=/usr/bin/node --max-old-space-size=1536 --env-file=%h/Documents/PiChat/.env %h/Documents/PiChat/.output/server/index.mjs
 # 工作目录
 WorkingDirectory=%h/Documents/PiChat
 # node 崩溃后重启
