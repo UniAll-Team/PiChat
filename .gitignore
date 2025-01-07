@@ -6,7 +6,6 @@
 .nitro
 .cache
 dist
-*.tzst
 
 # Node dependencies
 node_modules
@@ -34,3 +33,11 @@ runs/
 
 # tmp
 tmp
+
+# 配音文件
+*.opus
+*.mp3
+
+# 压缩包
+*.zip
+*.tzst
