@@ -20,7 +20,7 @@ export default defineNuxtConfig({
 		'@pinia/nuxt',
 		'pinia-plugin-persistedstate/nuxt',
 		'@nuxtjs/seo',
-		'@unlok-co/nuxt-stripe',
+		'nuxt-webhook-validators',
 		'@sentry/nuxt/module',
 		'@samk-dev/nuxt-vcalendar',
 		'@vite-pwa/nuxt',
@@ -57,6 +57,9 @@ export default defineNuxtConfig({
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
 		},
+		paddle: {
+			webhookSecret: process.env.PADDLE_WEBHOOK_SECRET,
+		},
 		// 是否使用代理，这里不能使用 `yn`，因为 `yn` 的输出在编译时会被转换为常量
 		useProxy: process.env.NUXT_USE_PROXY,
 		proxy: {
@@ -65,17 +68,10 @@ export default defineNuxtConfig({
 			socks5: 'socks5://localhost:1080',
 			socks5h: 'socks5h://localhost:1080',
 		},
-		stripe: {
-			key: process.env.STRIPE_SECRET_KEY,
-			webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
-		},
 		public: {
 			sentry: {
 				dsn: process.env.SENTRY_DSN,
 				environment: process.env.NODE_ENV,
-			},
-			stripe: {
-				key: process.env.STRIPE_PUBLIC_KEY,
 			},
 		},
 	},
@@ -112,10 +108,10 @@ export default defineNuxtConfig({
 			alwaysRedirect: true,
 			useCookie: true,
 			cookieCrossOrigin: true,
-			fallbackLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
+			fallbackLocale: (process.env.NUXT_DEFAULT_LOCALE as 'en' | 'ar' | 'zh-Hans') || 'en',
 		},
 		lazy: true,
-		defaultLocale: process.env.NUXT_DEFAULT_LOCALE || 'en',
+		defaultLocale: (process.env.NUXT_DEFAULT_LOCALE as 'en' | 'ar' | 'zh-Hans') || 'en',
 		baseUrl: process.env.NUXT_SITE_URL || 'http://localhost:3000',
 		locales: [
 			{

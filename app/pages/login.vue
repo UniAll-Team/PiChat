@@ -155,7 +155,7 @@ const terms = [
 	{
 		placeholder: 'terms',
 		label: t('terms_and_conditions'),
-		href: '/terms/term-and-condition.html'
+		href: '/terms/terms-and-conditions.html'
 	},
 	{
 		placeholder: 'privacy',

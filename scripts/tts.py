@@ -46,7 +46,7 @@ class MarkdownToSpeech:
 
         # 读取并处理每个段落
         for i, text in enumerate(self.read_paragraphs(markdown_file), 1):
-            output_file = output_path / f'{i:03d}.opus'
+            output_file = output_path / f'{i:03d}.mp3'
             print(f'处理第 {i} 段...')
 
             try:

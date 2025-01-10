@@ -12,7 +12,7 @@ set modules \
     nuxt-zod-i18n \
     supabase \
     sentry \
-    stripe-next
+    webhook-validators
 
 for module in $modules
     # 必须使用npm源不能使用镜像源，否则会出现找不到模块的情况
@@ -41,6 +41,8 @@ ni \
     @uppy/status-bar \
     @uppy/webcam \
     @uppy/file-input \
+    @paddle/paddle-js \
+    @paddle/paddle-node-sdk \
     vue3-google-login \
     ua-parser-js \
     openai \
