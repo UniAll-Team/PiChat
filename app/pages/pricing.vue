@@ -83,9 +83,9 @@ en:
         pictures you want.
     purchaseMethod:
       label: Why can't I purchase via the website?
-      content: We are currently applying for stripe payment functionality,
-        so it is temporarily unavailable for web purchase. If
-        you want to buy now, please click the "Customer Service"
+      content: We are currently applying for a payment gateway,
+        so online payments are temporarily unavailable. If you'd
+        like to subscribe now, please click the "Customer Service"
         button at the top of the page to contact us.
     planLimitations:
       label: Only 3 plans? I want more storage and features.
@@ -214,10 +214,10 @@ ar:
         اللغة الطبيعية حتى تتمكن من العثور على الصور التي تريدها.
     purchaseMethod:
       label: لماذا لا أستطيع الشراء عبر الموقع؟
-      content: نحن حالياً بصدد طلب وظيفة الدفع عبر stripe، لذلك
-        فهي غير متاحة مؤقتاً للشراء عبر الإنترنت. إذا كنت تريد
-        الشراء الآن، يرجى النقر على زر "خدمة العملاء" في أعلى
-        الصفحة للتواصل معنا.
+      content: نحن بصدد الحصول على بوابة دفع في الوقت الراهن،
+        لذا لا يمكن الدفع عبر الموقع مؤقتًا. إذا كنت ترغب في الاشتراك
+        الآن، يرجى النقر على زر "خدمة العملاء" في أعلى الصفحة
+        للتواصل معنا.
     cryptoCurrency:
       label: هل تدعم الدفع بالعملات المشفرة؟
       content: إذا كنت ترغب في الدفع باستخدام العملات المشفرة،
