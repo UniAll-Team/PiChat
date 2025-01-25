@@ -13,7 +13,7 @@ export async function useUserUsed() {
 
 	const userUsed = computed(() => {
 		return {
-			storageUsed: data.size ?? 0,
+			storageUsed: data?.size ?? 0,
 			cycleIndexedCount: user.value?.app_metadata?.cycle_indexed_count ?? 0
 		}
 	})

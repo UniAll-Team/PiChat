@@ -11,8 +11,8 @@ set modules \
     @vite-pwa/nuxt \
     nuxt-zod-i18n \
     supabase \
-    sentry \
-    webhook-validators
+    # webhook-validators \
+    sentry
 
 for module in $modules
     # 必须使用npm源不能使用镜像源，否则会出现找不到模块的情况
@@ -46,6 +46,7 @@ ni \
     vue3-google-login \
     ua-parser-js \
     openai \
+    https-proxy-agent \
     yn \
     client-zip
 

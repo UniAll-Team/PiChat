@@ -11,7 +11,6 @@ export function useUserPlan() {
 		// 设置用户当前的付费周期
 		userPlan.cycle = plan?.cycle ?? 'month'
 		userPlan.indexingQuota = userPlan.indexingQuotas[userPlan.cycle ?? 'month']
-		userPlan.lookupKey = userPlan.lookupKeys[userPlan.cycle ?? 'month']
 
 		return userPlan
 	})

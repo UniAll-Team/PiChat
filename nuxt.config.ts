@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 		// 'nuxt-swiper',
 		'nuxt-viewport',
 		'@nuxtjs/i18n',
+		'@nuxtjs/seo',
 		'@nuxtjs/supabase',
 		'@nuxt/scripts',
 		'@nuxt/content',
@@ -19,7 +20,6 @@ export default defineNuxtConfig({
 		'@vueuse/nuxt',
 		'@pinia/nuxt',
 		'pinia-plugin-persistedstate/nuxt',
-		'@nuxtjs/seo',
 		'nuxt-webhook-validators',
 		'@sentry/nuxt/module',
 		'@samk-dev/nuxt-vcalendar',
@@ -57,8 +57,13 @@ export default defineNuxtConfig({
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
 		},
+		webhook: {
+			paddle: {
+				webhookId: process.env.PADDLE_WEBHOOK_ID,
+			},
+		},
 		paddle: {
-			webhookSecret: process.env.PADDLE_WEBHOOK_SECRET,
+			apiKey: process.env.PADDLE_API_KEY
 		},
 		// 是否使用代理，这里不能使用 `yn`，因为 `yn` 的输出在编译时会被转换为常量
 		useProxy: process.env.NUXT_USE_PROXY,
@@ -72,6 +77,10 @@ export default defineNuxtConfig({
 			sentry: {
 				dsn: process.env.SENTRY_DSN,
 				environment: process.env.NODE_ENV,
+			},
+			paddle: {
+				environment: process.env.PADDLE_ENVIRONMENT as 'sandbox' | 'production',
+				clientToken: process.env.PADDLE_CLIENT_TOKEN,
 			},
 		},
 	},
@@ -280,6 +289,7 @@ export default defineNuxtConfig({
 				'heroicons',
 				'simple-icons',
 				'hugeicons',
+				'line-md',
 				'logos',
 				'mdi',
 			]
@@ -301,7 +311,7 @@ export default defineNuxtConfig({
 		},
 	},
 
-	sourcemap: { client: true },
+	sourcemap: true,
 	sentry: {
 		sourceMapsUploadOptions: {
 			org: process.env.SENTRY_ORG,

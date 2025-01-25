@@ -116,6 +116,9 @@ en:
   toast:
     error: Payment failed, if you have any questions, please click
       the customer service on the left.
+    payment: Unable to purchase through the website at the moment,
+      please click the "Customer Service" button at the top of
+      the page to contact us directly.
 
 zh-Hans:
   hero:
@@ -145,9 +148,6 @@ zh-Hans:
     differentFromOthers:
       label: 当市场上已经有大量的在线相册应用，还为什么要选择你们的产品？
       content: 一般的在线相册都不允许您使用自然语言搜索图片，而只能根据图片主题进行检索。PiChat不同，它允许您使用自然语言搜索图片，这样您就可以找到您想要的图片。
-    purchaseMethod:
-      label: 为什么无法通过网页购买？
-      content: 我们目前正在申请stripe付款功能，所以暂时无法通过网页购买。如果您现在就想购买，请点击页面顶部的"客服"按钮联系我们。
     planLimitations:
       label: 只有3个计划？我想要更多的存储空间和功能。
       content: 目前我们处于早期阶段，我们会根据用户的需求和反馈来增加更多的计划，如果当你发现我们的计划不满足您的需求，请联系我们。
@@ -218,6 +218,10 @@ ar:
         فهي غير متاحة مؤقتاً للشراء عبر الإنترنت. إذا كنت تريد
         الشراء الآن، يرجى النقر على زر "خدمة العملاء" في أعلى
         الصفحة للتواصل معنا.
+    cryptoCurrency:
+      label: هل تدعم الدفع بالعملات المشفرة؟
+      content: إذا كنت ترغب في الدفع باستخدام العملات المشفرة،
+        يرجى النقر على "خدمة العملاء" في أعلى الصفحة للتواصل معنا.
     planLimitations:
       label: ثلاث خطط فقط؟ أريد المزيد من التخزين والميزات.
       content: نحن حالياً في المراحل الأولى، وسنضيف المزيد من
@@ -245,25 +249,69 @@ ar:
   toast:
     error: فشل الدفع، إذا كان لديك أي أسئلة، يرجى النقر على خدمة
       العملاء على اليسار.
+    payment: عذرًا، لا يمكن الشراء عبر الويب حاليًا، يُرجى النقر
+      على زر "خدمة العملاء" في أعلى الصفحة للتواصل معنا مباشرة.
 </i18n>
 
 <script setup lang="ts">
 import type { ClickableButton } from '~/types'
+import type { Paddle } from '@paddle/paddle-js'
 
-const { t, n } = useI18n({ numberFormats })
+import { initializePaddle } from '@paddle/paddle-js'
+import _ from 'lodash'
+
+const { t, te, n } = useI18n({ numberFormats })
+const config = useRuntimeConfig()
+
 const format = useLocaleBytes()
+const { createPortalSession, updateCustomer } = useServerFunctions()
 
 const user = useSupabaseUser()
+const supabase = useSupabaseClient()
 
-const { createCheckoutSession, createPortalSession } = useServerFunctions()
-
-const { toastError } = useAppToast()
+const { toastSuccess, toastError } = useAppToast()
 const userPlan = useUserPlan()
+const paidPlans = ref(userPlans.slice(1))
 
 const isYearly = ref(false)
 const displayedCycle = computed(() => isYearly.value ? 'year' : 'month')
 
 console.debug('userPlan', userPlan.value)
+
+// 创建变量存储 Paddle 实例
+/* let paddle: Paddle
+
+switch (config.public.paddle.environment) {
+	case 'sandbox':
+		userPlans[1].paddle = {
+			productId: 'pro_01jh5hrb7c8fpbab0zhfrya5aq',
+			priceIds: {
+				month: 'pri_01jh5j2650xrs4294zc8qnrp7q',
+				year: 'pri_01jh5j653d3fnmpgxnmnwzn8je',
+			}
+		}
+		userPlans[2].paddle = {
+			productId: 'pro_01jh8ae8s0tnn1b5xdeb32ceb1',
+			priceIds: {
+				month: 'pri_01jh8agz5h25sd9zdpz88b05kj',
+				year: 'pri_01jh8aknxcw096fvevag4nk87n',
+			}
+		}
+		userPlans[3].paddle = {
+			productId: 'pro_01jhaxjgv5ttksf5fjtkd8b8tt',
+			priceIds: {
+				month: 'pri_01jhaxm72w2h6631beq1dafj2f',
+				year: 'pri_01jhaxpgs28g40tjaevdmqh9pw',
+			}
+		}
+		break
+	case 'production':
+		break
+	default:
+		console.error('Invalid Paddle environment:', config.public.paddle.environment)
+		toastError('Invalid Paddle environment')
+		break
+} */
 
 const logos = {
 	title: "Trusted by the world's best",
@@ -276,10 +324,83 @@ const logos = {
 	],
 }
 
-const plans = computed(() => userPlans
-	.filter(plan => plan.name != 'free')
+// 初始化 Paddle
+/* onMounted(async () => {
+	try {
+		paddle = await initializePaddle({
+			environment: config.public.paddle.environment as 'sandbox' | 'production',
+			token: config.public.paddle.clientToken,
+			checkout: {
+				settings: {
+					showAddTaxId: true,
+				}
+			},
+			async eventCallback(eventData) {
+				if (eventData.name == "checkout.completed") {
+					console.debug(eventData)
+					// 获取用户信息
+					const customer = eventData.data.customer
+					// 将supabase的用户id保存到paddle的用户custom_data中，将paddle的用户id保存到supabase的用户app_metadata中
+					{
+						const { data, error } = await updateCustomer(customer.id)
+						if (error) {
+							console.error('更新用户信息失败', error)
+						}
+						console.debug('updateCustomer', data)
+					}
+					// 刷新jwt
+					{
+						const { error } = await supabase.auth.refreshSession()
+						if (error) {
+							console.error('刷新jwt失败', error)
+						}
+					}
+					// 提示付款完成
+					toastSuccess(t('toast.success'))
+				}
+			},
+		})
+
+		const request = {
+			items: _
+				.slice(userPlans, 1)
+				.map(plan =>
+					'month year'
+						.split(' ')
+						.map(cycle => ({
+							priceId: plan.paddle.priceIds[cycle],
+							quantity: 1,
+						}))
+				)
+				.flat()
+		}
+
+		const response = await paddle.PricePreview(request)
+		console.debug(response)
+
+		const items = response.data.details.lineItems
+		console.debug('items: ', items)
+
+		// 修改userPlans中的价格
+		for (let i = 1; i < userPlans.length; i++) {
+			const idx = i - 1
+			userPlans[i].pricesStr = {
+				month: items[idx * 2].formattedTotals.subtotal,
+				year: items[idx * 2 + 1].formattedTotals.subtotal,
+			}
+		}
+
+		// 更新paidPlans
+		paidPlans.value = userPlans.slice(1)
+	} catch (error) {
+		console.error('Failed to initialize Paddle:', error)
+		toastError('Failed to initialize Paddle', error.message)
+	}
+}) */
+
+const plans = computed(() => paidPlans.value
 	.map(plan => {
-		const isCurrentPlan = userPlan.value.lookupKey === plan.lookupKeys[displayedCycle.value]
+		const isCurrentPlan = (userPlan.value.name == plan.name && userPlan.value.cycle == displayedCycle.value)
 
 		return {
 			...plan,
@@ -306,27 +427,49 @@ const plans = computed(() => userPlans
 				disabled: isCurrentPlan,
 				color: isCurrentPlan ? 'gray' : 'primary',
 				async click() {
+					console.debug('click', plan)
+
 					if (!user.value) {
 						await navigateTo('/login')
 						return
 					}
 
-					if (userPlan.value.name == 'free') {
-						var { url, error } = await createCheckoutSession(plan.lookupKeys[displayedCycle.value], location.origin)
-					} else {
-						var { url, error } = await createPortalSession(location.origin)
-					}
-
-					if (error) {
-						console.error(error)
-						toastError(
-							t('toast.error'),
-							error.message
-						)
+					if (te('toast.payment')) {
+						toastError(t('toast.payment'))
 						return
 					}
 
-					await navigateTo(url, { external: true })
+					/* if (userPlan.value.name == 'free') {
+						const checkoutOptions = {
+							items: [{
+								priceId: plan.paddle.priceIds[displayedCycle.value],
+								quantity: 1,
+							}],
+							customer: {
+								email: user.value.email,
+							},
+							customData: {
+								userId: user.value.id,
+								fullName: user.value.user_metadata.full_name,
+							},
+						}
+						console.debug('checkoutOptions', checkoutOptions)
+						paddle.Checkout.open(checkoutOptions)
+					} else {
+						const { portalSession, error } = await createPortalSession()
+						console.debug('portalSession', portalSession)
+
+						if (error) {
+							console.error(error)
+							toastError(
+								t('toast.error'),
+								error.message
+							)
+							return
+						}
+
+						await navigateTo(portalSession.urls.general.overview, { external: true })
+					} */
 				},
 			} as ClickableButton,
 		}
@@ -339,10 +482,6 @@ const faqs = [
 		content: t('faqs.differentFromOthers.content'),
 	},
 	{
-		label: t('faqs.purchaseMethod.label'),
-		content: t('faqs.purchaseMethod.content'),
-	},
-	{
 		label: t('faqs.planLimitations.label'),
 		content: t('faqs.planLimitations.content'),
 	},
@@ -352,11 +491,24 @@ const faqs = [
 	},
 	{
 		label: t('faqs.planSwitching.label'),
-		content: t('faqs.purchaseMethod.content'),
+		content: t('faqs.planSwitching.content'),
 	},
 	{
 		label: t('faqs.freeUsage.label'),
 		content: t('faqs.freeUsage.content'),
 	},
 ]
+
+if (te('faqs.cryptoCurrency.label'))
+	faqs.unshift({
+		label: t('faqs.cryptoCurrency.label'),
+		content: t('faqs.cryptoCurrency.content'),
+	})
+
+if (te('faqs.purchaseMethod.label'))
+	faqs.unshift({
+		label: t('faqs.purchaseMethod.label'),
+		content: t('faqs.purchaseMethod.content'),
+	})
+
 </script>
