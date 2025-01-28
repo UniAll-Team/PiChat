@@ -62,7 +62,7 @@
 
 		<UDivider class="mb-4" />
 
-		<!-- <UDashboardSection :title="t('account.title')"
+		<UDashboardSection :title="t('account.title')"
 			:description="t('account.description')">
 			<div>
 				<UButton color="red" :label="t('account.delete')"
@@ -72,7 +72,7 @@
 		</UDashboardSection>
 
 		<SettingsDeleteAccountModal
-			v-model="isDeleteAccountModalOpen" /> -->
+			v-model="isDeleteAccountModalOpen" />
 	</UDashboardPanelContent>
 </template>
 

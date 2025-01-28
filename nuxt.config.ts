@@ -82,6 +82,10 @@ export default defineNuxtConfig({
 				environment: process.env.PADDLE_ENVIRONMENT as 'sandbox' | 'production',
 				clientToken: process.env.PADDLE_CLIENT_TOKEN,
 			},
+			storeReview: {
+				email: process.env.STORE_REVIEW_EMAIL,
+				password: process.env.STORE_REVIEW_PASSWORD,
+			}
 		},
 	},
 
@@ -119,6 +123,9 @@ export default defineNuxtConfig({
 			cookieCrossOrigin: true,
 			fallbackLocale: (process.env.NUXT_DEFAULT_LOCALE as 'en' | 'ar' | 'zh-Hans') || 'en',
 		},
+		customBlocks: {
+			defaultSFCLang: 'yaml'
+		},
 		lazy: true,
 		defaultLocale: (process.env.NUXT_DEFAULT_LOCALE as 'en' | 'ar' | 'zh-Hans') || 'en',
 		baseUrl: process.env.NUXT_SITE_URL || 'http://localhost:3000',
@@ -142,7 +149,10 @@ export default defineNuxtConfig({
 				file: 'zh-Hans.yaml',
 				isCatchallLocale: true,
 			},
-		],
+		].filter(local =>
+			// 仅在开发环境下显示中文
+			process.env.NODE_ENV == 'development' || local.code != 'zh-Hans'
+		),
 	},
 
 	content: {

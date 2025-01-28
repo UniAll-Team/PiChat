@@ -183,102 +183,129 @@ const schema = ref(z.object({
 }))
 
 const providers = useLoginProviders()
+const { submitLabel, resend, login } = useLoginEmail()
 
-const loginStatus = ref('send')
-const submitLabel = computed(() => {
-	switch (loginStatus.value) {
-		case 'send':
-			return t('submit.send_email')
-		case 'otp':
-			return t('submit.login_with_otp')
-	}
-})
-let resend: any
+function useLoginEmail() {
+	const loginStatus = ref('send')
+	const submitLabel = computed(() => {
+		switch (loginStatus.value) {
+			case 'send':
+				return t('submit.send_email')
+			case 'otp':
+				return t('submit.login_with_otp')
+		}
+	})
+	let resend: any
 
-async function sendEmail(email: string, immediate = true) {
-	async function send() {
-		const { error } = await supabase.auth.signInWithOtp({
-			email: email
-		})
+	async function sendEmail(email: string, immediate = true) {
+		async function send() {
+			const { error } = await supabase.auth.signInWithOtp({
+				email: email
+			})
 
-		if (error) {
-			toastError(t('send_email.error.title'), error.message)
-		} else {
-			toastSuccess(
-				t('send_email.success.title'),
-				t('send_email.success.message', { email })
-			)
+			if (error) {
+				toastError(t('send_email.error.title'), error.message)
+			} else {
+				toastSuccess(
+					t('send_email.success.title'),
+					t('send_email.success.message', { email })
+				)
+			}
+
+			return { error }
 		}
 
-		return { error }
+		if (immediate) {
+			var { error } = await send()
+		}
+
+		return {
+			error,
+			send
+		}
 	}
 
-	if (immediate) {
-		var { error } = await send()
+	async function login(data: any) {
+		if (data.email === config.public.storeReview.email) {
+			const { error } = await supabase.auth.signInWithPassword({
+				email: data.email,
+				password: config.public.storeReview.password
+			})
+
+			if (error) {
+				toastError(t('login_with_otp.error.title'), error.message)
+				return
+			}
+
+			toastSuccess('Login Successful', 'You have successfully logged in with the audit special account.')
+			await navigateTo('/home')
+			return
+		}
+
+		switch (loginStatus.value) {
+			case 'send':
+				await signInWithOtp()
+				break
+			case 'otp':
+				await verifyOTP()
+				break
+		}
+
+		async function signInWithOtp() {
+			const { error, send } = await sendEmail(data.email)
+
+			resend = send
+
+			if (error) {
+				return
+			}
+
+			fields.value.push(
+				{
+					name: 'otp',
+					type: 'text',
+					label: t('fields.otp.label'),
+					placeholder: t('fields.otp.placeholder'),
+				}
+			)
+
+			schema.value = z.object({
+				email: z.string().email(),
+				otp: z.string().length(6)
+			})
+
+			loginStatus.value = 'otp'
+		}
+
+		async function verifyOTP() {
+			const { error } = await supabase.auth.verifyOtp({
+				email: data.email,
+				token: data.otp,
+				type: 'email'
+			})
+
+			if (error) {
+				toastError(t('login_with_otp.error.title'), error.message)
+				return
+			}
+
+			toastSuccess(
+				t('login_with_otp.success.title'),
+				t('login_with_otp.success.message')
+			)
+
+			await navigateTo('/home')
+
+			loginStatus.value = 'success'
+		}
 	}
 
 	return {
-		error,
-		send
+		submitLabel,
+		resend,
+		login
 	}
 }
 
-async function login(data: any) {
-	switch (loginStatus.value) {
-		case 'send':
-			await signInWithOtp()
-			break
-		case 'otp':
-			await verifyOTP()
-			break
-	}
 
-	async function signInWithOtp() {
-		const { error, send } = await sendEmail(data.email)
-
-		resend = send
-
-		if (error) {
-			return
-		}
-
-		fields.value.push(
-			{
-				name: 'otp',
-				type: 'text',
-				label: t('fields.otp.label'),
-				placeholder: t('fields.otp.placeholder'),
-			}
-		)
-
-		schema.value = z.object({
-			email: z.string().email(),
-			otp: z.string().length(6)
-		})
-
-		loginStatus.value = 'otp'
-	}
-
-	async function verifyOTP() {
-		const { error } = await supabase.auth.verifyOtp({
-			email: data.email,
-			token: data.otp,
-			type: 'email'
-		})
-
-		if (error) {
-			toastError(t('login_with_otp.error.title'), error.message)
-			return
-		}
-
-		toastSuccess(
-			t('login_with_otp.success.title'),
-			t('login_with_otp.success.message')
-		)
-
-		await navigateTo('/home')
-
-		loginStatus.value = 'success'
-	}
-}
 </script>
