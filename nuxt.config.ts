@@ -284,6 +284,12 @@ export default defineNuxtConfig({
 		},
 		// 必须使用 `autoUpdate`，否则有可能产生缓存问题，打开网页是白板
 		registerType: 'autoUpdate',
+		workbox: {
+			// 全部开启，防止产生缓存问题
+			skipWaiting: true,
+			clientsClaim: true,
+			cleanupOutdatedCaches: true,
+		},
 		registerWebManifestInRouteRules: true,
 		devOptions: {
 			enabled: true,
