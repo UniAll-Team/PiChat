@@ -36,11 +36,7 @@ const color = computed(() => colorMode.value === 'dark' ? '#111827' : 'white')
 
 const user = useSupabaseUser()
 
-const localeHead = useLocaleHead({
-	addDirAttribute: true,
-	identifierAttribute: 'id',
-	addSeoAttributes: true
-})
+const localeHead = useLocaleHead()
 
 useHead(() => ({
 	htmlAttrs: {

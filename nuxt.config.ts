@@ -247,7 +247,6 @@ export default defineNuxtConfig({
 					type: 'image/png',
 				},
 			],
-			theme_color: '#000000',
 			lang: process.env.NUXT_DEFAULT_LOCALE || 'en',
 			orientation: 'natural',
 			prefer_related_applications: false,
@@ -271,6 +270,11 @@ export default defineNuxtConfig({
 					type: 'image/png',
 				},
 				{
+					src: '/icon-384.png',
+					sizes: '384x384',
+					type: 'image/png',
+				},
+				{
 					src: '/icon-512.png',
 					sizes: '512x512',
 					type: 'image/png',
@@ -280,6 +284,54 @@ export default defineNuxtConfig({
 					sizes: '1024x1024',
 					type: 'image/png',
 				},
+				{
+					src: '/maskable-icon-192.png',
+					sizes: '192x192',
+					type: 'image/png',
+					purpose: 'maskable',
+				},
+				{
+					src: '/maskable-icon-384.png',
+					sizes: '384x384',
+					type: 'image/png',
+					purpose: 'maskable',
+				},
+				{
+					src: '/maskable-icon-512.png',
+					sizes: '512x512',
+					type: 'image/png',
+					purpose: 'maskable',
+				},
+				{
+					src: '/maskable-icon-1024.png',
+					sizes: '1024x1024',
+					type: 'image/png',
+					purpose: 'maskable',
+				},
+				{
+					src: '/removebg-icon-192.png',
+					sizes: '192x192',
+					type: 'image/png',
+					purpose: 'monochrome',
+				},
+				{
+					src: '/removebg-icon-384.png',
+					sizes: '384x384',
+					type: 'image/png',
+					purpose: 'monochrome',
+				},
+				{
+					src: '/removebg-icon-512.png',
+					sizes: '512x512',
+					type: 'image/png',
+					purpose: 'monochrome',
+				},
+				{
+					src: '/removebg-icon-1024.png',
+					sizes: '1024x1024',
+					type: 'image/png',
+					purpose: 'monochrome',
+				}
 			]
 		},
 		// 必须使用 `autoUpdate`，否则有可能产生缓存问题，打开网页是白板
