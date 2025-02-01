@@ -234,6 +234,7 @@ export default defineNuxtConfig({
 			id: process.env.NUXT_SITE_NAME?.toLowerCase(),
 			name: process.env.NUXT_SITE_NAME,
 			description: process.env.NUXT_SITE_DESCRIPTION,
+			theme_color: 'rgb(236 255 255)',
 			categories: ['productivity'],
 			screenshots: [
 				{

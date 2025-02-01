@@ -349,7 +349,7 @@ function useImagesAction() {
 	z-index: 10;
 }
 
-@media (width<=768px) {
+@media (width<=640px) {
 	.mobile-search-input {
 		width: 7rem;
 	}
