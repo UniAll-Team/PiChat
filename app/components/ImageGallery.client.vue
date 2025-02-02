@@ -145,22 +145,19 @@ function useImageGroups() {
 	}))
 
 	let lastImageID: number
-	let observer: IntersectionObserver
 
 	const format = useLocaleDate()
 
-	onMounted(() => {
-		observer = new IntersectionObserver(async ([entry]) => {
-			console.debug('Intersection entry:', entry)
-			console.debug('hasMore:', hasMore.value)
-			console.debug('loading:', loading.value)
+	let observer = new IntersectionObserver(async ([entry]) => {
+		console.debug('Intersection entry:', entry)
+		console.debug('hasMore:', hasMore.value)
+		console.debug('loading:', loading.value)
 
-			if (entry.isIntersecting) {
-				await loadMore()
-				// 已经不是最后一张图片，取消观察
-				observer.unobserve(entry.target)
-			}
-		})
+		if (entry.isIntersecting) {
+			await loadMore()
+			// 已经不是最后一张图片，取消观察
+			observer.unobserve(entry.target)
+		}
 	})
 
 	onUnmounted(() => {
@@ -194,9 +191,18 @@ function useImageGroups() {
 	)
 
 	function observerLastImage(el: HTMLDivElement) {
-		if (el && lastImageID === Number(el.dataset.id) && hasMore.value) {
-			observer.observe(el)
+		// 如果元素不存在或不是最后一张图片，不观察
+		if (!el || Number(el.dataset.id) != lastImageID) return
+
+		if (!hasMore.value) {
+			// 如果没有更多数据，observer 不再观察
+			console.debug('observer disconnect')
+			observer.disconnect()
+			return
 		}
+
+		// 观察最后一张图片
+		observer.observe(el)
 	}
 
 	async function getImages() {
