@@ -234,7 +234,8 @@ export default defineNuxtConfig({
 			id: process.env.NUXT_SITE_NAME?.toLowerCase(),
 			name: process.env.NUXT_SITE_NAME,
 			description: process.env.NUXT_SITE_DESCRIPTION,
-			theme_color: 'rgb(236 255 255)',
+			// PWABuilder 必须使用16进制颜色，否则会报错
+			theme_color: '#ECFFFF',
 			categories: ['productivity'],
 			screenshots: [
 				{
