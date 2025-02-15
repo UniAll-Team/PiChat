@@ -12,4 +12,4 @@ description: تثبيت البرنامج على منصات مختلفة.
 
 ## أندرويد
 
-نحن في طريقنا للنشر على Google Play. إذا كنت ترغب في تثبيت النسخة التجريبية من التطبيق، يرجى النقر [هنا](https://github.com/UniAll-LLC/PiChat-releases/releases/latest) للتنزيل والتثبيت.
+:GooglePlay

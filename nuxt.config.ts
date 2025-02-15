@@ -85,6 +85,9 @@ export default defineNuxtConfig({
 			storeReview: {
 				email: process.env.STORE_REVIEW_EMAIL,
 				password: process.env.STORE_REVIEW_PASSWORD,
+			},
+			android: {
+				packageName: process.env.ANDROID_PACKAGE_NAME,
 			}
 		},
 	},
