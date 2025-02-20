@@ -130,20 +130,20 @@ WITH CHECK (
 		(SELECT size FROM used_storage) <
 		CASE (auth.jwt()->'plan'->>'name')::text
 			WHEN 'pro' THEN (177<<30)  -- 177GB for pro plan
-			WHEN 'max' THEN (377<<30)  -- 377GB for pro plus plan
+			WHEN 'max' THEN (377<<30)  -- 377GB for max plan
 			WHEN 'ultra' THEN (777<<30)  -- 777GB for ultra plan
 			ELSE (5<<30)  -- 5GB for free plan
 		END
 		AND
 		COALESCE((auth.jwt()->'plan'->>'cycle_indexed_count')::int, 0) <
 		CASE (auth.jwt()->'plan'->>'name')::text || '/' || (auth.jwt()->'plan'->>'cycle')::text
-			WHEN 'pro/month' THEN 1777  -- 177 images per month
-			WHEN 'pro/year' THEN 17777  -- 1777 images per year
-			WHEN 'max/month' THEN 3777  -- 377 images per month
-			WHEN 'max/year' THEN 37777  -- 3777 images per year
-			WHEN 'ultra/month' THEN 7777  -- 7777 images per month
-			WHEN 'ultra/year' THEN 77777  -- 77777 images per year
-			ELSE 177  -- 177 images per month
+			WHEN 'pro/month' THEN 7777
+			WHEN 'pro/year' THEN 77777
+			WHEN 'max/month' THEN 17777
+			WHEN 'max/year' THEN 177777
+			WHEN 'ultra/month' THEN 37777
+			WHEN 'ultra/year' THEN 377777
+			ELSE 777
 		END
 	)
 );

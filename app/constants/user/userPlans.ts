@@ -9,7 +9,7 @@ export const userPlans: UserPlans = [
 		// fileSizeLimit: math.unit('10MB').toNumber('B'),
 		indexingQuotas: {
 			// 免费方案只有月度配额
-			month: 177,
+			month: 777,
 		},
 		pricesStr: {
 			month: 'Free',
@@ -31,8 +31,8 @@ export const userPlans: UserPlans = [
 		storageQuota: math.unit('177GB').toNumber('B'),
 		// fileSizeLimit: math.unit('100MB').toNumber('B'),
 		indexingQuotas: {
-			month: 1777,
-			year: 17777,
+			month: 7777,
+			year: 77777,
 		},
 		pricesStr: {
 			month: '$19.7',
@@ -54,8 +54,8 @@ export const userPlans: UserPlans = [
 		storageQuota: math.unit('377GB').toNumber('B'),
 		// fileSizeLimit: math.unit('1GB').toNumber('B'),
 		indexingQuotas: {
-			month: 3777,
-			year: 37777,
+			month: 17777,
+			year: 177777,
 		},
 		pricesStr: {
 			month: '$39.7',
@@ -77,8 +77,8 @@ export const userPlans: UserPlans = [
 		storageQuota: math.unit('777GB').toNumber('B'),
 		// fileSizeLimit: math.unit('10GB').toNumber('B'),
 		indexingQuotas: {
-			month: 7777,
-			year: 77777,
+			month: 37777,
+			year: 377777,
 		},
 		pricesStr: {
 			month: '$77.7',
