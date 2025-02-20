@@ -4,12 +4,20 @@ create table images (
 	name text unique not null,
 	user_id UUID,	-- 上传这个图片的用户，注意不能非空或使用外键，否则无法通过仪表盘上传图片
 	last_modified_date timestamp default now(),
-	document text,
-	embedding halfvec(3072)
+	-- document text,
+	-- embedding halfvec(3072),
+	voyage_embedding vector(1024)
 );
 
--- 创建HNSW内积索引
+/* -- 创建HNSW内积索引
 CREATE INDEX ON images USING hnsw (embedding halfvec_ip_ops);
+
+-- 增加embedding列
+ALTER TABLE images
+ADD COLUMN voyage_embedding vector(1024); */
+
+-- 创建HNSW余弦相似度索引
+CREATE INDEX ON images USING hnsw (voyage_embedding vector_cosine_ops);
 
 create policy "Enable users to view their own data only"
 on public.images
@@ -183,7 +191,7 @@ FOR EACH ROW
 EXECUTE FUNCTION public.insert_new_image();
 
 -- 建立一个视图，联合查询 storage.objects 和 images 表
-CREATE OR REPLACE VIEW image_details
+CREATE OR REPLACE VIEW _image_details
 WITH (security_invoker) AS
 SELECT
 	i.id,
@@ -191,6 +199,7 @@ SELECT
 	o.name,
 	storage.filename(o.name) AS filename,
 	i.embedding,
+	i.voyage_embedding,
 	i.last_modified_date,
 	o.created_at,
 	o.updated_at,
@@ -203,8 +212,14 @@ FROM
 	storage.objects o
 WHERE
 	i.object_id = o.id
-	AND o.owner_id::UUID = auth.uid()
 	AND o.bucket_id = 'images';
+
+-- 只查询当前用户的图片
+CREATE OR REPLACE VIEW image_details
+WITH (security_invoker) AS
+SELECT *
+FROM _image_details
+WHERE owner_id = auth.uid()::UUID;
 
 -- 创建或替换函数
 CREATE OR REPLACE FUNCTION auth.add_cycle_indexed_count()
@@ -256,7 +271,7 @@ EXECUTE FUNCTION auth.add_cycle_indexed_count();
 
 -- 使用embedding搜索图像
 CREATE OR REPLACE FUNCTION search_images (
-	query_embedding halfvec(3072)
+	query_embedding vector(1024)
 )
 RETURNS TABLE (
 	id int,
@@ -278,12 +293,32 @@ SELECT
 	owner_id,
 	name,
 	filename,
+	last_modified_date,
 	created_at,
 	updated_at,
 	last_accessed_at,
 	version,
 	metadata,
 	user_metadata,
-	-(embedding <#> query_embedding) AS similarity
+	-- 负内积
+	-- -(embedding <#> query_embedding) AS similarity
+	-- 余弦相似度
+	1 - (voyage_embedding <=> query_embedding) AS similarity
 FROM image_details;
 $$;
+
+-- View for normal sized images
+CREATE OR REPLACE VIEW normal_sized_images
+WITH (security_invoker = true) AS
+SELECT *
+FROM _image_details
+WHERE (metadata->>'size')::bigint <= 20<<20  -- 20MB in bytes, 2 进制
+AND (user_metadata->>'width')::int * (user_metadata->>'height')::int <= 16000000;  -- 16M pixels, 10进制
+
+-- View for oversized images
+CREATE OR REPLACE VIEW oversized_images
+WITH (security_invoker = true) AS
+SELECT *
+FROM _image_details
+WHERE ((metadata->>'size')::bigint > 20<<20  -- 20MB in bytes, 2 进制
+OR (user_metadata->>'width')::int * (user_metadata->>'height')::int > 16000000);  -- 16M pixels, 10进制

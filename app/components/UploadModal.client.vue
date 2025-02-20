@@ -82,7 +82,7 @@ const localeMap = {
 const { toastError, toastSuccess } = useAppToast()
 const newNotification = useAppNotification({ tag: 'upload', renotify: true })
 
-const { createImageEmbedding } = useServerFunctions()
+const { createVoyageEmbedding } = useServerFunctions()
 
 const supabase = useSupabaseClient<Database>()
 const user = useSupabaseUser()
@@ -245,13 +245,10 @@ async function getSignedUrl(name: string, width?: number, height?: number) {
 	return { signedUrl: data?.signedUrl, error }
 }
 
-async function updateEmbedding(name: string, embedding: any, document?: any) {
+async function updateVoyageEmbedding(name: string, voyage_embedding: any) {
 	const { error } = await supabase
 		.from('images')
-		.update({
-			embedding,
-			document,
-		})
+		.update({ voyage_embedding })
 		.eq('name', name)
 
 	return error
@@ -274,19 +271,27 @@ async function createEmbedding(name: string) {
 	console.debug('signedUrl', signedUrl)
 
 	// 创建图片的embedding
-	const { embedding, document } = await createImageEmbedding(signedUrl)
-	console.debug('file', name, 'document', document, 'embedding', embedding)
-	if (!(document && embedding)) {
-		toastError(t('imageIndexFailed'))
-		return
+	let voyageEmbedding: number[]
+	{
+		const { embedding, error } = await createVoyageEmbedding({ imageUrl: signedUrl })
+		if (error) {
+			console.error('createEmbedding error', error)
+			toastError(t('imageIndexFailed'), error.message)
+			return
+		}
+
+		console.debug('file', name, 'embedding', embedding)
+		voyageEmbedding = embedding
 	}
 
 	// 更新文件的embedding
-	const updateError = await updateEmbedding(name, embedding, document)
-	if (updateError) {
-		console.error('updateError', updateError)
-		toastError(t('updateIndexFailed'), updateError.message)
-		return
+	{
+		const error = await updateVoyageEmbedding(name, voyageEmbedding)
+		if (error) {
+			console.error('updateError', error)
+			toastError(t('updateIndexFailed'), error.message)
+			return
+		}
 	}
 }
 </script>

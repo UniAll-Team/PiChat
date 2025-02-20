@@ -45,6 +45,7 @@ ni \
     @paddle/paddle-node-sdk \
     vue3-google-login \
     ua-parser-js \
+    voyageai \
     openai \
     https-proxy-agent \
     yn \

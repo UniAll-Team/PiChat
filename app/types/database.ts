@@ -18,6 +18,7 @@ export type Database = {
           name: string
           object_id: string
           user_id: string | null
+          voyage_embedding: string | null
         }
         Insert: {
           document?: string | null
@@ -27,6 +28,7 @@ export type Database = {
           name: string
           object_id: string
           user_id?: string | null
+          voyage_embedding?: string | null
         }
         Update: {
           document?: string | null
@@ -36,11 +38,30 @@ export type Database = {
           name?: string
           object_id?: string
           user_id?: string | null
+          voyage_embedding?: string | null
         }
         Relationships: []
       }
     }
     Views: {
+      _image_details: {
+        Row: {
+          created_at: string | null
+          embedding: unknown | null
+          filename: string | null
+          id: number | null
+          last_accessed_at: string | null
+          last_modified_date: string | null
+          metadata: Json | null
+          name: string | null
+          owner_id: string | null
+          updated_at: string | null
+          user_metadata: Json | null
+          version: string | null
+          voyage_embedding: string | null
+        }
+        Relationships: []
+      }
       image_details: {
         Row: {
           created_at: string | null
@@ -55,6 +76,43 @@ export type Database = {
           updated_at: string | null
           user_metadata: Json | null
           version: string | null
+          voyage_embedding: string | null
+        }
+        Relationships: []
+      }
+      normal_sized_images: {
+        Row: {
+          created_at: string | null
+          embedding: unknown | null
+          filename: string | null
+          id: number | null
+          last_accessed_at: string | null
+          last_modified_date: string | null
+          metadata: Json | null
+          name: string | null
+          owner_id: string | null
+          updated_at: string | null
+          user_metadata: Json | null
+          version: string | null
+          voyage_embedding: string | null
+        }
+        Relationships: []
+      }
+      oversized_images: {
+        Row: {
+          created_at: string | null
+          embedding: unknown | null
+          filename: string | null
+          id: number | null
+          last_accessed_at: string | null
+          last_modified_date: string | null
+          metadata: Json | null
+          name: string | null
+          owner_id: string | null
+          updated_at: string | null
+          user_metadata: Json | null
+          version: string | null
+          voyage_embedding: string | null
         }
         Relationships: []
       }
@@ -66,46 +124,25 @@ export type Database = {
       }
     }
     Functions: {
-      search_images:
-        | {
-            Args: {
-              query_embedding: unknown
-            }
-            Returns: {
-              id: number
-              owner_id: string
-              name: string
-              filename: string
-              last_modified_date: string
-              created_at: string
-              updated_at: string
-              last_accessed_at: string
-              version: string
-              metadata: Json
-              user_metadata: Json
-              similarity: number
-            }[]
-          }
-        | {
-            Args: {
-              query_embedding: unknown
-              match_threshold: number
-              match_count: number
-            }
-            Returns: {
-              id: number
-              owner_id: string
-              name: string
-              filename: string
-              created_at: string
-              updated_at: string
-              last_accessed_at: string
-              version: string
-              metadata: Json
-              user_metadata: Json
-              similarity: number
-            }[]
-          }
+      search_images: {
+        Args: {
+          query_embedding: string
+        }
+        Returns: {
+          id: number
+          owner_id: string
+          name: string
+          filename: string
+          last_modified_date: string
+          created_at: string
+          updated_at: string
+          last_accessed_at: string
+          version: string
+          metadata: Json
+          user_metadata: Json
+          similarity: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

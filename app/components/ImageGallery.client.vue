@@ -105,7 +105,7 @@ const { toastError } = useAppToast()
 
 const isSearching = computed(() => Boolean(description))
 
-const { text2embedding } = useServerFunctions()
+const { createVoyageEmbedding } = useServerFunctions()
 
 // 获取图片列表
 const { dateRange } = storeToRefs(useDateRangeStore())
@@ -222,23 +222,27 @@ function useImageGroups() {
 	}
 
 	async function searchImages() {
-		const embedding = await text2embedding(description)
+		let query_embedding: number[]
+		{
+			const { embedding, error } = await createVoyageEmbedding({ text: description })
+			if (error)
+				throw error
 
-		console.debug('searchImages, embedding:', embedding)
+			console.debug('searchImages, embedding:', embedding)
+			query_embedding = embedding
+		}
 
 		const { data, error } = await supabase
 			.rpc('search_images', {
-				query_embedding: embedding
+				query_embedding
 			})
 			.gte('similarity', 0.2)
 			.gte('last_modified_date', dateRangeISO.value.start)
 			.lte('last_modified_date', dateRangeISO.value.end)
 			.order('similarity', { ascending: false })
 			.limit(pageSize)
-
-		if (error) {
+		if (error)
 			throw error
-		}
 
 		return data
 	}

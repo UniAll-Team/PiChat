@@ -13,6 +13,13 @@
 				"dev",
 				"--host"
 			]
+		},
+		{
+			"type": "debugpy",
+			"request": "launch",
+			"name": "server: python",
+			"program": "${file}",
+			"console": "integratedTerminal"
 		}
 	]
 }
