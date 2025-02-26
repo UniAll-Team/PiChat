@@ -40,7 +40,7 @@
 						<!-- 在移动端搜索框聚焦时隐藏 -->
 						<UButton icon="i-heroicons-arrow-up-tray"
 							color="gray" variant="outline"
-							@click="openUploadModal"
+							@click="isUploadModalOpen = true"
 							:class="{ 'hidden': isSearchFocused }">
 							<span class="hidden-on-mobile">
 								{{ t('actions.upload') }}
@@ -176,10 +176,8 @@ const {
 // 搜索处理函数
 const { searchInput, imageDescription, handleSearch, clearSearch } = useSearchAction()
 
-// 上传模态框状态
-const { openUploadModal, isUploadModalOpen } = useUploadModal()
-// 上传处理函数
-const { onComplete } = useUploadAction()
+// 上传相关逻辑
+const { isUploadModalOpen, onComplete } = useUpload()
 
 // 图片选择状态
 const imagesStore = useImagesStore()
@@ -234,28 +232,19 @@ function useSearchAction() {
 	}
 }
 
-function useUploadModal() {
+function useUpload() {
 	const isUploadModalOpen = ref(false)
-	const openUploadModal = () => {
-		isUploadModalOpen.value = true
-	}
 
-	return {
-		isUploadModalOpen,
-		openUploadModal,
-	}
-}
-
-function useUploadAction() {
-	// 上传完成后的处理函数
 	function onComplete(result: UploadResult<Meta, Record<string, never>>) {
 		console.debug('Upload complete:', result)
 		// 刷新图片列表
 		refreshID.value = nanoid(5)
 	}
 
+
 	return {
-		onComplete
+		isUploadModalOpen,
+		onComplete,
 	}
 }
 

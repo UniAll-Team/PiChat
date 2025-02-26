@@ -234,7 +234,7 @@ function useImageGroups() {
 
 		const { data, error } = await supabase
 			.rpc('search_images', {
-				query_embedding
+				query_embedding: `[${query_embedding}]`
 			})
 			.gte('similarity', 0.2)
 			.gte('last_modified_date', dateRangeISO.value.start)

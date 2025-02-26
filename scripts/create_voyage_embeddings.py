@@ -15,7 +15,7 @@ from voyageai import Client
 class VoyageEmbeddingProcessor:
     BATCH_SIZE = 10  # Process images in batches to avoid rate limits
     MAX_PIXELS = 16_000_000  # 16M pixels
-    MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
+    MAX_FILE_SIZE = 20 << 20  # 20MB
 
     def __init__(self):
         # Load environment variables

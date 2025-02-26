@@ -5,7 +5,7 @@ import * as math from 'mathjs'
 export const userPlans: UserPlans = [
 	{
 		name: 'free',
-		storageQuota: math.unit('5GB').toNumber('B'),
+		storageQuota: math.unit('5GiB').toNumber('B'),
 		// fileSizeLimit: math.unit('10MB').toNumber('B'),
 		indexingQuotas: {
 			// 免费方案只有月度配额
@@ -28,7 +28,7 @@ export const userPlans: UserPlans = [
 	},
 	{
 		name: 'pro',
-		storageQuota: math.unit('177GB').toNumber('B'),
+		storageQuota: math.unit('177GiB').toNumber('B'),
 		// fileSizeLimit: math.unit('100MB').toNumber('B'),
 		indexingQuotas: {
 			month: 7777,

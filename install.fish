@@ -48,6 +48,7 @@ ni \
     voyageai \
     openai \
     https-proxy-agent \
+    sharp \
     yn \
     client-zip
 

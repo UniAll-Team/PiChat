@@ -80,6 +80,7 @@ const localeMap = {
 }
 
 const { toastError, toastSuccess } = useAppToast()
+// @ts-ignore
 const newNotification = useAppNotification({ tag: 'upload', renotify: true })
 
 const { createVoyageEmbedding } = useServerFunctions()
@@ -132,7 +133,7 @@ const uppy = new Uppy({
 	// 	'contentType',
 	// 	'cacheControl',
 	// ],
-	chunkSize: math.unit('6MB').toNumber('B'),
+	chunkSize: math.unit('6MiB').toNumber('B'),
 })
 	.use(Webcam)
 
@@ -192,15 +193,13 @@ uppy.addPostProcessor(async (fileIDs: string[]) => {
 			continue
 		}
 
-		const name = String(file.meta.objectName)
-
 		uppy.emit('postprocess-progress', file, {
 			mode: 'determinate',
 			message: t('creatingIndex'),
 			value: idx / fileIDs.length
 		})
 
-		await createEmbedding(name)
+		await createEmbedding(_cloneDeep(file.meta))
 
 		uppy.emit('postprocess-complete', file, {
 			mode: 'determinate',
@@ -254,39 +253,44 @@ async function updateVoyageEmbedding(name: string, voyage_embedding: any) {
 	return error
 }
 
-async function createEmbedding(name: string) {
+async function createEmbedding(fileMeta: any) {
 	// 获取图片的签名URL
-	const { signedUrl, error } = await getSignedUrl(name)
-	if (error) {
-		console.dir(error)
+	fileMeta.metadata = JSON.parse(fileMeta.metadata as string)
+	if (fileMeta.metadata.width * fileMeta.metadata.height <= voyageLimit.maxPixels && fileMeta.size <= voyageLimit.maxBytes) {
+		const { signedUrl, error } = await getSignedUrl(fileMeta.objectName as string)
+		if (error) {
+			console.dir(error)
 
-		if (error.name == 'StorageApiError' && (error as StorageApiError).status == 400) {
-			toastError(t('fileExists'))
-		} else {
-			toastError(t('createSignedURLError'), error.message)
+			if (error.name == 'StorageApiError' && (error as StorageApiError).status == 400) {
+				toastError(t('fileExists'))
+			} else {
+				toastError(t('createSignedURLError'), error.message)
+			}
+
+			return
 		}
+		console.debug('signedUrl', signedUrl)
 
-		return
+		fileMeta.url = signedUrl
 	}
-	console.debug('signedUrl', signedUrl)
 
 	// 创建图片的embedding
 	let voyageEmbedding: number[]
 	{
-		const { embedding, error } = await createVoyageEmbedding({ imageUrl: signedUrl })
+		const { embedding, error } = await createVoyageEmbedding({ image: fileMeta })
 		if (error) {
 			console.error('createEmbedding error', error)
 			toastError(t('imageIndexFailed'), error.message)
 			return
 		}
 
-		console.debug('file', name, 'embedding', embedding)
+		console.debug('file', fileMeta, 'embedding', embedding)
 		voyageEmbedding = embedding
 	}
 
 	// 更新文件的embedding
 	{
-		const error = await updateVoyageEmbedding(name, voyageEmbedding)
+		const error = await updateVoyageEmbedding(fileMeta.metadata.objectName, voyageEmbedding)
 		if (error) {
 			console.error('updateError', error)
 			toastError(t('updateIndexFailed'), error.message)

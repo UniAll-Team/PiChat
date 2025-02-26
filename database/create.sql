@@ -313,7 +313,7 @@ WITH (security_invoker = true) AS
 SELECT *
 FROM _image_details
 WHERE (metadata->>'size')::bigint <= 20<<20  -- 20MB in bytes, 2 进制
-AND (user_metadata->>'width')::int * (user_metadata->>'height')::int <= 16000000;  -- 16M pixels, 10进制
+AND (user_metadata->>'width')::int * (user_metadata->>'height')::int <= 16e6::int;  -- 16M pixels, 10进制
 
 -- View for oversized images
 CREATE OR REPLACE VIEW oversized_images
@@ -321,4 +321,4 @@ WITH (security_invoker = true) AS
 SELECT *
 FROM _image_details
 WHERE ((metadata->>'size')::bigint > 20<<20  -- 20MB in bytes, 2 进制
-OR (user_metadata->>'width')::int * (user_metadata->>'height')::int > 16000000);  -- 16M pixels, 10进制
+OR (user_metadata->>'width')::int * (user_metadata->>'height')::int > 16e6::int);  -- 16M pixels, 10进制

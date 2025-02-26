@@ -239,7 +239,7 @@ export default defineNuxtConfig({
 			description: process.env.NUXT_SITE_DESCRIPTION,
 			// PWABuilder 必须使用16进制颜色，否则会报错
 			theme_color: '#ecffff',
-			categories: ['productivity'],
+			categories: ['photo', 'productivity', 'utilities'],
 			screenshots: [
 				{
 					src: '/images/home.jpg',
@@ -268,26 +268,31 @@ export default defineNuxtConfig({
 					src: '/icon-64.png',
 					sizes: '64x64',
 					type: 'image/png',
+					purpose: 'any',
 				},
 				{
 					src: '/icon-192.png',
 					sizes: '192x192',
 					type: 'image/png',
+					purpose: 'any',
 				},
 				{
 					src: '/icon-384.png',
 					sizes: '384x384',
 					type: 'image/png',
+					purpose: 'any',
 				},
 				{
 					src: '/icon-512.png',
 					sizes: '512x512',
 					type: 'image/png',
+					purpose: 'any',
 				},
 				{
 					src: '/icon-1024.png',
 					sizes: '1024x1024',
 					type: 'image/png',
+					purpose: 'any',
 				},
 				{
 					src: '/maskable-icon-192.png',
