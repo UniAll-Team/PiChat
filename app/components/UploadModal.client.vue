@@ -57,7 +57,8 @@ ar:
 <script lang="ts" setup>
 import type { StorageApiError } from '@supabase/storage-js'
 import type { Meta, UploadResult } from '@uppy/core'
-import type { Database } from '~/types/database'
+import type { UppyFile } from '@uppy/core'
+import type { UploadedImage, Database } from '~/types'
 
 import Uppy from '@uppy/core'
 import ar from '@uppy/locales/lib/ar_SA'
@@ -199,7 +200,7 @@ uppy.addPostProcessor(async (fileIDs: string[]) => {
 			value: idx / fileIDs.length
 		})
 
-		await createEmbedding(_cloneDeep(file.meta))
+		await createEmbedding(uppyFile2UploadedImage(file))
 
 		uppy.emit('postprocess-complete', file, {
 			mode: 'determinate',
@@ -244,7 +245,7 @@ async function getSignedUrl(name: string, width?: number, height?: number) {
 	return { signedUrl: data?.signedUrl, error }
 }
 
-async function updateVoyageEmbedding(name: string, voyage_embedding: any) {
+async function updateVoyageEmbedding(name: string, voyage_embedding: string) {
 	const { error } = await supabase
 		.from('images')
 		.update({ voyage_embedding })
@@ -253,11 +254,12 @@ async function updateVoyageEmbedding(name: string, voyage_embedding: any) {
 	return error
 }
 
-async function createEmbedding(fileMeta: any) {
+async function createEmbedding(uploadedImage: UploadedImage) {
 	// 获取图片的签名URL
-	fileMeta.metadata = JSON.parse(fileMeta.metadata as string)
-	if (fileMeta.metadata.width * fileMeta.metadata.height <= voyageLimit.maxPixels && fileMeta.size <= voyageLimit.maxBytes) {
-		const { signedUrl, error } = await getSignedUrl(fileMeta.objectName as string)
+	if (uploadedImage.width * uploadedImage.height <= voyageLimit.maxPixels && uploadedImage.size <= voyageLimit.maxBytes) {
+		console.debug('符合voyage要求，直接获取签名URL')
+
+		const { signedUrl, error } = await getSignedUrl(uploadedImage.objectName as string)
 		if (error) {
 			console.dir(error)
 
@@ -271,32 +273,46 @@ async function createEmbedding(fileMeta: any) {
 		}
 		console.debug('signedUrl', signedUrl)
 
-		fileMeta.url = signedUrl
+		uploadedImage.signedUrl = signedUrl
 	}
 
 	// 创建图片的embedding
 	let voyageEmbedding: number[]
 	{
-		const { embedding, error } = await createVoyageEmbedding({ image: fileMeta })
+		const { embedding, error } = await createVoyageEmbedding({ image: uploadedImage })
 		if (error) {
 			console.error('createEmbedding error', error)
 			toastError(t('imageIndexFailed'), error.message)
 			return
 		}
 
-		console.debug('file', fileMeta, 'embedding', embedding)
+		console.debug('file', uploadedImage, 'embedding', embedding)
 		voyageEmbedding = embedding
 	}
 
 	// 更新文件的embedding
 	{
-		const error = await updateVoyageEmbedding(fileMeta.metadata.objectName, voyageEmbedding)
+		const error = await updateVoyageEmbedding(uploadedImage.objectName, `[${voyageEmbedding}]`)
 		if (error) {
 			console.error('updateError', error)
 			toastError(t('updateIndexFailed'), error.message)
 			return
 		}
 	}
+}
+
+function uppyFile2UploadedImage(file: UppyFile<any, any>): UploadedImage {
+	const metadata = JSON.parse(file.meta.metadata as string)
+	const uploadedImage = {
+		name: file.name,
+		size: file.size,
+		objectName: file.meta.objectName,
+		width: metadata.width,
+		height: metadata.height,
+	}
+
+	console.debug('uppyFile2UploadedImage', file, uploadedImage)
+	return uploadedImage
 }
 </script>
 

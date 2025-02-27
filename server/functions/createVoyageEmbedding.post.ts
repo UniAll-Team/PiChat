@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import type { MultimodalEmbedRequestInputType } from 'voyageai/api'
+import type { UploadedImage } from '~/types'
 
 import { serverSupabaseClient } from '#supabase/server'
 import { StatusCodes } from 'http-status-codes'
@@ -7,11 +8,10 @@ import sharp from 'sharp'
 import { VoyageAIClient } from "voyageai"
 import { voyageLimit } from '~/constants/image'
 
-export async function createVoyageEmbedding(this: H3Event, { image, text }: { image?: any, text?: string }) {
+export async function createVoyageEmbedding(this: H3Event, { image, text }: { image?: UploadedImage, text?: string }) {
 	try {
-		const voyage = new VoyageAIClient({
-			apiKey: process.env.VOYAGE_API_KEY,
-		})
+		const config = useRuntimeConfig(this)
+		const voyage = new VoyageAIClient({ apiKey: config.voyageAI.apiKey })
 
 		if (!(image || text))
 			throw createError({
@@ -20,10 +20,10 @@ export async function createVoyageEmbedding(this: H3Event, { image, text }: { im
 			})
 
 		let content, inputType: MultimodalEmbedRequestInputType
-		if (image?.url) {
+		if (image?.signedUrl) {
 			content = [{
 				type: "image_url",
-				imageUrl: image.url
+				imageUrl: image.signedUrl
 			}]
 			inputType = "document"
 		} else if (image?.objectName) {
@@ -37,8 +37,8 @@ export async function createVoyageEmbedding(this: H3Event, { image, text }: { im
 				throw error
 
 			const imageBase64 = await blob2base64(data, {
-				width: image.metadata.width,
-				height: image.metadata.height
+				width: image.width,
+				height: image.height
 			})
 
 			content = [{
@@ -92,5 +92,5 @@ async function blob2base64(data: Blob, { width, height }: { width: number, heigh
 			break
 	}
 
-	return `data:image/jpeg;base64,${resizedImageBuffer.toString('base64')}`
+	return `data:image/webp;base64,${resizedImageBuffer.toString('base64')}`
 }

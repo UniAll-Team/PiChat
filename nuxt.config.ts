@@ -57,6 +57,9 @@ export default defineNuxtConfig({
 			apiKey: process.env.OPENAI_API_KEY,
 			baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
 		},
+		voyageAI: {
+			apiKey: process.env.VOYAGE_API_KEY,
+		},
 		webhook: {
 			paddle: {
 				webhookId: process.env.PADDLE_WEBHOOK_ID,

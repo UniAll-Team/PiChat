@@ -14,3 +14,12 @@ export type Image = {
 }
 
 export type Images = Image[]
+
+export type UploadedImage = {
+	name: string
+	objectName: string
+	signedUrl?: string
+	size: number
+	width: number
+	height: number
+}
