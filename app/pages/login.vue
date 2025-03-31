@@ -64,6 +64,43 @@ zh-Hans:
       title: 登录成功
       message: 您已成功登录。
 
+de:
+  title: Willkommen
+  description: Wenn Sie kein Konto haben, wird Ihr Konto automatisch
+    erstellt.
+  footer: Durch die Anmeldung stimmen Sie unseren {terms}, {privacy}
+    und {disclaimer} zu.
+  terms_and_conditions: Nutzungsbedingungen
+  privacy_policy: Datenschutzrichtlinie
+  disclaimer: Haftungsausschluss
+  fields:
+    email:
+      label: E-Mail
+      placeholder: Bitte geben Sie Ihre E-Mail ein
+    otp:
+      label: Bestätigungscode
+      placeholder: Bitte geben Sie Ihren Bestätigungscode ein
+      resend: Bestätigungscode erneut senden
+  validation:
+    email: Ungültige E-Mail-Adresse
+    otp: Ungültiger Bestätigungscode
+  submit:
+    send_email: E-Mail senden
+    login_with_otp: Anmelden
+  send_email:
+    error:
+      title: E-Mail-Versand fehlgeschlagen
+    success:
+      title: Bestätigungscode gesendet
+      message: Ein Bestätigungscode wurde an {email} gesendet.
+        Bitte geben Sie ihn im Feld für den Bestätigungscode ein.
+  login_with_otp:
+    error:
+      title: Anmeldung fehlgeschlagen
+    success:
+      title: Anmeldung erfolgreich
+      message: Sie haben sich erfolgreich angemeldet.
+
 en:
   title: Welcome
   description: If you do not have an account, your account will

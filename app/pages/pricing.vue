@@ -166,6 +166,102 @@ zh-Hans:
   toast:
     error: 支付失败，如果您有任何疑问，请点击左侧客服。
 
+de:
+  hero:
+    title: Wählen Sie einen Plan, bewahren Sie kostbare Erinnerungen
+    description: Alle Konten verfügen über einen kostenlosen Plan,
+      aber wir empfehlen Ihnen, für Ihre schönen Erinnerungen
+      und wertvollen Bilder zu bezahlen.
+  button:
+    getStarted: Jetzt starten
+    currentPlan: Aktueller Plan
+  note: Die Indexzahl bezieht sich auf die Anzahl der Bilder,
+    die Sie innerhalb eines Abrechnungszyklus hochladen können.
+    Wenn Sie nicht alle Ihre Indexzahlen im aktuellen Zyklus aufbrauchen,
+    werden diese nicht in den nächsten Zyklus übertragen. Wenn
+    Sie beispielsweise monatlich bezahlen und 100 Indexe pro Monat
+    haben, bedeutet dies, dass Sie in diesem Monat bis zu 100
+    Bilder hochladen können. Wenn Sie nur 50 Bilder hochladen,
+    werden die verbleibenden 50 Indexzahlen nicht in den nächsten
+    Monat übertragen. Im nächsten Monat können Sie trotzdem 100
+    Bilder hochladen. Wenn Sie sich für eine jährliche Zahlung
+    entscheiden, gelten die Indexzahlen für das gesamte Jahr.
+    Diese Regel gilt für alle Benutzer, um Transparenz und Vorhersehbarkeit
+    der Bedingungen zu gewährleisten.
+  pricing:
+    cycle:
+      month: /Monat
+      year: /Jahr
+    features:
+      storage: '{0} Speicherplatz'
+      indexing: '{0} Bild-Indexierungen'
+    free:
+      description: Kostenlos zu nutzen, keine Kreditkarte erforderlich.
+    pro:
+      description: Plan geeignet für einzelne Benutzer mit mehr
+        Speicherplatz und Bild-Indexierungen.
+    max:
+      description: Plan geeignet für die meisten Benutzer mit
+        viel Speicherplatz und Bild-Indexierungen, um Ihre wunderbaren
+        Erinnerungen dauerhaft zu bewahren.
+    ultra:
+      description: Plan geeignet für Fotografie-Enthusiasten oder
+        die ganze Familie, mit viel Speicherplatz und Bild-Indexierungen,
+        um jeden kostbaren Moment dauerhaft zu bewahren.
+  faqs:
+    title: Häufig gestellte Fragen
+    differentFromOthers:
+      label: Warum sollte man sich für Ihr Produkt entscheiden,
+        wenn es bereits viele Online-Fotoalben-Anwendungen auf
+        dem Markt gibt?
+      content: Typische Online-Fotoalben erlauben es Ihnen nicht,
+        Bilder mit natürlicher Sprache zu suchen, sondern nur
+        basierend auf Bildthemen. PiChat ist anders; es ermöglicht
+        Ihnen, Bilder mit natürlicher Sprache zu durchsuchen,
+        damit Sie die Bilder finden können, die Sie suchen.
+    purchaseMethod:
+      label: Warum kann ich nicht über die Website kaufen?
+      content: Wir beantragen derzeit ein Zahlungsgateway, daher
+        sind Online-Zahlungen vorübergehend nicht verfügbar. Wenn
+        Sie jetzt abonnieren möchten, klicken Sie bitte auf die
+        Schaltfläche "Kundendienst" oben auf der Seite, um uns
+        zu kontaktieren.
+    planLimitations:
+      label: Nur 3 Pläne? Ich möchte mehr Speicherplatz und Funktionen.
+      content: Wir befinden uns derzeit in einem frühen Stadium
+        und werden basierend auf den Bedürfnissen und dem Feedback
+        der Benutzer weitere Pläne hinzufügen. Wenn Sie feststellen,
+        dass unsere Pläne Ihren Anforderungen nicht entsprechen,
+        kontaktieren Sie uns bitte.
+    contactMethod:
+      label: Wie kann ich Sie kontaktieren?
+      content: Klicken Sie auf die Schaltfläche "Kundendienst"
+        oben, um uns auf verschiedene Weise zu kontaktieren.
+    planSwitching:
+      label: Wie wechsle ich zu einem anderen Plan?
+      content: Sie können auf die Schaltfläche "Plan aktualisieren"
+        auf der linken Seite des Panels klicken, auf der Preisseite
+        auf den gewünschten Plan klicken, und es führt Sie zur
+        Seite, um Ihren Plan zu aktualisieren.
+    cancelSubscription:
+      label: Wie kündige ich das Abonnement?
+      content: Sie können auf die Schaltfläche "Plan aktualisieren"
+        auf der linken Seite des Panels klicken, auf der Preisseite
+        auf den kostenlosen Plan klicken, und es führt Sie zur
+        Seite, um Ihren Plan zu aktualisieren.
+    freeUsage:
+      label: Kann ich es kostenlos nutzen?
+      content: Ja, wir haben einen kostenlosen Plan für Sie. Wir
+        empfehlen jedoch, für Ihre schönen Erinnerungen und wertvollen
+        Bilder zu bezahlen, denn Erinnerungen und Freude sind
+        unbezahlbar.
+  toast:
+    error: Zahlung fehlgeschlagen. Wenn Sie Fragen haben, klicken
+      Sie bitte auf den Kundendienst auf der linken Seite.
+    payment: Derzeit ist ein Kauf über die Website nicht möglich.
+      Bitte klicken Sie auf die Schaltfläche "Kundendienst" oben
+      auf der Seite, um uns direkt zu kontaktieren.
+
 ar:
   hero:
     title: اختر خطة، حافظ على الذكريات الثمينة

@@ -69,6 +69,25 @@ zh-Hans:
   failedToCopyLink: 复制链接失败
   pleaseEnableClipboardPermission: 复制失败，请开启剪贴板权限
 
+de:
+  home: Startseite
+  shared: Geteilt
+  settings: Einstellungen
+  general: Allgemein
+  notifications: Benachrichtigungen
+  upgradeToPro: Auf Pro upgraden
+  updateSubscription: Abonnement aktualisieren
+  documentation: Dokumentation
+  invitePeople: Personen einladen
+  helpSupport: Hilfe & Support
+  customerService: Kundendienst
+  linkCopiedToClipboard: Link in die Zwischenablage kopiert
+  youCanNowShareThisLink: Sie können diesen Link jetzt mit anderen
+    teilen
+  failedToCopyLink: Fehler beim Kopieren des Links
+  pleaseEnableClipboardPermission: Kopieren fehlgeschlagen, bitte
+    Zugriff auf Zwischenablage erlauben
+
 ar:
   home: الصفحة الرئيسية
   shared: مشترك

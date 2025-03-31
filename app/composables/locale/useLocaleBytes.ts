@@ -6,6 +6,7 @@ export function useLocaleBytes() {
 		en: 'en-US',
 		'zh-Hans': 'zh-Hans',
 		ar: 'ar-SA',
+		de: 'de-DE',
 	}
 
 	return (bytes: number) => {

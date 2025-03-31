@@ -94,6 +94,32 @@ zh-Hans:
   footer:
     copyright: © {year} 版权所有
 
+de:
+  resources:
+    resources: Ressourcen
+    help_center: Hilfecenter
+    docs: Dokumentation
+    roadmap: Roadmap
+    changelog: Änderungsprotokoll
+  features:
+    features: Funktionen
+    affiliates: Partner
+    portal: Portal
+    jobs: Jobs
+    sponsors: Sponsoren
+  company:
+    company: Unternehmen
+    about: Über uns
+    pricing: Preise
+    careers: Karriere
+    blog: Blog
+  newsletter:
+    title: Abonnieren Sie unseren Newsletter
+    submit: Abonnieren
+    submitting: Wird abonniert
+  footer:
+    copyright: Copyright © {year}. Alle Rechte vorbehalten.
+
 ar:
   resources:
     resources: الموارد

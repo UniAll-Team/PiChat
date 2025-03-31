@@ -21,6 +21,7 @@ const { locale } = useI18n()
 const localeMap = {
 	en: 'en',
 	'zh-Hans': 'zh',
-	ar: 'ar'
+	ar: 'ar',
+	de: 'de',
 }
 </script>

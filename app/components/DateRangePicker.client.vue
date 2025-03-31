@@ -68,6 +68,15 @@ zh-Hans:
   lastYear: 近1年
   lastFiveYears: 近5年
 
+de:
+  lastWeek: Letzte Woche
+  lastTwoWeeks: Letzte 2 Wochen
+  lastMonth: Letzter Monat
+  lastThreeMonths: Letzte 3 Monate
+  lastSixMonths: Letzte 6 Monate
+  lastYear: Letztes Jahr
+  lastFiveYears: Letzte 5 Jahre
+
 ar:
   lastWeek: آخر أسبوع
   lastTwoWeeks: آخر أسبوعين

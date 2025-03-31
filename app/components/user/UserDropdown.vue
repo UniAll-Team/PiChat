@@ -33,37 +33,48 @@
 
 <i18n lang="yaml">
 en:
-  signedInAs: 'Signed in as'
+  signedInAs: Signed in as
   menuItems:
-    settings: 'Settings'
-    commandMenu: 'Command menu'
-    helpAndSupport: 'Help & Support'
-    documentation: 'Documentation'
-    githubRepository: 'GitHub repository'
-    upgradeToPro: 'Upgrade to Pro'
-    signOut: 'Sign out'
+    settings: Settings
+    commandMenu: Command menu
+    helpAndSupport: Help & Support
+    documentation: Documentation
+    githubRepository: GitHub repository
+    upgradeToPro: Upgrade to Pro
+    signOut: Sign out
 
 zh-Hans:
-  signedInAs: '当前登录账号'
+  signedInAs: 当前登录账号
   menuItems:
-    settings: '系统设置'
-    commandMenu: '命令面板'
-    helpAndSupport: '帮助与支持'
-    documentation: '帮助文档'
-    githubRepository: '代码仓库'
-    upgradeToPro: '升级到专业版'
-    signOut: '退出登录'
+    settings: 系统设置
+    commandMenu: 命令面板
+    helpAndSupport: 帮助与支持
+    documentation: 帮助文档
+    githubRepository: 代码仓库
+    upgradeToPro: 升级到专业版
+    signOut: 退出登录
+
+de:
+  signedInAs: Angemeldet als
+  menuItems:
+    settings: Einstellungen
+    commandMenu: Befehlsmenü
+    helpAndSupport: Hilfe & Support
+    documentation: Dokumentation
+    githubRepository: GitHub-Repository
+    upgradeToPro: Auf Pro upgraden
+    signOut: Abmelden
 
 ar:
-  signedInAs: 'تم تسجيل الدخول باسم'
+  signedInAs: تم تسجيل الدخول باسم
   menuItems:
-    settings: 'الإعدادات'
-    commandMenu: 'قائمة الأوامر'
-    helpAndSupport: 'المساعدة والدعم'
-    documentation: 'التوثيق'
-    githubRepository: 'مستودع GitHub'
-    upgradeToPro: 'الترقية إلى النسخة المحترفة'
-    signOut: 'تسجيل الخروج'
+    settings: الإعدادات
+    commandMenu: قائمة الأوامر
+    helpAndSupport: المساعدة والدعم
+    documentation: التوثيق
+    githubRepository: مستودع GitHub
+    upgradeToPro: الترقية إلى النسخة المحترفة
+    signOut: تسجيل الخروج
 </i18n>
 
 <script lang="ts" setup>

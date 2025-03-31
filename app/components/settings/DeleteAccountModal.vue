@@ -42,6 +42,18 @@ zh-Hans:
     success: 账户已成功删除
     error: 删除账户时出现错误
 
+de:
+  title: Konto löschen
+  description: Sobald Ihr Konto gelöscht wurde, werden alle Ihre
+    Daten dauerhaft gelöscht und können nicht wiederhergestellt
+    werden. Sind Sie sicher, dass Sie Ihr Konto löschen möchten?
+  button:
+    delete: Löschen
+    cancel: Abbrechen
+  toast:
+    success: Konto wurde erfolgreich gelöscht
+    error: Beim Löschen des Kontos ist ein Fehler aufgetreten
+
 ar:
   title: حذف الحساب
   description: بمجرد حذف حسابك، سيتم حذف جميع بياناتك بشكل دائم

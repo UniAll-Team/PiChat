@@ -310,6 +310,132 @@ zh-Hans:
     searchImages: I3AFrFqwni8
     filterByDate: ytCBkU9WUgI
 
+de:
+  hero:
+    title: Intelligente Verwaltung Ihrer wertvollen Erinnerungen
+    description: PiChat ist nicht nur ein Fotoalbum, sondern Ihr
+      intelligenter Erinnerungsbutler. Finden Sie mühelos jedes
+      gewünschte Foto durch natürliche Sprachsuche.
+    badge: Neue Aktualisierung
+  search:
+    placeholder: 'Versuchen Sie zu tippen: "Fotos vom Hotpot-Essen
+      mit Freunden im letzten Winter"'
+  features:
+    section1:
+      title: Intelligente Suche, jenseits des Herkömmlichen
+      description: Verabschieden Sie sich von mühsamer Tag-Klassifizierung
+        und finden Sie jedes gewünschte Foto mit natürlicher Sprache
+    section2:
+      title: Einfach zu bedienen, Freiheit zu wählen
+      description: Konzentriert darauf, Ihnen das intuitivste
+        Fotoverwaltungserlebnis zu bieten
+    section3:
+      title: Warum PiChat wählen?
+      description: Fotoverwaltung intelligenter und einfacher
+        machen
+    smart:
+      feature1:
+        name: Suche mit natürlicher Sprache
+        description: Verwenden Sie Alltagssprache, um Szenen zu
+          beschreiben und entsprechende Fotos leicht zu finden
+      feature2:
+        name: Szenenerkennung
+        description: Intelligente Erkennung von Szenen, Aktivitäten
+          und Personen in Fotos
+      feature3:
+        name: Intelligente Zeitableitung
+        description: Automatische Ableitung von Zeiträumen anhand
+          der Beschreibung für eine präzisere Fotolokalisierung
+    easy:
+      feature1:
+        name: Schnelles Hochladen
+        description: Unterstützung für Massenupload mit automatischer
+          Organisation
+      feature2:
+        name: Intelligente Alben
+        description: Automatische Erstellung von thematischen
+          Alben, um schöne Momente leicht wieder zu erleben
+      feature3:
+        name: Plattformübergreifender Zugriff
+        description: Sehen und verwalten Sie Ihre Fotos jederzeit
+          und überall
+    core:
+      feature1:
+        title: Intelligente Suche
+        description: Finden Sie schnell gewünschte Fotos mit natürlichsprachlichen
+          Beschreibungen, verabschieden Sie sich von mühsamer
+          Tag-Verwaltung
+      feature2:
+        title: Intelligente Klassifizierung
+        description: Automatische Erkennung von Szenen, Personen
+          und Aktivitäten in Fotos, intelligente Organisation
+          Ihrer Fotobibliothek
+      feature3:
+        title: Sichere Speicherung
+        description: Verwendung fortschrittlicher Verschlüsselungstechnologie,
+          um Ihre Fotos sicher zu speichern
+      feature4:
+        title: Schnelles Hochladen
+        description: Unterstützung verschiedener Upload-Methoden
+          für effizientere Stapelverarbeitung
+      feature5:
+        title: Intelligentes Teilen
+        description: Teilen Sie mühelos Fotos und Alben mit Familie
+          und Freunden
+      feature6:
+        title: Offline-Zugriff
+        description: Unterstützung für Foto-Caching zum Anzeigen
+          jederzeit ohne Netzwerkeinschränkungen
+  testimonials:
+    headline: Nutzerbewertungen
+    title: Hören Sie, was Benutzer sagen
+    description: Erfahrungen von echten Benutzern
+    review1:
+      quote: Nach der Verwendung von PiChat ist das Finden von
+        Fotos ein Kinderspiel. Ich habe "Weihnachtsfeier mit der
+        Familie im letzten Jahr" eingegeben, und die Fotos erschienen
+        sofort. Es ist magisch!
+      author:
+        name: Frau Müller
+        description: Fotografie-Enthusiastin
+    review2:
+      quote: Als jemand, der häufig Fotos macht, hat PiChat mir
+        viel Zeit bei der Organisation von Fotos gespart. Die
+        intelligente Klassifizierungsfunktion ist besonders nützlich.
+      author:
+        name: Herr Schmidt
+        description: Freiberufler
+    review3:
+      quote: Übersichtliche Oberfläche, einfach zu bedienen und
+        vor allem kann man Fotos durch natürliches Sprechen suchen.
+        Dieses Feature ist großartig!
+      author:
+        name: Frau Wagner
+        description: Designerin
+    review4:
+      quote: Die intelligente Suchfunktion hat wirklich meine
+        Art der Fotoverwaltung verändert. Keine Sorgen mehr, bestimmte
+        Gelegenheitsfotos nicht zu finden.
+      author:
+        name: Herr Fischer
+        description: Unternehmensmanager
+  cta:
+    title: Beginnen Sie mit der intelligenten Verwaltung Ihrer
+      Fotos
+    description: Erleben Sie jetzt die neue Art der Fotoverwaltung
+    button: Kostenlos beginnen
+  links:
+    start: Jetzt beginnen
+    demo: Demo ansehen
+  seo:
+    title: Intelligenter Fotoverwaltungsassistent
+    description: PiChat ist ein intelligentes Fotoverwaltungstool,
+      das natürliche Sprachsuche unterstützt und Ihnen ermöglicht,
+      mühelos jedes gewünschte Foto sofort zu finden.
+  video:
+    searchImages: I3AFrFqwni8
+    filterByDate: ytCBkU9WUgI
+
 ar:
   hero:
     title: إدارة ذكية لذكرياتك الثمينة

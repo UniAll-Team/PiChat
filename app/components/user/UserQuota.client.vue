@@ -44,6 +44,17 @@ zh-Hans:
   error:
     title: 获取用户配额失败，请点击左侧联系客服
 
+de:
+  quota:
+    storage: 'Genutzter Speicher: {used}, verbleibender Speicher:
+      {remaining}, Gesamtspeicher: {total}'
+    indexing: '{count} Bilder indiziert, {remaining} verbleibende
+      Indizierungszeiten, insgesamt {total} Indizierungszeiten'
+  error:
+    title: Benutzerquote konnte nicht abgerufen werden, bitte
+      klicken Sie auf die Support-Schaltfläche auf der linken
+      Seite
+
 ar:
   quota:
     storage: 'المساحة المستخدمة: {used}، المساحة المتبقية: {remaining}،

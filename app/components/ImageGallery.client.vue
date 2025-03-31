@@ -58,31 +58,41 @@
 
 <i18n lang="yaml">
 en:
-  loading: 'Loading...'
-  complete: 'No more data'
+  loading: Loading...
+  complete: No more data
   error:
-    title: 'Failed to load'
-    message: 'Failed to load. You can click {link} to contact us.'
-    link: 'here'
-  modalCloseButtonAlt: 'Close the preview'
+    title: Failed to load
+    message: Failed to load. You can click {link} to contact us.
+    link: here
+  modalCloseButtonAlt: Close the preview
 
 zh-Hans:
-  loading: '加载中……'
-  complete: '没有更多数据'
+  loading: 加载中……
+  complete: 没有更多数据
   error:
-    title: '加载失败'
-    message: '加载失败，你可以点击{link}联系我们。'
-    link: '这里'
-  modalCloseButtonAlt: '关闭预览'
+    title: 加载失败
+    message: 加载失败，你可以点击{link}联系我们。
+    link: 这里
+  modalCloseButtonAlt: 关闭预览
+
+de:
+  loading: Wird geladen...
+  complete: Keine weiteren Daten
+  error:
+    title: Laden fehlgeschlagen
+    message: Laden fehlgeschlagen. Sie können {link} klicken,
+      um uns zu kontaktieren.
+    link: hier
+  modalCloseButtonAlt: Vorschau schließen
 
 ar:
-  loading: 'جار التحميل...'
-  complete: 'لا توجد بيانات إضافية'
+  loading: جار التحميل...
+  complete: لا توجد بيانات إضافية
   error:
-    title: 'فشل التحميل'
-    message: 'فشل التحميل. يمكنك النقر فوق {link} للاتصال بنا.'
-    link: 'هنا'
-  modalCloseButtonAlt: 'إغلاق المعاينة'
+    title: فشل التحميل
+    message: فشل التحميل. يمكنك النقر فوق {link} للاتصال بنا.
+    link: هنا
+  modalCloseButtonAlt: إغلاق المعاينة
 </i18n>
 
 <script lang="ts" setup>

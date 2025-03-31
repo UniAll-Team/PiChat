@@ -155,6 +155,12 @@ export default defineNuxtConfig({
 				file: 'zh-Hans.yaml',
 				isCatchallLocale: true,
 			},
+			{
+				code: 'de',
+				language: 'de',
+				name: 'Deutsch',
+				file: 'de.yaml',
+			},
 		].filter(local =>
 			// 仅在开发环境下显示中文
 			process.env.NODE_ENV == 'development' || local.code != 'zh-Hans'

@@ -88,7 +88,6 @@ en:
     delete: Delete
     upload: Upload
     search: Search
-
   messages:
     deleteSuccess:
       title: Delete Successful
@@ -98,7 +97,6 @@ en:
     downloadSuccess:
       title: Download Successful
       description: Selected images have been downloaded
-
   placeholders:
     search: Search
 
@@ -109,7 +107,6 @@ zh-Hans:
     delete: 删除
     upload: 上传
     search: 搜索
-
   messages:
     deleteSuccess:
       title: 删除成功
@@ -119,9 +116,27 @@ zh-Hans:
     downloadSuccess:
       title: 下载成功
       description: 选中的图片已被下载
-
   placeholders:
     search: 搜索
+
+de:
+  actions:
+    cancel: Abbrechen
+    download: Herunterladen
+    delete: Löschen
+    upload: Hochladen
+    search: Suchen
+  messages:
+    deleteSuccess:
+      title: Löschen erfolgreich
+      description: Ausgewählte Bilder wurden gelöscht
+    deleteError:
+      title: Löschen fehlgeschlagen
+    downloadSuccess:
+      title: Download erfolgreich
+      description: Ausgewählte Bilder wurden heruntergeladen
+  placeholders:
+    search: Suchen
 
 ar:
   actions:
@@ -130,7 +145,6 @@ ar:
     delete: حذف
     upload: تحميل
     search: بحث
-
   messages:
     deleteSuccess:
       title: تم الحذف بنجاح
@@ -140,7 +154,6 @@ ar:
     downloadSuccess:
       title: تم التحميل بنجاح
       description: تم تحميل الصور المحددة
-
   placeholders:
     search: بحث
 </i18n>

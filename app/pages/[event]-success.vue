@@ -21,6 +21,11 @@ en:
     success: Subscription successful
     update: Subscription updated
 
+de:
+  subscription:
+    success: Abonnement erfolgreich
+    update: Abonnement aktualisiert
+
 ar:
   subscription:
     success: تم الاشتراك بنجاح

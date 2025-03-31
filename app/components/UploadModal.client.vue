@@ -52,6 +52,26 @@ ar:
   updateIndexFailed: فشل في تحديث فهرس الصور، يرجى الاتصال بخدمة
     العملاء على اليسار.
   uploadComplete: اكتمل التحميل.
+
+de:
+  fileAdded: Datei erfolgreich hinzugefügt.
+  uploadErrorLarge: Die Datei ist zu groß, bitte wählen Sie erneut.
+  uploadErrorRetry: Upload fehlgeschlagen, bitte versuchen Sie
+    es erneut.
+  creatingIndex: Bildindex wird erstellt...
+  indexCreated: Bildindex erfolgreich erstellt.
+  getUserQuotaFailed: Fehler beim Abrufen des Benutzerkontos,
+    bitte kontaktieren Sie den Kundendienst auf der linken Seite.
+  fileExists: Die Datei existiert bereits, kein erneuter Upload
+    erforderlich.
+  createSignedURLError: Fehler beim Erstellen einer signierten
+    URL, bitte kontaktieren Sie den Kundendienst auf der linken
+    Seite.
+  imageIndexFailed: Fehler beim Erstellen des Bildindexes, bitte
+    kontaktieren Sie den Kundendienst auf der linken Seite.
+  updateIndexFailed: Fehler beim Aktualisieren des Bildindexes,
+    bitte kontaktieren Sie den Kundendienst auf der linken Seite.
+  uploadComplete: Upload abgeschlossen.
 </i18n>
 
 <script lang="ts" setup>

@@ -70,6 +70,18 @@ zh-Hans:
   signout: 登出
   dashboard: 仪表盘
 
+de:
+  logo: PiChat
+  nav:
+    docs: Dokumentation
+    pricing: Preise
+    install: Installation
+    customer-service: Kundendienst
+  signin: Anmelden
+  signup: Registrieren
+  signout: Abmelden
+  dashboard: Dashboard
+
 ar:
   logo: PiChat
   nav:

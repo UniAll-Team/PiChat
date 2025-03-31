@@ -15,6 +15,9 @@ en:
 zh-Hans:
   settings: 设置
 
+de:
+  settings: Einstellungen
+
 ar:
   settings: الإعدادات
 </i18n>

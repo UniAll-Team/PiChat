@@ -11,6 +11,12 @@ export const numberFormats = {
 			numberingSystem: 'latn',
 		},
 	},
+	de: {
+		decimal: {
+			style: 'decimal',
+			numberingSystem: 'latn',
+		},
+	},
 	'zh-Hans': {
 		decimal: {
 			style: 'decimal',

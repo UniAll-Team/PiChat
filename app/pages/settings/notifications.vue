@@ -86,6 +86,42 @@ zh-Hans:
       error:
         title: 错误
 
+de:
+  notifications:
+    channels:
+      title: Benachrichtigungskanäle
+      description: Wie möchten Sie benachrichtigt werden?
+      email:
+        label: E-Mail
+        description: Erhalten Sie Benachrichtigungen per E-Mail.
+      app:
+        label: In-App
+        description: Erhalten Sie Benachrichtigungen innerhalb
+          der App.
+    types:
+      title: Benachrichtigungstypen
+      description: Welche Arten von Benachrichtigungen möchten
+        Sie erhalten?
+      discounts:
+        label: Rabatte
+        description: Erhalten Sie Benachrichtigungen über Rabatte
+          und Aktionen.
+      product:
+        label: Produktupdates
+        description: Erhalten Sie eine monatliche E-Mail mit allen
+          neuen Funktionen und Updates.
+      important:
+        label: Wichtige Updates
+        description: Erhalten Sie E-Mails über wichtige Updates
+          wie Sicherheitskorrekturen und Wartungsarbeiten.
+    toast:
+      success:
+        title: Erfolg
+        description: Benachrichtigungseinstellungen erfolgreich
+          aktualisiert.
+      error:
+        title: Fehler
+
 ar:
   notifications:
     channels:
@@ -117,7 +153,6 @@ ar:
         description: تم تحديث إعدادات الإشعار بنجاح.
       error:
         title: خطأ
-
 </i18n>
 
 <script setup lang="ts">
