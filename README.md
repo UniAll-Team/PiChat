@@ -1,125 +1,59 @@
-![nuxt-ui-saas-social-card](https://github.com/nuxt-ui-pro/saas/assets/739984/50bf4ddd-c4d5-47e5-a09e-0f699513dfb5)
+[中文](#介绍) | [English](#introduction)
 
-# Nuxt UI Pro - SaaS template
+# 介绍
 
-[![Nuxt UI Pro](https://img.shields.io/badge/Made%20with-Nuxt%20UI%20Pro-00DC82?logo=nuxt.js&labelColor=020420)](https://ui.nuxt.com/pro)
+[PiChat](https://pichat.uniall.site) 是一个结合大模型 embedding 技术和 Nuxt 框架构建的在线相册。
+与传统相册不同，该相册中的图片并非使用常规标签进行标记，而是利用大模型 embedding 技术对图片进行处理，
+从而实现对图片的智能搜索和推荐。
+用户在搜索时输入的语句越长、越精确，推荐的图片就越准确。
 
-- [Live demo](https://saas-template.nuxt.dev/)
-- [Play on Stackblitz](https://stackblitz.com/github/nuxt-ui-pro/saas)
-- [Documentation](https://ui.nuxt.com/pro/getting-started)
+# 构建方法
 
-[![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://hub.nuxt.com/new?repo=nuxt-ui-pro/saas)
+## 1. 安装依赖
 
-## Quick Start
-
-```bash [Terminal]
-npx nuxi init -t github:nuxt-ui-pro/saas
-```
-
-## Setup
-
-Make sure to install the dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
+```fish
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## 2. 配置环境
 
-Start the development server on `http://localhost:3000`:
+请将 `.env.example` 文件复制为 `.env`，并根据需要修改配置。
 
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+```fish
+cp .env.example .env
 ```
 
-## Production
+## 3. 运行项目
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```fish
+pnpm dev
 ```
 
-Locally preview production build:
+# Introduction
 
-```bash
-# npm
-npm run preview
+[PiChat](https://pichat.uniall.site) is an online photo album built by combining large model embedding technology and the Nuxt framework.
+Unlike traditional photo albums, the images in this album are not tagged using conventional tags. Instead, large model embedding technology is used to process the images,
+thereby enabling intelligent search and recommendation of images.
+The longer and more precise the sentence entered by the user during search, the more accurate the recommended images will be.
 
-# pnpm
-pnpm run preview
+# Build Method
 
-# yarn
-yarn preview
+## 1. Install Dependencies
 
-# bun
-bun run preview
+```fish
+pnpm install
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## 2. Configure Environment
 
-## Nuxt Studio integration
+Please copy the `.env.example` file to `.env` and modify the configuration as needed.
 
-Add `@nuxthq/studio` dependency to your package.json:
-
-```bash
-# npm
-npm install --save-dev @nuxthq/studio
-
-# pnpm
-pnpm add -D @nuxthq/studio
-
-# yarn
-yarn add -D @nuxthq/studio
-
-# bun
-bun add -d @nuxthq/studio
+```fish
+cp .env.example .env
 ```
 
-Add this module to your `nuxt.config.ts`:
+## 3. Run the Project
 
-```ts
-export default defineNuxtConfig({
-  ...
-  modules: [
-    ...
-    '@nuxthq/studio'
-  ]
-})
+```fish
+pnpm dev
 ```
-
-Read more on [Nuxt Studio docs](https://nuxt.studio/docs/get-started/setup).
-
-## Renovate integration
-
-Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
